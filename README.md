@@ -13,6 +13,14 @@ You can choose how your character should be addressed on a per-character basis.
 * *WotLK Classic* - 3.4.1 :warning: UNTESTED :warning:
 * *Classic Era* - 1.14.3 :warning: UNTESTED :warning:
 
+Tested and appears to work with:
+* Stock UI Quest Frames
+* [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
+* Stock UI Chat Window
+* [Immersion](https://www.curseforge.com/wow/addons/immersion)
+
+
+
 ## Installation
 Download the latest version from one of the places below, and unzip it in your `<warcraft>\<_version_>\Interface\Addons` folder if installing manually.
 
@@ -29,3 +37,8 @@ So if your character's OOC name is a common word, for example, `The` or `Shaman`
 A new area will be added into Total RP 3's Config Window, under 'Settings' > 'Quest Text'.
 
 There is a dropdown here so you can choose how your character should be addressed by NPCs. Note that this is on a per-character basis, not per-TRP3 Profile basis. So even if you use the same TRP3 profile across 2 or more characters, you'll need to adjust this dropdown individually for each one.
+
+
+## To Do ?
+- [ ] Add Support for Speech Bubbles
+- [ ] See if any other quest addons work with this
