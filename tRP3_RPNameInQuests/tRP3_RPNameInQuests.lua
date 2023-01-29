@@ -244,7 +244,7 @@ local function trp3RPNameInQuestsInit()
 	local TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
 	GetRewardText = function (...)
 	
-		print("TRP3_RPNameInQuests_GetRewardTextHook")
+		--print("TRP3_RPNameInQuests_GetRewardTextHook")
 		
 		local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
 		
@@ -385,7 +385,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.0",
+	version = "0.1.1",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
