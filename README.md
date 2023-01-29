@@ -1,5 +1,5 @@
 # TRP3: RP Name in Quest Text
-An *EXPERIMENTAL* addon for World of Warcraft Dragonflight!
+An :warning: *EXPERIMENTAL* :warning: addon for World of Warcraft Dragonflight!
 
 ## About
 This addon attempts to replace any mentions of your OOC Character name by NPCs in Quest Dialogues and text chat, with your Roleplay Character Name that you have created using [Total RP 3](https://github.com/Total-RP/Total-RP-3).
