@@ -2,6 +2,33 @@ local TRPRPNAMEINQUESTS = select(2, ...);
 
 local function trp3RPNameInQuestsInit()
 
+
+
+	--for debug
+	
+	--[[
+	
+	local function tprint (t, s)
+		for k, v in pairs(t) do
+			local kfmt = '["' .. tostring(k) ..'"]'
+			if type(k) ~= 'string' then
+				kfmt = '[' .. k .. ']'
+			end
+			local vfmt = '"'.. tostring(v) ..'"'
+			if type(v) == 'table' then
+				tprint(v, (s or '')..kfmt)
+			else
+				if type(v) ~= 'string' then
+					vfmt = tostring(v)
+				end
+				print(type(t)..(s or '')..kfmt..' = '..vfmt)
+			end
+		end
+	end
+
+
+	]]--
+
 	if tRP3RPNameInQuests == nil then
 		tRP3RPNameInQuests = 1
 	end
@@ -259,10 +286,36 @@ local function trp3RPNameInQuestsInit()
 
 
 
+	if (useNewAPI == true) then
 
 
+		-- Gossip Options
+		local TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
+		C_GossipInfo.GetOptions = function (...)
+		
+			--print("TRP3_RPNameInQuests_GetGossipOptions")
+		
+			local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
+			--print(thisGossipOptions)
+			
+			for key, value in pairs(thisGossipOptions) do
+							
+				if (strmatch(thisGossipOptions[key]["name"], TRP3_RPNameInQuests_VarToChange)) then
+					thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_TextRename(thisGossipOptions[key]["name"])
+				end
+				
+			end
 
+			return(thisGossipOptions)
+		
+		end
+	
+	
+	else
+	--TO DO - Classic version maybe?
+	
 
+	end
 
 
 	-- NPC /s Chat
@@ -385,7 +438,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.1",
+	version = "0.1.2",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
