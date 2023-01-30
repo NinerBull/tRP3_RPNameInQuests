@@ -456,9 +456,14 @@ TRP3_API.configuration.registerConfigurationPage({
 		pageText = "RP Name in Quest Text",
 		elements = {
 			{
+				inherit = "TRP3_ConfigParagraph",
+				title = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
+			},
+			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = "How should NPCs address " .. UnitName("player") .. "?",
+				title = "How should NPCs address |cffffcc00" .. UnitName("player") .. "|r?",
+				help = "This will replace your OOC Name in Quests, NPC Speech, and Speech Bubbles, with your chosen name format. Note: Will cause funky stuff to happen if your OOC name is a common word.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
@@ -480,7 +485,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.3",
+	version = "0.1.4",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
