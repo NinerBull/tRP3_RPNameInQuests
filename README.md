@@ -41,5 +41,5 @@ There is a dropdown here so you can choose how your character should be addresse
 
 ## To Do ?
 - [X] Add Support for Dialogue Options
-- [ ] Add Support for Speech Bubbles
+- [X] Add Support for Speech Bubbles (May be buggy lol)
 - [X] See if any other quest addons work with this - [Storyline](https://github.com/Total-RP/Storyline) seems to, at least.
