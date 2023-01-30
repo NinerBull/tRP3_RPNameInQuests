@@ -6,9 +6,9 @@ local function trp3RPNameInQuestsInit()
 
 	--for debug
 	
-	--[[
 	
-	local function tprint (t, s)
+	
+	--[[local function tprint (t, s)
 		for k, v in pairs(t) do
 			local kfmt = '["' .. tostring(k) ..'"]'
 			if type(k) ~= 'string' then
@@ -24,10 +24,9 @@ local function trp3RPNameInQuestsInit()
 				print(type(t)..(s or '')..kfmt..' = '..vfmt)
 			end
 		end
-	end
+	end]]--
 
 
-	]]--
 
 	if tRP3RPNameInQuests == nil then
 		tRP3RPNameInQuests = 1
@@ -127,12 +126,6 @@ local function trp3RPNameInQuestsInit()
 	
 	hooksecurefunc("QuestInfo_Display", function()
 		--print("QuestInfo_Display")
-
-		--[[if (QuestInfoFrame.questLog) then
-			local thisQuestID = C_QuestLog.GetSelectedQuest()
-		else
-			local thisQuestID = GetQuestID()
-		end]]--
 
 		local thisQuestDescription = QuestInfoDescriptionText:GetText()
 		
@@ -273,7 +266,7 @@ local function trp3RPNameInQuestsInit()
 
 
 
-	-- Get Quest Reward Progress Text
+	-- Get Quest Reward Text
 	local TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
 	GetRewardText = function (...)
 	
@@ -332,6 +325,7 @@ local function trp3RPNameInQuestsInit()
 			-- do NPC name as well in case player's been transformed e.g. Gamon
 			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
+			TRP3_RPNameInQuests_ModSpeechBubbles()
 			return false, thisNewMessage, thisNewNPC, ...
 		end
 
@@ -346,6 +340,7 @@ local function trp3RPNameInQuestsInit()
 			-- do NPC name as well in case player's been transformed e.g. Gamon
 			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
+			TRP3_RPNameInQuests_ModSpeechBubbles()
 			return false, thisNewMessage, thisNewNPC, ...
 		end
 
@@ -360,6 +355,7 @@ local function trp3RPNameInQuestsInit()
 			-- do NPC name as well in case player's been transformed e.g. Gamon
 			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
+			TRP3_RPNameInQuests_ModSpeechBubbles()
 			return false, thisNewMessage, thisNewNPC, ...
 		end
 
@@ -373,6 +369,7 @@ local function trp3RPNameInQuestsInit()
 			-- do NPC name as well in case player's been transformed e.g. Gamon
 			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
+			--TRP3_RPNameInQuests_ModSpeechBubbles()
 			return false, thisNewMessage, thisNewNPC, ...
 		end
 
@@ -386,13 +383,52 @@ local function trp3RPNameInQuestsInit()
 			-- do NPC name as well in case player's been transformed e.g. Gamon
 			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
+			--TRP3_RPNameInQuests_ModSpeechBubbles()
 			return false, thisNewMessage, thisNewNPC, ...
 		end
 
 	end)
 
 
-	-- how do i get speech bubbles m8
+
+
+	--Speech Bubbles
+	--with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
+	
+	
+	function TRP3_RPNameInQuests_ModSpeechBubbles()
+	
+		--print("TRP3_RPNameInQuests_ModSpeechBubbles")
+		
+		--Slight timer so the bubble has chance to fade in
+		C_Timer.After(.05, function()
+			for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
+				for i = 1, bubble:GetNumChildren() do
+					local child = select(i, select(i, bubble:GetChildren()))
+					if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
+	
+						for i = 1, child:GetNumRegions() do
+							local region = select(i, child:GetRegions())
+							if (region:GetObjectType() == "FontString") then
+							
+								thisBubbleText = region:GetText()
+								
+								
+								if (strmatch(thisBubbleText, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisBubbleText, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
+									region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
+								end
+
+							end
+						end
+					end
+				end
+			
+			end
+		
+		end)
+		
+	end
+	
 	
 	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
 		{ "OOC Character Name", 1 },
@@ -444,7 +480,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.2",
+	version = "0.1.3",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
