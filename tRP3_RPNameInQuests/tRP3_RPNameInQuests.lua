@@ -52,7 +52,10 @@ local function trp3RPNameInQuestsInit()
 	-- Function that does the actual renaming
 	local TRP3_RPNameInQuests_VarToChange = UnitName("player")
 	--UnitName("player")
-	local function TRP3_RPNameInQuests_TextRename(textToRename)
+	local function TRP3_RPNameInQuests_TextRename(textToRename, returnRPName)
+	
+		returnRPName = returnRPName or false
+	
 
 		--Get TRP 3 Name
 		
@@ -100,8 +103,12 @@ local function trp3RPNameInQuestsInit()
 			end
 			
 			
+			if (returnRPName == true) then
+				return thisTRP3CharName
+			else
+				return textToRename
+			end
 			
-			return textToRename
 			
 		end
 		
@@ -117,29 +124,28 @@ local function trp3RPNameInQuestsInit()
 
 
 	-- Quest Window
+	
 	hooksecurefunc("QuestInfo_Display", function()
 		--print("QuestInfo_Display")
 
-		if (QuestInfoFrame.questLog) then
+		--[[if (QuestInfoFrame.questLog) then
 			local thisQuestID = C_QuestLog.GetSelectedQuest()
 		else
 			local thisQuestID = GetQuestID()
-		end
+		end]]--
 
 		local thisQuestDescription = QuestInfoDescriptionText:GetText()
 		
-		
+		--Make sure RP name isn't already in the quest description to dodge dupes
 		if (thisQuestDescription ~= nil) then
-			if (strmatch(thisQuestDescription, TRP3_RPNameInQuests_VarToChange)) then
+			if (strmatch(thisQuestDescription, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisQuestDescription, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
 				QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_TextRename(thisQuestDescription))
 			end
 		
 		end
 
 	end)
-
-
-
+	
 
 
 
