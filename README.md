@@ -4,7 +4,7 @@ An :warning: **EXPERIMENTAL** :warning: addon for World of Warcraft Dragonflight
 ## About
 This addon attempts to replace any mentions of your OOC Character name by NPCs in Quest Dialogues and text chat, with your Roleplay Character Name that you have created using [Total RP 3](https://github.com/Total-RP/Total-RP-3).
 
-E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is `Sir Legolas the Nevermissing`, then Quest Dialogues should refer to you with your Roleplay name instead.
+E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is `Sir Legolas the Nevermissing`, then Quest Dialogues should refer to you with your TRP3 Roleplay name instead.
 
 You can choose how your character should be addressed on a per-character basis.
 
@@ -15,8 +15,8 @@ So if your character's OOC name is a common word, for example, `The` or `Shaman`
 
 ## Compatibility
 * **Dragonflight** - 10.0.5
-* **WotLK Classic** - 3.4.1 :warning: UNTESTED :warning:
-* **Classic Era** - 1.14.3 :warning: UNTESTED :warning:
+* **WotLK Classic** - 3.4.1
+* **Classic Era** - 1.14.3
 
 Tested and appears to work with:
 * Stock UI Quest Frames
@@ -37,9 +37,3 @@ Download the latest version below, and unzip it in your `<warcraft>\<_version_>\
 A new area will be added into Total RP 3's Config Window, under 'Settings' > 'Quest Text'.
 
 There is a dropdown here so you can choose how your character should be addressed by NPCs. Note that this is on a per-character basis, not per-TRP3 Profile basis. So even if you use the same TRP3 profile across 2 or more characters, you'll need to adjust this dropdown individually for each one.
-
-
-## To Do ?
-- [X] Add Support for Dialogue Options
-- [X] Add Support for Speech Bubbles (May be buggy lol)
-- [X] See if any other quest addons work with this - [Storyline](https://github.com/Total-RP/Storyline) seems to, at least.
