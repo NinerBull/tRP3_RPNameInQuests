@@ -18,6 +18,8 @@ So if your character's OOC name is a common word, for example, `The` or `Shaman`
 * **WotLK Classic** - 3.4.1
 * **Classic Era** - 1.14.3
 
+**REQUIRES** [Total RP 3](https://github.com/Total-RP/Total-RP-3)
+
 Tested and appears to work with:
 * Stock UI Quest Frames
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
