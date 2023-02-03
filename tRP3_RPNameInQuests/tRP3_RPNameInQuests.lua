@@ -405,19 +405,20 @@ local function trp3RPNameInQuestsInit()
 			for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
 				for i = 1, bubble:GetNumChildren() do
 					local child = select(i, select(i, bubble:GetChildren()))
-					if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
-	
-						for i = 1, child:GetNumRegions() do
-							local region = select(i, child:GetRegions())
-							if (region:GetObjectType() == "FontString") then
-							
-								thisBubbleText = region:GetText()
+					if(child) then
+						if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
+							for i = 1, child:GetNumRegions() do
+								local region = select(i, child:GetRegions())
+								if (region:GetObjectType() == "FontString") then
 								
-								
-								if (strmatch(thisBubbleText, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisBubbleText, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
-									region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
-								end
+									thisBubbleText = region:GetText()
+									
+									
+									if (strmatch(thisBubbleText, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisBubbleText, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
+										region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
+									end
 
+								end
 							end
 						end
 					end
@@ -485,7 +486,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.4",
+	version = "0.1.5",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
