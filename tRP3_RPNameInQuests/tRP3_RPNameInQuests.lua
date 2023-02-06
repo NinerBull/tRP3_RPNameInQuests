@@ -458,7 +458,7 @@ TRP3_API.configuration.registerConfigurationPage({
 		elements = {
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
+				title = "This AddOn attempts to put your Total RP 3 Character Name into quest text and dialogue.",
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -485,8 +485,8 @@ end
 
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
-	description = "This AddOn attempts to put your TRP3 In-Character Name into quest text and dialogue.",
-	version = "0.1.5",
+	description = "This AddOn attempts to put your Total RP 3 Character Name into quest text and dialogue.",
+	version = "1.0.0",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,

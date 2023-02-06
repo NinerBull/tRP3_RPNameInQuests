@@ -1,17 +1,19 @@
-# TRP3: RP Name in Quest Text
-An :warning: **EXPERIMENTAL** :warning: addon for World of Warcraft Dragonflight!
+# Total RP 3: RP Name in Quest Text
+An addon for World of Warcraft!
 
 ## About
-This addon attempts to replace any mentions of your OOC Character name by NPCs in Quest Dialogues and text chat, with your Roleplay Character Name that you have created using [Total RP 3](https://github.com/Total-RP/Total-RP-3).
+This _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) attempts to replace any mentions of your OOC Character name by NPCs in Quest Dialogues and Text Chat, with your Roleplay Character Name.
 
-E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is `Sir Legolas the Nevermissing`, then Quest Dialogues should refer to you with your TRP3 Roleplay name instead.
+E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is `Sir Legolas the Nevermissing`, then Quest Dialogues should refer to you with your TRP3 Roleplay Name instead.
 
 You can choose how your character should be addressed on a per-character basis.
 
 ## :warning: Caveats
-While datamined text may show things such as `<name>` in them [As for example, this weekly quest](https://www.wowhead.com/quest=72068), unfortunately, any quest text I can get via the API doesn't include placeholder tags for character name, etc. It already contains your OOC Character name. This addon basically does a find/replace for your OOC Char name with your IC Name.
+While datamined text may show things such as `<name>` in them [as for example, this weekly quest](https://www.wowhead.com/quest=72068), unfortunately, any quest text I can get via the API doesn't include placeholder tags for character name, etc. It already contains your OOC Character name. This addon basically does a find/replace for your OOC Char name with your IC Name.
 
-So if your character's OOC name is a common word, for example, `The` or `Shaman`, then **wierd things are going to happen to quest text with this addon enabled**.
+So if your character's OOC name is a common word, for example, `Warrior` or `Shaman`, then **wierd things are going to happen to quest text with this addon enabled**.
+
+This addon may not be compatible with other addons that modify quest windows, chat windows, etc.
 
 ## Compatibility
 * **Dragonflight** - 10.0.5
