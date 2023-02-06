@@ -33,6 +33,8 @@ Tested and appears to work with:
 ## Installation
 Download the latest version below, and unzip it in your `<warcraft>\<_version_>\Interface\Addons` folder if installing manually.
 
+* [CurseForge](https://www.curseforge.com/wow/addons/trp3-rpnameinquests)
+* [WoWInterface](https://www.wowinterface.com/downloads/fileinfo.php?id=26545)
 * [GitHub](https://github.com/NinerBull/tRP3_RPNameInQuests/releases/latest)
 * Or put `https://github.com/NinerBull/tRP3_RPNameInQuests` into your favourite Addon Manager
 
