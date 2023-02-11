@@ -94,6 +94,8 @@ local function trp3RPNameInQuestsInit()
 			
 			if (thisTRP3CharName == "") then
 				--empty, do nothing
+				thisTRP3CharName = TRP3_RPNameInQuests_VarToChange
+				
 			else
 			
 				if (textToRename) then
