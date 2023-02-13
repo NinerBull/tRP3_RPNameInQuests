@@ -6,7 +6,7 @@ This _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3
 
 E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is `Sir Legolas the Nevermissing`, then Quest Dialogues should refer to you with your TRP3 Roleplay Name instead.
 
-You can choose how your character should be addressed on a per-character basis.
+You can choose how your character should be addressed on a per-character basis. Type `/trp3 questtext` to begin.
 
 ## Compatibility
 * **Dragonflight** - 10.0.5
@@ -34,6 +34,8 @@ Download the latest version below, and unzip it in your `<warcraft>\<_version_>\
 
 ## Configuration
 A new area will be added into Total RP 3's Config Window, under 'Settings' > 'Quest Text'.
+
+You can also access the config by typing `/trp3 questtext`. 
 
 There is a dropdown here so you can choose how your character should be addressed by NPCs. Note that this is on a per-character basis, not per-TRP3 Profile basis. So even if you use the same TRP3 profile across 2 or more characters, you'll need to adjust this dropdown individually for each one.
 

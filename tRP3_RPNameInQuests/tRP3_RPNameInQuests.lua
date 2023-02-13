@@ -30,6 +30,7 @@ local function trp3RPNameInQuestsInit()
 
 	if tRP3RPNameInQuests == nil then
 		tRP3RPNameInQuests = 1
+		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
 	end
 
 
@@ -487,9 +488,32 @@ end
 
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
-	description = "This AddOn attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.0",
+	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
+	version = "1.0.1",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
 });
+
+
+
+
+
+
+
+-- Slash Command
+local function trp3RPNameInQuestsOpenConfig()
+	TRP3_API.navigation.openMainFrame();
+	TRP3_API.navigation.page.setPage("main_config_aaa_general");
+	TRP3_API.navigation.page.setPage("trp3_rpnameinquests_config");
+end
+
+local trp3RPNameInQuestsOpenConfigCommand = {
+    id = "questtext",
+    helpLine = " Open the RP Name in Quest Text Config.",
+    handler = function()
+        trp3RPNameInQuestsOpenConfig();
+    end,
+}
+
+TRP3_API.slash.registerCommand(trp3RPNameInQuestsOpenConfigCommand);
