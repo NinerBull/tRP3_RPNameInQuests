@@ -1,4 +1,8 @@
+local trp3rpnamequestsframe = CreateFrame("Frame")
+
+
 local TRPRPNAMEINQUESTS = select(2, ...);
+
 
 local function trp3RPNameInQuestsInit()
 
@@ -28,9 +32,23 @@ local function trp3RPNameInQuestsInit()
 
 
 
-	if tRP3RPNameInQuests == nil then
-		tRP3RPNameInQuests = 1
+	if tRP3RPNameInQuests == nil then		
+		tRP3RPNameInQuests = {
+			WhichRPName = 1,
+			PaperDollRPName = false
+		}
+		
 		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
+	end
+	
+	-- Upgrade from older version
+	if (type(tRP3RPNameInQuests) == 'number') then
+		local tRP3RPNameInQuestsNum = tRP3RPNameInQuests
+		
+		tRP3RPNameInQuests = {
+			WhichRPName = tRP3RPNameInQuestsNum or 1,
+			PaperDollRPName = false
+		}
 	end
 
 
@@ -44,6 +62,44 @@ local function trp3RPNameInQuestsInit()
 	if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) or (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)    then
 		useNewAPI = false
 	end
+
+
+
+
+
+
+
+
+
+	-- Full TRP3 Name
+	
+	local function TRP3_RPNameInQuests_GetFullRPName()
+			
+		local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
+	
+		local thisTRP3CharNameFull = ""
+	
+	
+		if (thisTRP3CharInfo.TI) then
+			thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
+		end
+		
+		if (thisTRP3CharInfo.FN) then
+			thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
+		end
+		
+		if (thisTRP3CharInfo.LN) then
+			thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
+		end
+		
+		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
+
+		return thisTRP3CharNameFull
+	
+	end
+	
+	
+
 
 
 
@@ -119,14 +175,25 @@ local function trp3RPNameInQuestsInit()
 	end
 
 
-
-
+	-- Character Sheet
+	hooksecurefunc("ToggleCharacter", function()
+		if (tRP3RPNameInQuests.PaperDollRPName == true) then
+			if ( CharacterFrame:IsShown() ) then
+				if (TRP3_RPNameInQuests_GetFullRPName() ~= "") then
+						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+							CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName());
+						else
+							CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName());
+						end
+				end
+			end
+		end
+	end)
 
 
 
 
 	-- Quest Window
-	
 	hooksecurefunc("QuestInfo_Display", function()
 		--print("QuestInfo_Display")
 
@@ -446,13 +513,24 @@ local function trp3RPNameInQuestsInit()
 	}
 	
 	
+
+
+local classDisplayName, class = UnitClass("player");
+local classColorString = RAID_CLASS_COLORS[class].colorStr;
+	
+	
 TRPRPNAMEINQUESTS.CONFIG = {};
 
 TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
+TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests);
+TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
+TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
 
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests)
+TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
+TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
+
+
 
 TRP3_API.configuration.registerConfigurationPage({
 		id = "trp3_rpnameinquests_config",
@@ -464,19 +542,36 @@ TRP3_API.configuration.registerConfigurationPage({
 				title = "This AddOn attempts to put your Total RP 3 Character Name into quest text and dialogue.",
 			},
 			{
+				inherit = "TRP3_ConfigH1",
+				title = "Main Options",
+			},
+			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = "How should NPCs address |cffffcc00" .. UnitName("player") .. "|r?",
+				title = "How should NPCs address |c" .. classColorString .. UnitName("player") .. "|r?",
 				help = "This will replace your OOC Name in Quests, NPC Speech, and Speech Bubbles, with your chosen name format. Note: Will cause funky stuff to happen if your OOC name is a common word.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, value)
-					--print(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME))
-					tRP3RPNameInQuests = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
-					--print(tRP3RPNameInQuests)
+					tRP3RPNameInQuests.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
 				end,
 
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = "Extra Functions",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "Use TRP3 Name in Character Window for |c" .. classColorString .. UnitName("player") .. "|r",
+				help = "If checked, your current TRP3 Character Name will be shown in the Character Window (aka Paper Doll).",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
+					tRP3RPNameInQuests.PaperDollRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME)
+				end,
 			},
 			
 		}
@@ -489,7 +584,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.1",
+	version = "1.0.2",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
