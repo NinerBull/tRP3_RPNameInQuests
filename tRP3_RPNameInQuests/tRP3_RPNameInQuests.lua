@@ -73,28 +73,38 @@ local function trp3RPNameInQuestsInit()
 
 	-- Full TRP3 Name
 	
-	local function TRP3_RPNameInQuests_GetFullRPName()
+	local function TRP3_RPNameInQuests_GetFullRPName(getFullName)
+	
+	
+		getFullName = getFullName or false
 			
 		local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
-	
-		local thisTRP3CharNameFull = ""
-	
-	
-		if (thisTRP3CharInfo.TI) then
-			thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
-		end
 		
-		if (thisTRP3CharInfo.FN) then
-			thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
-		end
-		
-		if (thisTRP3CharInfo.LN) then
-			thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
-		end
-		
-		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
-
-		return thisTRP3CharNameFull
+			local thisTRP3CharNameFull = ""
+			
+			if ((tRP3RPNameInQuests.WhichRPName == 2 or tRP3RPNameInQuests.WhichRPName == 3 or tRP3RPNameInQuests.WhichRPName == 4 or tRP3RPNameInQuests.WhichRPName == 5) or (getFullName == true)) then
+				if (thisTRP3CharInfo.TI) then
+					thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
+				end
+			end
+			
+			if ((tRP3RPNameInQuests.WhichRPName == 3 or tRP3RPNameInQuests.WhichRPName == 5 or tRP3RPNameInQuests.WhichRPName == 6 or tRP3RPNameInQuests.WhichRPName == 8) or (getFullName == true)) then
+				if (thisTRP3CharInfo.FN) then
+					thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
+				end
+			end
+			
+			if ((tRP3RPNameInQuests.WhichRPName == 4 or tRP3RPNameInQuests.WhichRPName == 5 or tRP3RPNameInQuests.WhichRPName == 7 or tRP3RPNameInQuests.WhichRPName == 8) or (getFullName == true)) then
+				if (thisTRP3CharInfo.LN) then
+					thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
+				end
+			end
+			
+			--trim space
+			thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
+			
+			
+			return thisTRP3CharNameFull
 	
 	end
 	
@@ -124,30 +134,7 @@ local function trp3RPNameInQuestsInit()
 		
 		else
 			--rename char
-			local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
-		
-			local thisTRP3CharName = ""
-			
-			if (tRP3RPNameInQuests == 2 or tRP3RPNameInQuests == 3 or tRP3RPNameInQuests == 4 or tRP3RPNameInQuests == 5) then
-				if (thisTRP3CharInfo.TI) then
-					thisTRP3CharName = thisTRP3CharName .. thisTRP3CharInfo.TI	.. " "
-				end
-			end
-			
-			if (tRP3RPNameInQuests == 3 or tRP3RPNameInQuests == 5 or tRP3RPNameInQuests == 6 or tRP3RPNameInQuests == 8) then
-				if (thisTRP3CharInfo.FN) then
-					thisTRP3CharName = thisTRP3CharName .. thisTRP3CharInfo.FN
-				end
-			end
-			
-			if (tRP3RPNameInQuests == 4 or tRP3RPNameInQuests == 5 or tRP3RPNameInQuests == 7 or tRP3RPNameInQuests == 8) then
-				if (thisTRP3CharInfo.LN) then
-					thisTRP3CharName = thisTRP3CharName .. " " ..  thisTRP3CharInfo.LN
-				end
-			end
-			
-			--trim space
-			thisTRP3CharName = thisTRP3CharName:gsub("^%s*(.-)%s*$", "%1")
+			thisTRP3CharName = TRP3_RPNameInQuests_GetFullRPName(false)
 			
 			if (thisTRP3CharName == "") then
 				--empty, do nothing
@@ -179,11 +166,11 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("ToggleCharacter", function()
 		if (tRP3RPNameInQuests.PaperDollRPName == true) then
 			if ( CharacterFrame:IsShown() ) then
-				if (TRP3_RPNameInQuests_GetFullRPName() ~= "") then
+				if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
 						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-							CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName());
+							CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
 						else
-							CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName());
+							CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
 						end
 				end
 			end
@@ -584,7 +571,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.2",
+	version = "1.0.3",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
