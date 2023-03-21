@@ -9,7 +9,7 @@ E.g. If your character's name is `Xxlegölåsxx` but your TRP3 Roleplay Name is 
 You can choose how your character should be addressed on a per-character basis. Type `/trp3 questtext` to begin.
 
 ## Compatibility
-* **Dragonflight** - 10.0.5
+* **Dragonflight** - 10.0.7
 * **WotLK Classic** - 3.4.1
 * **Classic Era** - 1.14.3
 
