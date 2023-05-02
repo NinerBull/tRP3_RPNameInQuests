@@ -10,4 +10,5 @@
 ## X-Website: https://github.com/NinerBull/tRP3_RPNameInQuests
 ## X-Curse-Project-ID: 822877
 ## X-WoWI-ID: 26545
+## IconTexture: Interface\Icons\vas_namechange.blp
 tRP3_RPNameInQuests.lua
