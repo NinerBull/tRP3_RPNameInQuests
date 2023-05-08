@@ -46,7 +46,7 @@ local function trp3RPNameInQuestsInit()
 		local tRP3RPNameInQuestsNum = tRP3RPNameInQuests
 		
 		tRP3RPNameInQuests = {
-			WhichRPName = tRP3RPNameInQuestsNum or 1,
+			WhichRPName = tRP3RPNameInQuestsNum or 5,
 			PaperDollRPName = false
 		}
 	end
@@ -571,7 +571,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.4",
+	version = "1.0.6",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
@@ -584,9 +584,9 @@ TRP3_API.module.registerModule({
 
 
 -- Slash Command
-local function trp3RPNameInQuestsOpenConfig()
+function trp3RPNameInQuestsOpenConfig()
 	TRP3_API.navigation.openMainFrame();
-	TRP3_API.navigation.page.setPage("main_config_aaa_general");
+	--TRP3_API.navigation.page.setPage("main_config_aaa_general");
 	TRP3_API.navigation.page.setPage("trp3_rpnameinquests_config");
 end
 
