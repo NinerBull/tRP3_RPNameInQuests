@@ -34,23 +34,12 @@ local function trp3RPNameInQuestsInit()
 
 	if tRP3RPNameInQuests == nil then		
 		tRP3RPNameInQuests = {
-			WhichRPName = 1,
+			WhichRPName = 5,
 			PaperDollRPName = false
 		}
 		
 		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
 	end
-	
-	-- Upgrade from older version
-	if (type(tRP3RPNameInQuests) == 'number') then
-		local tRP3RPNameInQuestsNum = tRP3RPNameInQuests
-		
-		tRP3RPNameInQuests = {
-			WhichRPName = tRP3RPNameInQuestsNum or 5,
-			PaperDollRPName = false
-		}
-	end
-
 
 	local useNewAPI = true
 
@@ -571,7 +560,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.6",
+	version = "1.0.7",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
