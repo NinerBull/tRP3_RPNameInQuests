@@ -7,52 +7,24 @@ local TRPRPNAMEINQUESTS = select(2, ...);
 local function trp3RPNameInQuestsInit()
 
 
-
-	--for debug
-	
-	
-	
-	--[[local function tprint (t, s)
-		for k, v in pairs(t) do
-			local kfmt = '["' .. tostring(k) ..'"]'
-			if type(k) ~= 'string' then
-				kfmt = '[' .. k .. ']'
-			end
-			local vfmt = '"'.. tostring(v) ..'"'
-			if type(v) == 'table' then
-				tprint(v, (s or '')..kfmt)
-			else
-				if type(v) ~= 'string' then
-					vfmt = tostring(v)
-				end
-				print(type(t)..(s or '')..kfmt..' = '..vfmt)
-			end
-		end
-	end]]--
-
-
-
 	if tRP3RPNameInQuests == nil then		
 		
-		
-		tRP3RPNameInQuests = {
-			WhichRPName = 5,
-			CustomClassName = false,
-			CustomRaceName = false,
-			PaperDollRPName = false
-		}
-		
+		tRP3RPNameInQuests = {}
 	
 		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
 	end
 	
+	-- Set Addon Variables
 	tRP3RPNameInQuests.WhichRPName = tRP3RPNameInQuests.WhichRPName or 5
 	tRP3RPNameInQuests.CustomClassName = tRP3RPNameInQuests.CustomClassName or false
 	tRP3RPNameInQuests.CustomRaceName = tRP3RPNameInQuests.CustomRaceName or false
 	tRP3RPNameInQuests.PaperDollRPName = tRP3RPNameInQuests.PaperDollRPName or false
 
-	local useNewAPI = true
 
+
+
+
+	local useNewAPI = true
 
 	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) or (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC) then
 		useNewAPI = true
@@ -161,8 +133,6 @@ local function trp3RPNameInQuestsInit()
 		
 		local thisTRP3CharInfoF = TRP3_API.profile.getData("player/characteristics")
 		
-		--tprint(thisTRP3CharInfoF)
-		
 		
 		-- Race Name Text Here
 		if (tRP3RPNameInQuests.CustomRaceName == true) then
@@ -217,16 +187,11 @@ local function trp3RPNameInQuestsInit()
 
 	-- Quest Window
 	hooksecurefunc("QuestInfo_Display", function()
-		--print("QuestInfo_Display")
 
 		local thisQuestDescription = QuestInfoDescriptionText:GetText()
 		
-		--Make sure RP name isn't already in the quest description to dodge dupes
 		if (thisQuestDescription ~= nil) then
-			--if (strmatch(thisQuestDescription, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisQuestDescription, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
 				QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_TextRename(thisQuestDescription))
-		--	end
-		
 		end
 
 	end)
@@ -234,14 +199,6 @@ local function trp3RPNameInQuestsInit()
 
 
 
-
-
-
-
-
-
-
-	
 	
 	if (useNewAPI == true) then
 	
@@ -249,16 +206,9 @@ local function trp3RPNameInQuestsInit()
 		-- Get Gossip Text
 		local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
 		C_GossipInfo.GetText = function (...)
-		
-			--print("TRP3_RPNameInQuests_C_GossipInfoGetTextHook")
 			
 			local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
-			
-			--if (strmatch(thisGossipText, TRP3_RPNameInQuests_VarToChange)) then
-				return TRP3_RPNameInQuests_TextRename(thisGossipText)
-			--else
-			--	return thisGossipText
-			--end
+			return TRP3_RPNameInQuests_TextRename(thisGossipText)
 			
 		end
 
@@ -270,15 +220,9 @@ local function trp3RPNameInQuestsInit()
 		local TRP3_RPNameInQuests_GetGossipTextHook = GetGossipText
 		GetGossipText = function (...)
 		
-			--print("TRP3_RPNameInQuests_GetGossipTextHook")
-			
 			local thisGossipText = TRP3_RPNameInQuests_GetGossipTextHook()
 			
-			--if (strmatch(thisGossipText, TRP3_RPNameInQuests_VarToChange)) then
-				return TRP3_RPNameInQuests_TextRename(thisGossipText)
-			--else
-			--	return thisGossipText
-			--end
+			return TRP3_RPNameInQuests_TextRename(thisGossipText)
 			
 		end
 
@@ -286,56 +230,29 @@ local function trp3RPNameInQuestsInit()
 	end
 	
 	
-	
 
-	
 	
 	-- Get Greeting Text
 	local TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
 	GetGreetingText = function (...)
 	
-		--print("TRP3_RPNameInQuests_GetGreetingTextHook")
-		
 		local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
 		
-		--if (strmatch(thisGreetingText, TRP3_RPNameInQuests_VarToChange)) then
-			return TRP3_RPNameInQuests_TextRename(thisGreetingText)
-		--else
-		--	return thisGreetingText
-		--end
+		return TRP3_RPNameInQuests_TextRename(thisGreetingText)
 		
 	end
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 
 	-- Get Quest Text
 	local TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
 	GetQuestText = function (...)
 	
-		--print("TRP3_RPNameInQuests_GetQuestTextHook")
-		
 		local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
 		
-		--if (strmatch(thisQuestText, TRP3_RPNameInQuests_VarToChange)) then
-			return TRP3_RPNameInQuests_TextRename(thisQuestText)
-		--else
-		--	return thisQuestText
-		--end
+		return TRP3_RPNameInQuests_TextRename(thisQuestText)
 		
 	end
-
-
-
-
-
 
 
 
@@ -343,18 +260,11 @@ local function trp3RPNameInQuestsInit()
 	local TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
 	GetProgressText = function (...)
 	
-		--print("TRP3_RPNameInQuests_GetProgressTextHook")
-		
 		local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
 		
-	--	if (strmatch(thisProgressText, TRP3_RPNameInQuests_VarToChange)) then
-			return TRP3_RPNameInQuests_TextRename(thisProgressText)
-		--else
-		--	return thisProgressText
-		--end
+		return TRP3_RPNameInQuests_TextRename(thisProgressText)
 		
 	end
-
 
 
 
@@ -362,17 +272,17 @@ local function trp3RPNameInQuestsInit()
 	local TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
 	GetRewardText = function (...)
 	
-		--print("TRP3_RPNameInQuests_GetRewardTextHook")
-		
 		local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
 		
-		--if (strmatch(thisRewardText, TRP3_RPNameInQuests_VarToChange)) then
-			return TRP3_RPNameInQuests_TextRename(thisRewardText)
-		--else
-		--	return thisRewardText
-		--end
+		return TRP3_RPNameInQuests_TextRename(thisRewardText)
 		
 	end
+
+
+
+
+
+
 
 
 
@@ -384,10 +294,7 @@ local function trp3RPNameInQuestsInit()
 		local TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
 		C_GossipInfo.GetOptions = function (...)
 		
-			--print("TRP3_RPNameInQuests_GetGossipOptions")
-		
 			local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
-			--print(thisGossipOptions)
 			
 			for key, value in pairs(thisGossipOptions) do
 							
@@ -407,91 +314,50 @@ local function trp3RPNameInQuestsInit()
 	
 
 	end
-
-
-	-- NPC /s Chat
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_SAY", function(self, thisEvent, thisMessage, thisNPC, ...) 
-		--print("monster say")
-
-	--	if (strmatch(thisMessage, TRP3_RPNameInQuests_VarToChange) or strmatch(thisNPC, TRP3_RPNameInQuests_VarToChange)) then
-			-- do NPC name as well in case player's been transformed e.g. Gamon
-			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
-			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
-			TRP3_RPNameInQuests_ModSpeechBubbles()
-			return false, thisNewMessage, thisNewNPC, ...
-		--end
-
-	end)
-
-
-	-- NPC /y Chat
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_YELL", function(self, thisEvent, thisMessage, thisNPC, ...) 
-		--print("monster yell")
-
-		--if (strmatch(thisMessage, TRP3_RPNameInQuests_VarToChange) or strmatch(thisNPC, TRP3_RPNameInQuests_VarToChange)) then
-			-- do NPC name as well in case player's been transformed e.g. Gamon
-			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
-			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
-			TRP3_RPNameInQuests_ModSpeechBubbles()
-			return false, thisNewMessage, thisNewNPC, ...
-		--end
-
-	end)
 	
 	
-	-- NPC /p Chat
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_PARTY", function(self, thisEvent, thisMessage, thisNPC, ...) 
-		--print("monster party")
-
-		--if (strmatch(thisMessage, TRP3_RPNameInQuests_VarToChange) or strmatch(thisNPC, TRP3_RPNameInQuests_VarToChange)) then
-			-- do NPC name as well in case player's been transformed e.g. Gamon
-			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
-			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
-			TRP3_RPNameInQuests_ModSpeechBubbles()
-			return false, thisNewMessage, thisNewNPC, ...
-		--end
-
-	end)
 	
-	-- NPC /w Chat
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_WHISPER", function(self, thisEvent, thisMessage, thisNPC, ...) 
-		--print("monster whisper")
-
-		--if (strmatch(thisMessage, TRP3_RPNameInQuests_VarToChange) or strmatch(thisNPC, TRP3_RPNameInQuests_VarToChange)) then
-			-- do NPC name as well in case player's been transformed e.g. Gamon
-			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
-			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
-			--TRP3_RPNameInQuests_ModSpeechBubbles()
-			return false, thisNewMessage, thisNewNPC, ...
-		--end
-
-	end)
 	
-	-- NPC /e Chat
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", function(self, thisEvent, thisMessage, thisNPC, ...) 
-		--print("monster emote")
-
-		--if (strmatch(thisMessage, TRP3_RPNameInQuests_VarToChange) or strmatch(thisNPC, TRP3_RPNameInQuests_VarToChange)) then
-			-- do NPC name as well in case player's been transformed e.g. Gamon
-			local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
+	
+	
+	
+	-- Chat Filters
+	local function TRP3_RPNameInQuests_ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...) 
+	
+		local thisNewMessage = TRP3_RPNameInQuests_TextRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_TextRename(thisNPC)
-			--TRP3_RPNameInQuests_ModSpeechBubbles()
+			
+			if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
+				TRP3_RPNameInQuests_ModSpeechBubbles()
+			end
+			
+			
 			return false, thisNewMessage, thisNewNPC, ...
-		--end
-
-	end)
-
-
-
-
+	
+	end
+	
+	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_SAY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /s Chat
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_YELL", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /y Chat
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_PARTY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /p Chat
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /w Chat
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
+	
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
+	end
+	
+	
+	
+	
+	
+	
+	
 	--Speech Bubbles
 	--with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
-	
-	
 	function TRP3_RPNameInQuests_ModSpeechBubbles()
-	
-		--print("TRP3_RPNameInQuests_ModSpeechBubbles")
-		
+			
 		--Slight timer so the bubble has chance to fade in
 		C_Timer.After(.05, function()
 			for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
@@ -505,11 +371,8 @@ local function trp3RPNameInQuestsInit()
 								
 									thisBubbleText = region:GetText()
 									
+									region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
 									
-									--if (strmatch(thisBubbleText, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisBubbleText, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
-										region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
-									--end
-
 								end
 							end
 						end
@@ -523,18 +386,22 @@ local function trp3RPNameInQuestsInit()
 	end
 	
 	
-	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
-		{ "OOC Character Name", 1 },
-		{ "Title", 2 },
-		{ "Title + First Name", 3 },
-		{ "Title + Last Name", 4 },
-		{ "Title + First Name + Last Name", 5 },
-		{ "First Name", 6 },
-		{ "Last Name", 7 },
-		{ "First Name + Last Name", 8 },	
-	}
 	
 	
+
+-- TRP3 Options Page
+local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
+	{ "OOC Character Name", 1 },
+	{ "Title", 2 },
+	{ "Title + First Name", 3 },
+	{ "Title + Last Name", 4 },
+	{ "Title + First Name + Last Name", 5 },
+	{ "First Name", 6 },
+	{ "Last Name", 7 },
+	{ "First Name + Last Name", 8 },	
+}
+
+
 
 
 local classDisplayName, class = UnitClass("player");
@@ -635,22 +502,16 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.8b",
+	version = "1.0.8",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
 });
 
 
-
-
-
-
-
 -- Slash Command
 function trp3RPNameInQuestsOpenConfig()
 	TRP3_API.navigation.openMainFrame();
-	--TRP3_API.navigation.page.setPage("main_config_aaa_general");
 	TRP3_API.navigation.page.setPage("trp3_rpnameinquests_config");
 end
 
