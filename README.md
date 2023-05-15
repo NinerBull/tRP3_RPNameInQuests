@@ -46,4 +46,6 @@ While datamined text may show things such as `<name>` in them [as for example, t
 
 So if your character's OOC name is a common word, for example, `Warrior` or `Shaman`, then **wierd things are going to happen to quest text with this addon enabled**.
 
-This addon may not be compatible with other addons that modify quest windows, chat windows, etc.
+Wierd things are also very likely to happen if you enable custom Race/Class names.
+
+This addon should be compatible with other addons that modify quest windows, chat windows, etc.
