@@ -37,7 +37,7 @@ A new area will be added into Total RP 3's Config Window, under 'Settings' > 'Qu
 
 You can also access the config by typing `/trp3 questtext`. 
 
-There is a dropdown here so you can choose how your character should be addressed by NPCs. You can also choose to enable a function that renames the Character Window with your TRP3 Roleplay Name.
+There is a dropdown here so you can choose how your character should be addressed by NPCs. You can also choose to enable functions that add your custom Class or Race to quest text.
 
 Note that this is on a per-character basis, not per-TRP3 Profile basis. So even if you use the same TRP3 profile across 2 or more characters, you'll need to adjust this dropdown individually for each one.
 
