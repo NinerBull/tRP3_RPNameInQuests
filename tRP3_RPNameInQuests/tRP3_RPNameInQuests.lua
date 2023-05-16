@@ -371,7 +371,14 @@ local function trp3RPNameInQuestsInit()
 								
 									thisBubbleText = region:GetText()
 									
-									region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
+									if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+									
+										if (strmatch(thisBubbleText, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisBubbleText, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
+											region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
+										end
+									else
+										region:SetText(TRP3_RPNameInQuests_TextRename(thisBubbleText))
+									end
 									
 								end
 							end
@@ -502,7 +509,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.8",
+	version = "1.0.9",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
