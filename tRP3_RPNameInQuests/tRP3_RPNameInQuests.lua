@@ -187,11 +187,20 @@ local function trp3RPNameInQuestsInit()
 
 	-- Quest Window
 	hooksecurefunc("QuestInfo_Display", function()
-
+		
 		local thisQuestDescription = QuestInfoDescriptionText:GetText()
 		
 		if (thisQuestDescription ~= nil) then
+		
+			if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+		
+				if (strmatch(thisQuestDescription, TRP3_RPNameInQuests_VarToChange) and (not (strmatch(thisQuestDescription, TRP3_RPNameInQuests_TextRename("placeholder", true))))) then
+					QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_TextRename(thisQuestDescription))
+				end
+				
+			else
 				QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_TextRename(thisQuestDescription))
+			end
 		end
 
 	end)
@@ -208,7 +217,17 @@ local function trp3RPNameInQuestsInit()
 		C_GossipInfo.GetText = function (...)
 			
 			local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
-			return TRP3_RPNameInQuests_TextRename(thisGossipText)
+			
+			if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+				if (strmatch(thisGossipText, TRP3_RPNameInQuests_VarToChange)) then
+					return TRP3_RPNameInQuests_TextRename(thisGossipText)
+				else
+					return thisGossipText
+				end
+			else
+				return TRP3_RPNameInQuests_TextRename(thisGossipText)
+			end
+			
 			
 		end
 
@@ -222,7 +241,16 @@ local function trp3RPNameInQuestsInit()
 		
 			local thisGossipText = TRP3_RPNameInQuests_GetGossipTextHook()
 			
-			return TRP3_RPNameInQuests_TextRename(thisGossipText)
+			if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+				if (strmatch(thisGossipText, TRP3_RPNameInQuests_VarToChange)) then
+					return TRP3_RPNameInQuests_TextRename(thisGossipText)
+				else
+					return thisGossipText
+				end
+			else
+				return TRP3_RPNameInQuests_TextRename(thisGossipText)
+			end
+			
 			
 		end
 
@@ -238,7 +266,17 @@ local function trp3RPNameInQuestsInit()
 	
 		local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
 		
-		return TRP3_RPNameInQuests_TextRename(thisGreetingText)
+		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+			if (strmatch(thisGreetingText, TRP3_RPNameInQuests_VarToChange)) then
+				return TRP3_RPNameInQuests_TextRename(thisGreetingText)
+			else
+				return thisGreetingText
+			end
+		else
+			return TRP3_RPNameInQuests_TextRename(thisGreetingText)
+		end
+		
+		
 		
 	end
 
@@ -247,10 +285,18 @@ local function trp3RPNameInQuestsInit()
 	-- Get Quest Text
 	local TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
 	GetQuestText = function (...)
-	
 		local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
 		
-		return TRP3_RPNameInQuests_TextRename(thisQuestText)
+		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+			if (strmatch(thisQuestText, TRP3_RPNameInQuests_VarToChange)) then
+				return TRP3_RPNameInQuests_TextRename(thisQuestText)
+			else
+				return thisQuestText
+			end
+		else
+			return TRP3_RPNameInQuests_TextRename(thisQuestText)
+		end
+		
 		
 	end
 
@@ -262,7 +308,17 @@ local function trp3RPNameInQuestsInit()
 	
 		local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
 		
-		return TRP3_RPNameInQuests_TextRename(thisProgressText)
+		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+			if (strmatch(thisProgressText, TRP3_RPNameInQuests_VarToChange)) then
+				return TRP3_RPNameInQuests_TextRename(thisProgressText)
+			else
+				return thisProgressText
+			end
+		else
+			return TRP3_RPNameInQuests_TextRename(thisProgressText)
+		end
+		
+		
 		
 	end
 
@@ -274,7 +330,17 @@ local function trp3RPNameInQuestsInit()
 	
 		local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
 		
-		return TRP3_RPNameInQuests_TextRename(thisRewardText)
+		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+			if (strmatch(thisRewardText, TRP3_RPNameInQuests_VarToChange)) then
+				return TRP3_RPNameInQuests_TextRename(thisRewardText)
+			else
+				return thisRewardText
+			end	
+		else
+			return TRP3_RPNameInQuests_TextRename(thisRewardText)
+		end
+		
+		
 		
 	end
 
@@ -509,7 +575,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.9",
+	version = "1.0.10",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
