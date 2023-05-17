@@ -32,8 +32,8 @@ You can access it via one of the following:
 From here, you'll have multiple options to select from. Note that these options are OOC Character Specific.
 
 * Choose from the dropdown how NPCs should address you when they say your name. This is "Title + First Name + Last Name" by default.
-* Select if NPCs should address your character by your TRP 3 IC Race Name. This is disabled by default.
-* Select if NPCs should address your character by your TRP 3 IC Class Name. This is disabled by default.
+* Select if NPCs should address your character by your TRP3 Race Name. This is disabled by default.
+* Select if NPCs should address your character by your TRP3 Class Name. This is disabled by default.
 
 
 ## Compatibility
