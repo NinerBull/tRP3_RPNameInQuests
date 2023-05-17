@@ -7,7 +7,8 @@ This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Tota
 
 
 ## Features
-With this addon, it accesses info from your currently selected Total RP 3 Character Profile, and with it :
+With this addon, it accesses info from your currently selected Total RP 3 Character Profile, and with it:
+
 * It can replace your character's OOC name (e.g. `Bestwarreu`) with your TRP3 IC name (e.g. `Sir Obvious Testman`) in Quests, Gossip Text, and Says/Yells/Emotes from NPCS!
 * You can select how NPCs address you - Title, First Name and/or Last Name, or a combination!
 * You can also choose to swap your OOC Race and Class Name (e.g. `Orc / Warrior`) with your TRP3 IC Race and Class (e.g. `Ogre / Brawler`) in the same text!
