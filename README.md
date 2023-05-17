@@ -3,7 +3,7 @@ An addon for World of Warcraft!
 
 
 ## About
-This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) that enhances questing immersion by putting your TRP3 IC name into Quest Text!
+This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) that enhances questing immersion by putting your TRP3 IC Name into Quest Text!
 
 
 ## Features
