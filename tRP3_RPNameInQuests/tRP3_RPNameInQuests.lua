@@ -241,7 +241,7 @@ local function trp3RPNameInQuestsInit()
 		thisRenamedText = textToRename or ""
 	
 		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
-			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange)) then
+			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
 			end
 		end
@@ -299,12 +299,11 @@ local function trp3RPNameInQuestsInit()
 
 	-- Quest Window
 	hooksecurefunc("QuestInfo_Display", function()
-		
+			
 		local thisQuestDescription = QuestInfoDescriptionText:GetText()
 		
 		if (thisQuestDescription ~= nil) then
 		
-	
 			QuestInfoDescriptionText:SetText(tRP3RPNameTheBigRename(thisQuestDescription))
 			
 		end
@@ -622,7 +621,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module attempts to put your Total RP 3 Character Name into quest text and dialogue.",
-	version = "1.0.11",
+	version = "1.0.12",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
