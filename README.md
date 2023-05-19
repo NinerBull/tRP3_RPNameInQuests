@@ -51,12 +51,18 @@ Tested and appears to work with:
 * [Immersion](https://www.curseforge.com/wow/addons/immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
 
+This addon should be compatible with other addons that modify quest windows, chat windows, etc.
 
 ## :warning: Caveats
-While datamined text may show things such as `<name>` in them [as for example, this weekly quest](https://www.wowhead.com/quest=72068), unfortunately, any quest text I can get via the API doesn't include placeholder tags for character name, etc. It already contains your OOC Character name. This addon basically does a find/replace for your OOC Char name with your IC Name.
+WoW's API only seems to give quest text/dialogue that already has your character's OOC Name/Class/Race in it. It does not have placeholders such as `<name>` or `<race>`.
+Due to this, the addon works by doing a find/replace for your OOC Info, and replaces it with your IC info, when enabled.
 
-So if your character's OOC name is a common word, for example, `Warrior` or `Shaman`, then **wierd things are going to happen to quest text with this addon enabled**.
+**Unfortunately this has the side effect that ANY text whether intended for your character or not can be replaced,** which will be much more apparent with Custom Class/Race enabled.
 
-Wierd things are also very likely to happen if you enable custom Race/Class names.
+For example, let's say you are an **Orc OOC**, but have your IC Race set as **Ogre**, and you have the **Use Custom Class option Enabled**.
 
-This addon should be compatible with other addons that modify quest windows, chat windows, etc.
+Right-clicking on Overlord Najoi in Orgrimmar, he will normally say "We be horde, all of us. Tauren, **orc**, troll, an' all da rest. Never forget dat we in dis together."
+But if you have Custom Race enabled in this addon, he'll say "We be horde, all of us. Tauren, **Ogre**, troll, an' all da rest. Never forget dat we in dis together.", which is unintended.
+
+
+
