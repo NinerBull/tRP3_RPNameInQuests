@@ -46,10 +46,11 @@ From here, you'll have multiple options to select from. Note that these options 
 
 Tested and appears to work with:
 * Stock UI Quest Frames
-* [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * Stock UI Chat Window
+* [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * [Immersion](https://www.curseforge.com/wow/addons/immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
+* [GossipChatter](https://github.com/keyboardturner/GossipChatter)
 
 This addon should be compatible with other addons that modify quest windows, chat windows, etc.
 
