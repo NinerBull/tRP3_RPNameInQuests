@@ -564,7 +564,7 @@ TRP3_API.configuration.registerConfigurationPage({
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
 				title = "How should NPCs address |c" .. classColorString .. UnitName("player") .. "|r?",
-				help = "This will replace your OOC Name in Quests, NPC Speech, and Speech Bubbles, with your chosen name format. \n\nNote: Will cause wierd stuff to happen if your OOC name is a common word.",
+				help = "This will replace your OOC Name in Quests, NPC Speech, and Speech Bubbles, with your chosen name format.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
@@ -576,7 +576,7 @@ TRP3_API.configuration.registerConfigurationPage({
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "[!] Use Custom Class Name for |c" .. classColorString .. UnitName("player") .. "|r",
-				help = "If checked, this will replace your OOC Class Name in Quests (e.g. Warrior) with your Custom Class name (e.g. Knight). \n\nNote: Will very likely cause regular quest text mentioning your OOC Class Name to look wierd.",
+				help = "If checked, this will replace your OOC Class Name in Quests (e.g. Warrior) with your Custom Class name (e.g. Knight). \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -587,7 +587,7 @@ TRP3_API.configuration.registerConfigurationPage({
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "[!] Use Custom Race Name for |c" .. classColorString .. UnitName("player") .. "|r",
-				help = "If checked, this will replace your OOC Race Name in Quests (e.g. Orc) with your Custom Race name (e.g. Ogre).\n\nNote: Will very likely cause regular quest text mentioning your OOC Race Name to look wierd.",
+				help = "If checked, this will replace your OOC Race Name in Quests (e.g. Orc) with your Custom Race name (e.g. Ogre).\n\nNote: Will also affect any regular quest text mentioning your OOC Race Name.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -602,7 +602,7 @@ TRP3_API.configuration.registerConfigurationPage({
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Use TRP3 Name in Character Window for |c" .. classColorString .. UnitName("player") .. "|r",
-				help = "If checked, your current TRP3 Character Name will be shown in the Character Window (aka Paper Doll).",
+				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;

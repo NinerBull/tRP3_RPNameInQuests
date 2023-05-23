@@ -42,9 +42,9 @@ From here, you'll have multiple options to select from. Note that these options 
 * **WotLK Classic** - 3.4.1
 * **Classic Era** - 1.14.3
 
-**REQUIRES** [Total RP 3](https://github.com/Total-RP/Total-RP-3)
+This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
-Tested and appears to work with:
+I have tested this addon successfully with the following:
 * Stock UI Quest Frames
 * Stock UI Chat Window
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
