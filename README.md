@@ -30,7 +30,7 @@ You can access it via one of the following:
 * Typing `/trp3 questtext` in chat.
 * Clicking the "RP Name in Quest Text" option from the Addon Compartment (Retail Only)
 
-From here, you'll have multiple options to select from. Note that these options are OOC Character Specific.
+From here, you'll have multiple options to select from. Note that these options are OOC Character Specific, and are not tied to your TRP 3 Character Profile.
 
 * Choose from the dropdown how NPCs should address you when they say your name. This is "Title + First Name + Last Name" by default.
 * Select if NPCs should address your character by your TRP3 Race Name. This is disabled by default.
@@ -45,14 +45,14 @@ From here, you'll have multiple options to select from. Note that these options 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
 I have tested this addon successfully with the following:
-* Stock UI Quest Frames
-* Stock UI Chat Window
+* Default UI Quest Frames
+* Default UI Chat Window
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
-* [Immersion](https://www.curseforge.com/wow/addons/immersion)
+* [Immersion](https://github.com/seblindfors/Immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
 * [GossipChatter](https://github.com/keyboardturner/GossipChatter)
 
-This addon should be compatible with other addons that modify quest windows, chat windows, etc.
+This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
 
 ## :warning: Caveats
 WoW's API only seems to give quest text/dialogue that already has your character's OOC Name/Class/Race in it. It does not have placeholders such as `<name>` or `<race>`.
