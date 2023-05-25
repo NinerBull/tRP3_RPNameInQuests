@@ -1,4 +1,5 @@
 local trp3rpnamequestsframe = CreateFrame("Frame")
+trp3rpnamequestsframe:RegisterEvent("ITEM_TEXT_READY");
 
 
 local TRPRPNAMEINQUESTS = select(2, ...);
@@ -43,7 +44,6 @@ local function trp3RPNameInQuestsInit()
 
 
 	-- Full TRP3 Name
-	
 	local function TRP3_RPNameInQuests_GetFullRPName(getFullName)
 	
 	
@@ -356,8 +356,6 @@ local function trp3RPNameInQuestsInit()
 		
 		return tRP3RPNameTheBigRename(thisGreetingText)
 		
-		
-		
 	end
 
 
@@ -435,9 +433,40 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
+	-- Mail Window
+	-- /Interface/FrameXML/MailFrame.lua
+	hooksecurefunc("OpenMail_Update", function()
 	
+		if ( not OpenMailFrame_IsValidMailID()) then
+			return;
+		end
+		
+		local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
+		
+		OpenMailBodyText:SetText(tRP3RPNameTheBigRename(bodyText), true);
 	
+	end)
 	
+	-- Books, etc.
+	-- /Interface/FrameXML/ItemTextFrame.lua
+	trp3rpnamequestsframe:SetScript("OnEvent", function(self, event, arg1, arg2)
+		
+		if event == "ITEM_TEXT_READY" then
+		
+			local creator = ItemTextGetCreator();
+			if ( creator ) then
+				creator = "\n\n"..ITEM_TEXT_FROM.."\n"..creator.."\n";
+				ItemTextPageText:SetText(tRP3RPNameTheBigRename(ItemTextGetText())..creator);
+			else
+				ItemTextPageText:SetText(tRP3RPNameTheBigRename(ItemTextGetText()));
+			end
+		
+		end
+	
+	end)
+	
+
+
 	
 	-- Chat Filters
 	local function TRP3_RPNameInQuests_ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...) 
