@@ -3,15 +3,14 @@ An addon for World of Warcraft!
 
 
 ## About
-This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) that enhances questing immersion by putting your TRP3 IC Name into Quest Text!
+This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) that enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
 
 
 ## Features
 With this addon, it accesses info from your currently selected Total RP 3 Character Profile, and with it:
 
-* It can replace your character's OOC name (e.g. `Bestwarreu`) with your TRP3 IC name (e.g. `Sir Obvious Testman`) in Quests, Gossip Text, and Says/Yells/Emotes from NPCS!
-* You can select how NPCs address you - Title, First Name and/or Last Name, or a combination!
-* You can also choose to swap your OOC Race and Class Name (e.g. `Orc / Warrior`) with your TRP3 IC Race and Class (e.g. `Ogre / Brawler`) in the same text!
+* Replaces your Character's OOC name (e.g. `Bestwarreu`) with your TRP3 IC name (e.g. `Sir Obvious Testman`) in Quests, Gossip Text, and Says/Yells/Emotes from NPCs!
+* Optionally replace your OOC Race and Class Name (e.g. `Orc / Warrior`) with your TRP3 IC Race and Class (e.g. `Ogre / Brawler`) or with your own Custom Text too!
 
 ## Installation
 Download the latest version below, and unzip it in your `<warcraft>\<_version_>\Interface\Addons` folder if installing manually.
@@ -23,7 +22,7 @@ Download the latest version below, and unzip it in your `<warcraft>\<_version_>\
 
 
 ## Configuration
-Once installed, a new tab will be added into Total RP 3's Config Window.
+Once installed, a new section will be added into Total RP 3's Config Window.
 You can access it via one of the following:
 
 * From TRP3's config window, under 'Settings' > 'Quest Text'.
@@ -32,10 +31,13 @@ You can access it via one of the following:
 
 From here, you'll have multiple options to select from. Note that these options are OOC Character Specific, and are not tied to your TRP 3 Character Profile.
 
-* Choose from the dropdown how NPCs should address you when they say your name. This is "Title + First Name + Last Name" by default.
-* Select if NPCs should address your character by your TRP3 Race Name. This is disabled by default.
-* Select if NPCs should address your character by your TRP3 Class Name. This is disabled by default.
+* Select how NPCs should address you when they say your Name. This is "Title + First Name + Last Name" by default.
+* Select what Race NPCs call you. This is "OOC Race Name" by default.
+* Select what Class NPCs call you. This is "OOC Class Name" by default.
 
+If set as "Custom Race/Class Name", fill in the text boxes underneath to use a Race/Class which is seperate from your TRP3 Profile!
+
+You can also select which text this addon modifies. Turn on/off as necessary! All are on by default except "Raid Boss Emotes".
 
 ## Compatibility
 * **Dragonflight** - 10.1.0
@@ -65,6 +67,3 @@ For example, let's say you are an **Orc OOC**, but have your IC Race set as **Og
 Right-clicking on Overlord Najoi in Orgrimmar, he will normally say "We be horde, all of us. Tauren, **orc**, troll, an' all da rest. Never forget dat we in dis together."
 
 But if you have Custom Race enabled in this addon, he'll say "We be horde, all of us. Tauren, **Ogre**, troll, an' all da rest. Never forget dat we in dis together.", which is unintended.
-
-
-
