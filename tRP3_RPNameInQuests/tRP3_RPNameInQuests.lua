@@ -313,9 +313,9 @@ local function trp3RPNameInQuestsInit()
 			--TRP3 Class Name
 			if (tRP3RPNameInQuests.CustomClassName == 2) then
 			
-				if (thisTRP3CharInfoR.CL ~= nil) then
+				if (thisTRP3CharInfoC.CL ~= nil) then
 				
-					thisClassName = thisTRP3CharInfoR.CL
+					thisClassName = thisTRP3CharInfoC.CL
 			
 				end
 				
@@ -1011,7 +1011,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module enhances questing immersion by putting your TRP3 IC Name into Quest Text!",
-	version = "1.1.0",
+	version = "1.1.1",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 60,
