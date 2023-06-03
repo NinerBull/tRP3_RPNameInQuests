@@ -1014,7 +1014,7 @@ TRP3_API.module.registerModule({
 	version = "1.1.1",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
-	minVersion = 60,
+	minVersion = 110,
 });
 
 
