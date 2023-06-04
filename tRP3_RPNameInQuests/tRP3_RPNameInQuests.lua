@@ -131,7 +131,7 @@ local function trp3RPNameInQuestsInit()
 
 
 	-- Full TRP3 Name
-	local function TRP3_RPNameInQuests_GetFullRPName(getFullName)
+	function TRP3_RPNameInQuests_GetFullRPName(getFullName)
 	
 	
 		getFullName = getFullName or false
@@ -182,7 +182,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	--Rename Character
-	local function TRP3_RPNameInQuests_RPNameRename(textToRename, returnRPName)
+	function TRP3_RPNameInQuests_RPNameRename(textToRename, returnRPName)
 	
 		returnRPName = returnRPName or false
 	
@@ -230,7 +230,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	--Rename Race
-	local function TRP3_RPNameInQuests_RPRaceRename(textToRename, returnRPRace, doLowerCase)
+  function TRP3_RPNameInQuests_RPRaceRename(textToRename, returnRPRace, doLowerCase)
 	
 		returnRPRace = returnRPRace or false
 		
@@ -293,7 +293,7 @@ local function trp3RPNameInQuestsInit()
 	 
 	 
 	--Rename Class
-	local function TRP3_RPNameInQuests_RPClassRename(textToRename, returnRPClass, doLowerCase)
+	 function TRP3_RPNameInQuests_RPClassRename(textToRename, returnRPClass, doLowerCase)
 	
 		returnRPClass = returnRPClass or false
 		
@@ -355,7 +355,7 @@ local function trp3RPNameInQuestsInit()
 	
 	--TheBigRename
 	
-	local function tRP3RPNameTheBigRename(textToRename)
+	function tRP3RPNameTheBigRename(textToRename)
 	
 		thisRenamedText = textToRename or ""
 	
@@ -824,6 +824,19 @@ TRP3_API.configuration.registerConfigurationPage({
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
+				title = "|cffE3963ERace|r Name Format",
+				help = "Select what race NPCs should refer to you as. \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
+				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
+				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
+				listCallback = function(value)
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
+					tRP3RPNameInQuests.CustomRaceName = value
+					
+					
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
 				title = "|c" .. classColorString .. "Class" .. "|r"  .. " Name Format",
 				help = "Select what class NPCs should refer to you as. \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
@@ -837,35 +850,21 @@ TRP3_API.configuration.registerConfigurationPage({
 				end,
 			},
 			{
-				inherit = "TRP3_ConfigDropDown",
-				title = "|cffE3963ERace|r Name Format",
-				help = "Select what race NPCs should refer to you as. \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
-				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
-				listCallback = function(value)
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
-					tRP3RPNameInQuests.CustomRaceName = value
-					
-					
-				end,
-			},
-			{
 				inherit = "TRP3_ConfigNote",
 				title = " ",
+			},
+			{
+				inherit = "TRP3_ConfigEditBox",
+				title = "Custom |cffE3963ERace|r Name (*)",
+				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
+				--dependentOnOptions = { false }
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom |c" .. classColorString .. "Class" .. "|r" .." Name (*)",
 				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
-				--dependentOnOptions = { false }
-			},
-			
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = "Custom |cffE3963ERace|r Name (*)",
-				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 				--dependentOnOptions = { false }
 			},
 			{
@@ -878,7 +877,7 @@ TRP3_API.configuration.registerConfigurationPage({
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Select which text this addon should modify to include your RP Name/Class/Race.",
+				title = "Select which text this addon should modify to include your RP Name/Race/Class.",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1033,3 +1032,40 @@ local trp3RPNameInQuestsOpenConfigCommand = {
 }
 
 TRP3_API.slash.registerCommand(trp3RPNameInQuestsOpenConfigCommand);
+
+
+--Addon Compartment
+local trp3RPNameInQuestsTooltip
+
+function trp3RPNameInQuests_CompartmentClick(addonName, buttonName)
+	trp3RPNameInQuestsOpenConfig()
+end
+
+function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
+	if (not trp3RPNameInQuestsTooltip) then
+		trp3RPNameInQuestsTooltip = CreateFrame("GameTooltip", "trp3RPNameInQuestsTooltip_Compartment", UIParent, "GameTooltipTemplate")
+	end
+	
+	local classDisplayName, class = UnitClass("player");
+    local classColorString = RAID_CLASS_COLORS[class].colorStr;
+	
+    trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
+	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
+	
+	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddLine("Current Settings for |c" .. classColorString .. UnitName("player") .. "|r:", 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
+	
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(UnitName("player"), true), nil, nil, nil, 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), nil, nil, nil, 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true), nil, nil, nil, 1, 1, 1)
+	
+	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddLine("Click to change settings.", 0, 1, 0)
+
+	trp3RPNameInQuestsTooltip:Show()
+end
+
+function trp3RPNameInQuests_CompartmentLeave(buttonName)
+	trp3RPNameInQuestsTooltip:Hide()
+end
