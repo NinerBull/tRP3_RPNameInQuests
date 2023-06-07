@@ -1052,16 +1052,16 @@ function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
     trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
 	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
 	
-	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
-	trp3RPNameInQuestsTooltip:AddLine("Current Settings for |c" .. classColorString .. UnitName("player") .. "|r:", 1, 1, 1)
-	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddLine(" ")
+	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address |c" .. classColorString .. UnitName("player") .. "|r:", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddLine(" ")
 	
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(UnitName("player"), true), nil, nil, nil, 1, 1, 1)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), nil, nil, nil, 1, 1, 1)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true), nil, nil, nil, 1, 1, 1)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(UnitName("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	
-	trp3RPNameInQuestsTooltip:AddLine(" ", 1, 1, 1)
-	trp3RPNameInQuestsTooltip:AddLine("Click to change settings.", 0, 1, 0)
+	trp3RPNameInQuestsTooltip:AddLine(" ")
+	trp3RPNameInQuestsTooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
 
 	trp3RPNameInQuestsTooltip:Show()
 end
