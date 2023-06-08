@@ -799,11 +799,11 @@ TRP3_API.configuration.registerConfigurationPage({
 		elements = {
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Note that all options here are OOC Character Specific.",
+				title = "Note that all settings on this page are OOC Character Specific.",
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Main Options for |c" .. classColorString .. UnitName("player") .. "|r",
+				title = "Main Settings for |c" .. classColorString .. UnitName("player") .. "|r",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
