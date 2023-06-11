@@ -31,9 +31,9 @@ You can access it via one of the following:
 
 From here, you'll have multiple options to select from. Note that these options are OOC Character Specific, and are not tied to your TRP 3 Character Profile.
 
-* Select how NPCs should address you when they say your Name. This is "Title + First Name + Last Name" by default.
-* Select what Race NPCs call you. This is "OOC Race Name" by default.
-* Select what Class NPCs call you. This is "OOC Class Name" by default.
+* Select how NPCs should address you when they say your Name. (This is "Title + First Name + Last Name" by default.)
+* Select what Race NPCs call you. (This is "OOC Race Name" by default.)
+* Select what Class NPCs call you. (This is "OOC Class Name" by default.)
 
 If set as "Custom Race/Class Name", fill in the text boxes underneath to use a Race/Class which is seperate from your TRP3 Profile!
 
