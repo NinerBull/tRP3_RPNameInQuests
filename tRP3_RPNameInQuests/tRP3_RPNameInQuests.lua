@@ -672,8 +672,16 @@ local function trp3RPNameInQuestsInit()
 									if (region:GetObjectType() == "FontString") then
 									
 										thisBubbleText = region:GetText()
-
+										
 										region:SetText(tRP3RPNameTheBigRename(thisBubbleText))
+										
+										--Resize bubble to accomodate new text
+										if (region:GetStringWidth() >= region:GetWrappedWidth()) then
+											region:SetWidth(region:GetWrappedWidth())
+										else
+											region:SetWidth(region:GetStringWidth())
+										end
+										
 										
 									end
 								end
