@@ -96,12 +96,20 @@ local function trp3RPNameInQuestsInit()
 		tRP3RPNameInQuests.EnabledTextMods.TextItems = true
 	end
 	
+	if (tRP3RPNameInQuests.EnabledTextMods.UnitFrameRPName == nil) then
+		tRP3RPNameInQuests.EnabledTextMods.UnitFrameRPName = false
+	end
+	
 	if (tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote == nil) then
 		tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote = false
 	end
 	
 	
 	
+	
+	if (tRP3RPNameInQuests.UnitFrameRPName == nil) then
+		tRP3RPNameInQuests.UnitFrameRPName = false
+	end
 	
 	if (tRP3RPNameInQuests.PaperDollRPName == nil) then
 		tRP3RPNameInQuests.PaperDollRPName = false
@@ -395,6 +403,41 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
+	-- Unit Frame
+	hooksecurefunc("UnitFrame_Update", function(self)
+		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
+				if (self.name) then
+				
+					local name;
+					if ( self.overrideName ) then
+						name = self.overrideName;
+					else
+						name = self.unit;
+					end
+									
+					if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
+						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
+				
+				end
+		end
+	end)
+	
+	
+	--Update Unit Frames when profile changed
+	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
+		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
+			UnitFrame_Update(PlayerFrame)
+			UnitFrame_Update(TargetFrame)
+		end
+	end);
+	
+	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
+		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
+			UnitFrame_Update(PlayerFrame)
+			UnitFrame_Update(TargetFrame)
+		end
+	end);
 	
 	
 	
@@ -412,11 +455,6 @@ local function trp3RPNameInQuestsInit()
 			end
 		end
 	end)
-
-
-
-
-
 
 
 
@@ -745,6 +783,7 @@ TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
 TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
 TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS = "trp3_rpnameinquests_textmod_raidboss";
 
+TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
 TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 
 
@@ -790,6 +829,10 @@ TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, tRP3R
 TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote);
 TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote);
 
+--UnitFrameRPName
+TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, tRP3RPNameInQuests.UnitFrameRPName);
+TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, tRP3RPNameInQuests.UnitFrameRPName);
+
 --PaperDollRPName
 TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
 TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
@@ -798,13 +841,7 @@ TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RP
 
 
 
-
---Create Config Page
-TRP3_API.configuration.registerConfigurationPage({
-		id = "trp3_rpnameinquests_config",
-		menuText = "Quest Text",
-		pageText = "RP Name in Quest Text",
-		elements = {
+TRP3RPNameQuestsConfigElements = {
 			{
 				inherit = "TRP3_ConfigParagraph",
 				title = "Note that all settings on this page are OOC Character Specific.",
@@ -993,23 +1030,49 @@ TRP3_API.configuration.registerConfigurationPage({
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
+				title = "Use TRP3 Name in Player Unit Frame",
+				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
+					
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
 				title = "Use TRP3 Name in Character Window",
 				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
+					
+					--Save Variables we can't save otherwise
+					tRP3RPNameInQuests.UnitFrameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME)
+					
 					tRP3RPNameInQuests.PaperDollRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME)
 					
 					tRP3RPNameInQuests.CustomClassNameText = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT)
 					
 					tRP3RPNameInQuests.CustomRaceNameText = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
 					
+					--Update Unit Frames
+					UnitFrame_Update(PlayerFrame)
+					UnitFrame_Update(TargetFrame)
+					
 				end,
 			},
 			
 		}
-	
+
+
+--Create Config Page
+TRP3_API.configuration.registerConfigurationPage({
+		id = "trp3_rpnameinquests_config",
+		menuText = "Quest Text",
+		pageText = "RP Name in Quest Text",
+		elements = TRP3RPNameQuestsConfigElements
 	});
 
 end
