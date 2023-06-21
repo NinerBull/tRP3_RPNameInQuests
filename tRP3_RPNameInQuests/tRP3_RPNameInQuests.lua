@@ -31,17 +31,22 @@ local function trp3RPNameInQuestsInit()
 		tRP3RPNameInQuests.CustomRaceName = 2
 	end
 	
-	
-	
-	
-	
-	
-	
-	
-	--Init Enabled Mods Table
-	if (tRP3RPNameInQuests.EnabledTextMods == nil) then
-		tRP3RPNameInQuests.EnabledTextMods = {}
+	if (tRP3RPNameInQuests.EnabledTextMods ~= nil) then
+		tRP3RPNameInQuests.EnabledTextMods = nil
 	end
+	
+	if (tRP3RPNameInQuests.UnitFrameRPName ~= nil) then
+		tRP3RPNameInQuests.UnitFrameRPName = nil
+	end
+	
+	if (tRP3RPNameInQuests.PaperDollRPName ~= nil) then
+		tRP3RPNameInQuests.PaperDollRPName = nil
+	end
+	
+	
+
+	
+	
 	
 	
 	
@@ -51,13 +56,7 @@ local function trp3RPNameInQuestsInit()
 		tRP3RPNameInQuests.WhichRPName = 5
 	end
 	
-	if (tRP3RPNameInQuests.WhichRPNameText == nil) then
-		tRP3RPNameInQuests.WhichRPNameText = ""
-	end
-	
-	
-	
-	
+
 	if (tRP3RPNameInQuests.CustomClassName == nil) then
 		tRP3RPNameInQuests.CustomClassName = 1
 	end
@@ -65,8 +64,6 @@ local function trp3RPNameInQuestsInit()
 	if (tRP3RPNameInQuests.CustomClassNameText == nil) then
 		tRP3RPNameInQuests.CustomClassNameText = ""
 	end
-	
-	
 	
 	
 	if (tRP3RPNameInQuests.CustomRaceName == nil) then
@@ -80,42 +77,91 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	if (tRP3RPNameInQuests.EnabledTextMods.NPCSpeech == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.NPCSpeech = true
-	end
-	
-	if (tRP3RPNameInQuests.EnabledTextMods.QuestDialog == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.QuestDialog = true
-	end
-	
-	if (tRP3RPNameInQuests.EnabledTextMods.Mailbox == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.Mailbox = true
-	end
-	
-	if (tRP3RPNameInQuests.EnabledTextMods.TextItems == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.TextItems = true
-	end
-	
-	if (tRP3RPNameInQuests.EnabledTextMods.UnitFrameRPName == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.UnitFrameRPName = false
-	end
-	
-	if (tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote == nil) then
-		tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote = false
-	end
 	
 	
-	
-	
-	if (tRP3RPNameInQuests.UnitFrameRPName == nil) then
-		tRP3RPNameInQuests.UnitFrameRPName = false
-	end
-	
-	if (tRP3RPNameInQuests.PaperDollRPName == nil) then
-		tRP3RPNameInQuests.PaperDollRPName = false
-	end
-	
-	
+		
+
+
+	local classDisplayName, class = UnitClass("player");
+	local classColorString = RAID_CLASS_COLORS[class].colorStr;
+		
+
+	--TRP3 Variables
+	TRPRPNAMEINQUESTS.CONFIG = {};
+
+	TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
+
+	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME = "trp3_rpnameinquests_customclassname";
+	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT = "trp3_rpnameinquests_customclassnametext";
+
+	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME = "trp3_rpnameinquests_customracename";
+	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT = "trp3_rpnameinquests_customracenametext";
+
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG = "trp3_rpnameinquests_textmod_questdialog";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS = "trp3_rpnameinquests_textmod_raidboss";
+
+	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
+	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
+
+
+	--Register and set value for variables
+
+	-- Character Specific
+	--WhichRPName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
+
+	--CustomClassName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
+
+	--CustomClassNameText
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
+
+	--CustomRaceName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
+
+	--CustomRaceNameText
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
+
+
+
+	-- Account Wide
+	--NPCSpeech
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, true);
+
+	--QuestDialog
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, true);
+
+	--Mailbox
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, true);
+
+	--TextItems
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, true);
+
+	--RaidBossEmote
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, false);
+
+	--UnitFrameRPName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, false);
+
+	--PaperDollRPName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, false);
+
+
+
+	--Temp Values to check if /reload is needed
+	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH)
+	local TRP3_RPNameInQuests_OldVar_QuestDialog = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG)
+	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
+	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
+	local TRP3_RPNameInQuests_OldVar_RaidBossEmote = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS)
 	
 	
 	
@@ -146,32 +192,32 @@ local function trp3RPNameInQuestsInit()
 			
 		local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
 		
-			local thisTRP3CharNameFull = ""
-			
-			if ((tRP3RPNameInQuests.WhichRPName == 2 or tRP3RPNameInQuests.WhichRPName == 3 or tRP3RPNameInQuests.WhichRPName == 4 or tRP3RPNameInQuests.WhichRPName == 5) or (getFullName == true)) then
-				if (thisTRP3CharInfo.TI) then
-					thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
-				end
+		local thisTRP3CharNameFull = ""
+		
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
+			if (thisTRP3CharInfo.TI) then
+				thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
 			end
-			
-			if ((tRP3RPNameInQuests.WhichRPName == 3 or tRP3RPNameInQuests.WhichRPName == 5 or tRP3RPNameInQuests.WhichRPName == 6 or tRP3RPNameInQuests.WhichRPName == 8) or (getFullName == true)) then
-				if (thisTRP3CharInfo.FN) then
-					thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
-				end
+		end
+		
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 6 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 8) or (getFullName == true)) then
+			if (thisTRP3CharInfo.FN) then
+				thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
 			end
-			
-			if ((tRP3RPNameInQuests.WhichRPName == 4 or tRP3RPNameInQuests.WhichRPName == 5 or tRP3RPNameInQuests.WhichRPName == 7 or tRP3RPNameInQuests.WhichRPName == 8) or (getFullName == true)) then
-				if (thisTRP3CharInfo.LN) then
-					thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
-				end
+		end
+		
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 7 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 8) or (getFullName == true)) then
+			if (thisTRP3CharInfo.LN) then
+				thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
 			end
-			
-			--trim space
-			thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
-			
-			
-			return thisTRP3CharNameFull
-	
+		end
+		
+		--trim space
+		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
+		
+		
+		return thisTRP3CharNameFull
+
 	end
 	
 	
@@ -198,7 +244,7 @@ local function trp3RPNameInQuestsInit()
 		--Get TRP 3 Name
 		
 		
-		if (tRP3RPNameInQuests.WhichRPName == 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 1) then
 			-- ooc name, so do nothing
 			
 		else
@@ -238,7 +284,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	--Rename Race
-  function TRP3_RPNameInQuests_RPRaceRename(textToRename, returnRPRace, doLowerCase)
+	function TRP3_RPNameInQuests_RPRaceRename(textToRename, returnRPRace, doLowerCase)
 	
 		returnRPRace = returnRPRace or false
 		
@@ -251,10 +297,10 @@ local function trp3RPNameInQuestsInit()
 		thisRaceName = TRP3_RPNameInQuests_RaceToChange
 		
 		--If not OOC Race Name
-		if (tRP3RPNameInQuests.CustomRaceName ~= 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) ~= 1) then
 		
 			--TRP3 Race Name
-			if (tRP3RPNameInQuests.CustomRaceName == 2) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 2) then
 			
 				if (thisTRP3CharInfoR.RA ~= nil) then
 				
@@ -266,11 +312,11 @@ local function trp3RPNameInQuestsInit()
 			
 			
 			--Custom Race Name
-			if (tRP3RPNameInQuests.CustomRaceName == 3) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 3) then
 			
-				if (tRP3RPNameInQuests.CustomRaceNameText ~= "") then
+				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT) ~= "") then
 				
-					thisRaceName = tRP3RPNameInQuests.CustomRaceNameText
+					thisRaceName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
 					
 				end
 				
@@ -316,10 +362,10 @@ local function trp3RPNameInQuestsInit()
 		
 		
 		--If not OOC Class Name
-		if (tRP3RPNameInQuests.CustomClassName ~= 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) ~= 1) then
 		
 			--TRP3 Class Name
-			if (tRP3RPNameInQuests.CustomClassName == 2) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 2) then
 			
 				if (thisTRP3CharInfoC.CL ~= nil) then
 				
@@ -331,11 +377,11 @@ local function trp3RPNameInQuestsInit()
 			
 			
 			--Custom Class Name
-			if (tRP3RPNameInQuests.CustomClassName == 3) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 3) then
 			
-				if (tRP3RPNameInQuests.CustomClassNameText ~= "") then
+				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT) ~= "") then
 				
-					thisClassName = tRP3RPNameInQuests.CustomClassNameText
+					thisClassName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT)
 					
 				end
 				
@@ -362,19 +408,18 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	--TheBigRename
-	
 	function tRP3RPNameTheBigRename(textToRename)
 	
 		thisRenamedText = textToRename or ""
 	
-		if (tRP3RPNameInQuests.WhichRPName ~= 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) ~= 1) then
 			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
 			end
 		end
 		
 		--ClassName
-		if (tRP3RPNameInQuests.CustomClassName ~= 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) ~= 1) then
 			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_ClassToChange)) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPClassRename(thisRenamedText)
 			end
@@ -384,7 +429,7 @@ local function trp3RPNameInQuestsInit()
 		end
 		
 		--RaceName
-		if (tRP3RPNameInQuests.CustomRaceName ~= 1) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) ~= 1) then
 			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_RaceToChange)) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPRaceRename(thisRenamedText)
 			end
@@ -405,45 +450,41 @@ local function trp3RPNameInQuestsInit()
 	
 	-- Unit Frame
 	hooksecurefunc("UnitFrame_Update", function(self)
-		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
-				if (self.name) then
-				
-					local name;
-					if ( self.overrideName ) then
-						name = self.overrideName;
-					else
-						name = self.unit;
-					end
-									
-					if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+			if (self.name) then
+								
+				if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
+					if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
 						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
 					end
-				
 				end
+			
+			end
 		end
 	end)
 	
-	
+
+
+
 	--Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
-		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
-			UnitFrame_Update(PlayerFrame)
-			UnitFrame_Update(TargetFrame)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+			TRP3_RPNameInQuests_UpdateUnitFrames()
 		end
 	end);
 	
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
-		if (tRP3RPNameInQuests.UnitFrameRPName == true) then
-			UnitFrame_Update(PlayerFrame)
-			UnitFrame_Update(TargetFrame)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+			TRP3_RPNameInQuests_UpdateUnitFrames()
 		end
 	end);
 	
 	
+
 	
 	-- Character Sheet
 	hooksecurefunc("ToggleCharacter", function()
-		if (tRP3RPNameInQuests.PaperDollRPName == true) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 			if ( CharacterFrame:IsShown() ) then
 				if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
 						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
@@ -460,7 +501,7 @@ local function trp3RPNameInQuestsInit()
 
 
 	--Quests, Dialog, Gossip Etc.
-	if (tRP3RPNameInQuests.EnabledTextMods.QuestDialog == true) then
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
 
 		-- Quest Window
 		hooksecurefunc("QuestInfo_Display", function()
@@ -607,7 +648,7 @@ local function trp3RPNameInQuestsInit()
 	
 	-- Mail Window
 	-- /Interface/FrameXML/MailFrame.lua
-	if (tRP3RPNameInQuests.EnabledTextMods.Mailbox == true) then
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX) == true) then
 		hooksecurefunc("OpenMail_Update", function()
 
 				if ( not OpenMailFrame_IsValidMailID()) then
@@ -630,7 +671,7 @@ local function trp3RPNameInQuestsInit()
 	
 	-- Books, etc.
 	-- /Interface/FrameXML/ItemTextFrame.lua
-	if (tRP3RPNameInQuests.EnabledTextMods.TextItems == true) then
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
 		trp3rpnamequestsframe:SetScript("OnEvent", function(self, event, arg1, arg2)
 	
 			if event == "ITEM_TEXT_READY" then
@@ -659,7 +700,7 @@ local function trp3RPNameInQuestsInit()
 	
 		local thisNewMessage = tRP3RPNameTheBigRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_RPNameRename(thisNPC)
-			if (tRP3RPNameInQuests.EnabledTextMods.NPCSpeech == true) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 				if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
 					TRP3_RPNameInQuests_ModSpeechBubbles()
 				end
@@ -672,7 +713,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	-- NPC Speech
-	if (tRP3RPNameInQuests.EnabledTextMods.NPCSpeech == true) then
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_SAY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /s Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_YELL", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /y Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_PARTY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /p Chat
@@ -680,14 +721,12 @@ local function trp3RPNameInQuestsInit()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
 	end
 	
-	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-		if (tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote == true) then
-			-- Raid Boss Emote Frame
-			ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
-			ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
-		end
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS) == true) then
+		-- Raid Boss Emote Frame
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
 	end
-	
+
 	
 	
 	
@@ -733,126 +772,45 @@ local function trp3RPNameInQuestsInit()
 			
 	end
 	
-	
+	function TRP3_RPNameInQuests_UpdateUnitFrames()
+		UnitFrame_Update(PlayerFrame)
+		UnitFrame_Update(TargetFrame)
+	end
 
--- TRP3 Options Page
-local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
-	{ "OOC Character Name", 1 },
-	{ "Title", 2 },
-	{ "Title + First Name", 3 },
-	{ "Title + Last Name", 4 },
-	{ "Title + First Name + Last Name", 5 },
-	{ "First Name", 6 },
-	{ "Last Name", 7 },
-	{ "First Name + Last Name", 8 },	
-}
+	-- TRP3 Options Page
+	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
+		{ "OOC Character Name", 1 },
+		{ "Title", 2 },
+		{ "Title + First Name", 3 },
+		{ "Title + Last Name", 4 },
+		{ "Title + First Name + Last Name", 5 },
+		{ "First Name", 6 },
+		{ "Last Name", 7 },
+		{ "First Name + Last Name", 8 },	
+	}
 
-local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
-	{ "OOC Class Name", 1 },
-	{ "TRP3 Class Name", 2 },
-	{ "Custom Class Name (Set Below)", 3 },	
-}
+	local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
+		{ "OOC Class Name", 1 },
+		{ "TRP3 Class Name", 2 },
+		{ "Custom Class Name (Set Below)", 3 },	
+	}
 
-local TRPRPNAMEINQUESTS_DROPDOWNRACE = {
-	{ "OOC Race Name", 1 },
-	{ "TRP3 Race Name", 2 },
-	{ "Custom Race Name (Set Below)", 3 },	
-}
-
-
-
-
-local classDisplayName, class = UnitClass("player");
-local classColorString = RAID_CLASS_COLORS[class].colorStr;
-	
-
---TRP3 Variables
-TRPRPNAMEINQUESTS.CONFIG = {};
-
-TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
-
-TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME = "trp3_rpnameinquests_customclassname";
-TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT = "trp3_rpnameinquests_customclassnametext";
-
-TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME = "trp3_rpnameinquests_customracename";
-TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT = "trp3_rpnameinquests_customracenametext";
-
-TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
-TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG = "trp3_rpnameinquests_textmod_questdialog";
-TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
-TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
-TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS = "trp3_rpnameinquests_textmod_raidboss";
-
-TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
-TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
-
-
---Register and set value for variables
-
---WhichRPName
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
-
---CustomClassName
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
-
---CustomClassNameText
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
-
---CustomRaceName
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
-
---CustomRaceNameText
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
-
---NPCSpeech
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, tRP3RPNameInQuests.EnabledTextMods.NPCSpeech);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, tRP3RPNameInQuests.EnabledTextMods.NPCSpeech);
-
---QuestDialog
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, tRP3RPNameInQuests.EnabledTextMods.QuestDialog);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, tRP3RPNameInQuests.EnabledTextMods.QuestDialog);
-
---Mailbox
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, tRP3RPNameInQuests.EnabledTextMods.Mailbox);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, tRP3RPNameInQuests.EnabledTextMods.Mailbox);
-
---TextItems
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, tRP3RPNameInQuests.EnabledTextMods.TextItems);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, tRP3RPNameInQuests.EnabledTextMods.TextItems);
-
---RaidBossEmote
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote);
-
---UnitFrameRPName
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, tRP3RPNameInQuests.UnitFrameRPName);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, tRP3RPNameInQuests.UnitFrameRPName);
-
---PaperDollRPName
-TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
-TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, tRP3RPNameInQuests.PaperDollRPName);
+	local TRPRPNAMEINQUESTS_DROPDOWNRACE = {
+		{ "OOC Race Name", 1 },
+		{ "TRP3 Race Name", 2 },
+		{ "Custom Race Name (Set Below)", 3 },	
+	}
 
 
 
-
-
-TRP3RPNameQuestsConfigElements = {
-			{
-				inherit = "TRP3_ConfigParagraph",
-				title = "Note that all settings on this page are OOC Character Specific.",
-			},
+	TRP3RPNameQuestsConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Main Settings for |c" .. classColorString .. UnitName("player") .. "|r",
+				title = "|c" .. classColorString .. UnitName("player") .. "'s|r Quest Text Settings",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "How should NPCs refer to your character?",
+				title = "What Name, Race and Class should NPCs refer to |c" .. classColorString .. UnitName("player") .. "|r as? \nThese options are character specific.",
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -903,14 +861,12 @@ TRP3RPNameQuestsConfigElements = {
 				title = "Custom |cffE3963ERace|r Name (*)",
 				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
-				--dependentOnOptions = { false }
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom |c" .. classColorString .. "Class" .. "|r" .." Name (*)",
 				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
-				--dependentOnOptions = { false }
 			},
 			{
 				inherit = "TRP3_ConfigNote",
@@ -918,11 +874,11 @@ TRP3RPNameQuestsConfigElements = {
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Which Text to Modify for |c" .. classColorString .. UnitName("player") .. "|r",
+				title = "Text to Modify",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Select which text this addon should modify to include your RP Name/Race/Class.",
+				title = "Select which text this addon should modify to include your RP Name/Race/Class. \nThese options are |cffE3963EAccount Wide|r.",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -931,16 +887,12 @@ TRP3RPNameQuestsConfigElements = {
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
+					
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, value)
 					
-					local oldVar = tRP3RPNameInQuests.EnabledTextMods.NPCSpeech
-					
-					tRP3RPNameInQuests.EnabledTextMods.NPCSpeech = value
-					
-					if (oldVar ~= tRP3RPNameInQuests.EnabledTextMods.NPCSpeech) then
+					if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
-					
 					
 				end,
 			},
@@ -950,14 +902,11 @@ TRP3RPNameQuestsConfigElements = {
 				help = "If checked, this addon will modify all quest text and dialog boxes.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
 				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
+					local value = button:GetChecked() and true or false;					
+					
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
 					
-					local oldVar = tRP3RPNameInQuests.EnabledTextMods.QuestDialog
-					
-					tRP3RPNameInQuests.EnabledTextMods.QuestDialog = value
-					
-					if (oldVar ~= tRP3RPNameInQuests.EnabledTextMods.QuestDialog) then
+					if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 				end,
@@ -969,13 +918,10 @@ TRP3RPNameQuestsConfigElements = {
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
+
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
 					
-					local oldVar = tRP3RPNameInQuests.EnabledTextMods.Mailbox
-					
-					tRP3RPNameInQuests.EnabledTextMods.Mailbox = value
-					
-					if (oldVar ~= tRP3RPNameInQuests.EnabledTextMods.Mailbox) then
+					if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 					
@@ -985,16 +931,13 @@ TRP3RPNameQuestsConfigElements = {
 				inherit = "TRP3_ConfigCheck",
 				title = "Text Items (Books, Letters, Plaques etc)",
 				help = "If checked, this addon will modify text items such as books.",
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
+				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
-					
-					local oldVar = tRP3RPNameInQuests.EnabledTextMods.TextItems
-					
-					tRP3RPNameInQuests.EnabledTextMods.TextItems = value
-					
-					if (oldVar ~= tRP3RPNameInQuests.EnabledTextMods.TextItems) then
+
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
+
+					if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 				end,
@@ -1006,15 +949,10 @@ TRP3RPNameQuestsConfigElements = {
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
-					
+
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, value)
-					
-					local oldVar = tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote
-					
-					
-					tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote = value
-					
-					if (oldVar ~= tRP3RPNameInQuests.EnabledTextMods.RaidBossEmote) then
+
+					if (TRP3_RPNameInQuests_OldVar_RaidBossEmote ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 					
@@ -1026,7 +964,11 @@ TRP3RPNameQuestsConfigElements = {
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Extra Functions for |c" .. classColorString .. UnitName("player") .. "|r",
+				title = "Extra Functions",
+			},
+			{
+				inherit = "TRP3_ConfigParagraph",
+				title = "Add your TRP3 Character Name to other UI elements. \nThese options are |cffE3963EAccount Wide|r.",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1036,6 +978,9 @@ TRP3RPNameQuestsConfigElements = {
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
+					
+					--Update Unit Frames
+					TRP3_RPNameInQuests_UpdateUnitFrames()
 					
 				end,
 			},
@@ -1057,25 +1002,23 @@ TRP3RPNameQuestsConfigElements = {
 					
 					tRP3RPNameInQuests.CustomRaceNameText = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
 					
-					--Update Unit Frames
-					UnitFrame_Update(PlayerFrame)
-					UnitFrame_Update(TargetFrame)
-					
 				end,
 			},
 			
 		}
 
 
---Create Config Page
-TRP3_API.configuration.registerConfigurationPage({
-		id = "trp3_rpnameinquests_config",
-		menuText = "Quest Text",
-		pageText = "RP Name in Quest Text",
-		elements = TRP3RPNameQuestsConfigElements
-	});
+	--Create Config Page
+	TRP3_API.configuration.registerConfigurationPage({
+			id = "trp3_rpnameinquests_config",
+			menuText = "Quest Text",
+			pageText = "RP Name in Quest Text",
+			elements = TRP3RPNameQuestsConfigElements
+		});
 
 end
+
+
 
 
 TRP3_API.module.registerModule({
@@ -1095,14 +1038,18 @@ function trp3RPNameInQuestsOpenConfig()
 end
 
 local trp3RPNameInQuestsOpenConfigCommand = {
-    id = "questtext",
-    helpLine = " Open the 'RP Name in Quest Text' Config.",
-    handler = function()
-        trp3RPNameInQuestsOpenConfig();
-    end,
+	id = "questtext",
+	helpLine = " Open the 'RP Name in Quest Text' Config.",
+	handler = function()
+		trp3RPNameInQuestsOpenConfig();
+	end,
 }
 
 TRP3_API.slash.registerCommand(trp3RPNameInQuestsOpenConfigCommand);
+
+
+
+
 
 
 --Addon Compartment
@@ -1118,9 +1065,9 @@ function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
 	end
 	
 	local classDisplayName, class = UnitClass("player");
-    local classColorString = RAID_CLASS_COLORS[class].colorStr;
+	local classColorString = RAID_CLASS_COLORS[class].colorStr;
 	
-    trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
+	trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
 	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
 	
 	trp3RPNameInQuestsTooltip:AddLine(" ")
