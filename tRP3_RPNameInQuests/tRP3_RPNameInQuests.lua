@@ -30,7 +30,7 @@ local function trp3RPNameInQuestsInit()
 		--Init
 	if tRP3RPNameInQuests == nil then		
 		tRP3RPNameInQuests = {}
-		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
+		print(NORMAL_FONT_COLOR:WrapTextInColorCode("<TRP3: RP Name in Quest Text>") .. " Type " .. NORMAL_FONT_COLOR:WrapTextInColorCode("/trp3 questtext") .. " to select how this character is addressed by NPCs.")
 	end
 
 	

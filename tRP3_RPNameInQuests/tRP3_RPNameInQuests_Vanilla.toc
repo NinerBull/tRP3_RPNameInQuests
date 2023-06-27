@@ -7,12 +7,15 @@
 ## DefaultState: enabled
 ## RequiredDeps: totalRP3
 ## OptionalDeps: totalRP3_UnitFrames
+
 ## X-Category: Roleplay
 ## X-Website: https://github.com/NinerBull/tRP3_RPNameInQuests
 ## X-Curse-Project-ID: 822877
 ## X-WoWI-ID: 26545
+
 ## IconTexture: Interface\Icons\vas_namechange.blp
 ## AddonCompartmentFunc: trp3RPNameInQuests_CompartmentClick
 ## AddonCompartmentFuncOnEnter: trp3RPNameInQuests_CompartmentHover
 ## AddonCompartmentFuncOnLeave: trp3RPNameInQuests_CompartmentLeave
+
 tRP3_RPNameInQuests.lua
