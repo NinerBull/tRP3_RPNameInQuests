@@ -7,8 +7,27 @@ local TRPRPNAMEINQUESTS = select(2, ...);
 
 local function trp3RPNameInQuestsInit()
 
-	
-	--Init
+
+	--[[local function tprint (t, s)
+			for k, v in pairs(t) do
+				local kfmt = '["' .. tostring(k) ..'"]'
+				if type(k) ~= 'string' then
+					kfmt = '[' .. k .. ']'
+				end
+				local vfmt = '"'.. tostring(v) ..'"'
+				if type(v) == 'table' then
+					tprint(v, (s or '')..kfmt)
+				else
+					if type(v) ~= 'string' then
+						vfmt = tostring(v)
+					end
+					print(type(t)..(s or '')..kfmt..' = '..vfmt)
+				end
+			end
+		end]]
+
+		
+		--Init
 	if tRP3RPNameInQuests == nil then		
 		tRP3RPNameInQuests = {}
 		print("|cffFF7C0A<TRP3: RP Name in Quest Text>:|r Type |cffFF7C0A/trp3 questtext|r to select how this character is addressed by NPCs.")
@@ -105,6 +124,7 @@ local function trp3RPNameInQuestsInit()
 
 	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
 	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
+	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
 
 
 	--Register and set value for variables
@@ -153,6 +173,9 @@ local function trp3RPNameInQuestsInit()
 
 	--PaperDollRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, false);
+	
+	--PartyFrameRPName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, false);
 
 
 
@@ -163,7 +186,7 @@ local function trp3RPNameInQuestsInit()
 	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
 	local TRP3_RPNameInQuests_OldVar_RaidBossEmote = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS)
 	
-	
+	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = false
 	
 
 	local useNewAPI = true
@@ -194,7 +217,7 @@ local function trp3RPNameInQuestsInit()
 		
 		local thisTRP3CharNameFull = ""
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
 			if (thisTRP3CharInfo.TI) then
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
 			end
@@ -326,7 +349,7 @@ local function trp3RPNameInQuestsInit()
 			if (doLowerCase == false) then
 				thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange,thisRaceName)
 			else
-				thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange),thisRaceName)
+				thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange),string.lower(thisRaceName))
 			end
 	
 		end
@@ -391,7 +414,7 @@ local function trp3RPNameInQuestsInit()
 			if (doLowerCase == false) then
 				thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange,thisClassName)
 			else
-				thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange),thisClassName)
+				thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange),string.lower(thisClassName))
 			end
 	
 		end
@@ -450,7 +473,24 @@ local function trp3RPNameInQuestsInit()
 	
 	-- Unit Frame
 	hooksecurefunc("UnitFrame_Update", function(self)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+		
+			if (self.name) then
+								
+				if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
+					if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
+				end
+			
+			end
+		end
+	end)
+	
+	
+	--Compact Party/Raid Frames
+	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
 			if (self.name) then
 								
 				if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
@@ -468,13 +508,13 @@ local function trp3RPNameInQuestsInit()
 
 	--Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			TRP3_RPNameInQuests_UpdateUnitFrames()
 		end
 	end);
 	
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			TRP3_RPNameInQuests_UpdateUnitFrames()
 		end
 	end);
@@ -806,11 +846,11 @@ local function trp3RPNameInQuestsInit()
 	TRP3RPNameQuestsConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "|c" .. classColorString .. UnitName("player") .. "'s|r Quest Text Settings",
+				title = WrapTextInColorCode(UnitName("player") .. "'s", classColorString) .. " Quest Text Settings",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "What Name, Race and Class should NPCs refer to |c" .. classColorString .. UnitName("player") .. "|r as? \nThese options are character specific.",
+				title = "What Name, Race and Class should NPCs refer to " .. WrapTextInColorCode(UnitName("player"), classColorString) .. " as?" .."\n" .. "These options are " .. WrapTextInColorCode("Character Specific", classColorString) .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -827,8 +867,8 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = "|cffE3963ERace|r Name Format",
-				help = "Select what race NPCs should refer to you as. \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
+				title = NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name Format",
+				help = "Select what race NPCs should refer to you as." .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
 				listCallback = function(value)
@@ -840,8 +880,8 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = "|c" .. classColorString .. "Class" .. "|r"  .. " Name Format",
-				help = "Select what class NPCs should refer to you as. \n\nNote: Will also affect any regular quest text mentioning your OOC Class Name.",
+				title = WrapTextInColorCode("Class", classColorString)  .. " Name Format",
+				help = "Select what class NPCs should refer to you as. " .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
 				listCallback = function(value)
@@ -854,11 +894,11 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = " ",
+				title = "- - - - - - -",
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom |cffE3963ERace|r Name (*)",
+				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name (*)",
 				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 			},
@@ -878,7 +918,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Select which text this addon should modify to include your RP Name/Race/Class. \nThese options are |cffE3963EAccount Wide|r.",
+				title = "Select which text this addon should modify to include your RP Name/Race/Class." .. "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide."),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -968,11 +1008,11 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add your TRP3 Character Name to other UI elements. \nThese options are |cffE3963EAccount Wide|r.",
+				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide."),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Use TRP3 Name in Player Unit Frame",
+				title = "Show my TRP3 Name in Player Unit Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
@@ -986,7 +1026,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Use TRP3 Name in Character Window",
+				title = "Show my TRP3 Name in Character Window",
 				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
@@ -1004,9 +1044,34 @@ local function trp3RPNameInQuestsInit()
 					
 				end,
 			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "Show my TRP3 Name in Party/Raid Frames",
+				help = "If checked, your current TRP3 Character Name will be shown in your Party/Raid Frame.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, value)	
+					
+					
+				end,
+			},
 			
 		}
-
+		
+		
+	-- Do not include the Unit Frame option if totalRP3_UnitFrames is loaded.
+	-- (Go get it btw it's awesome)
+	-- https://github.com/keyboardturner/totalRP3_UnitFrames
+	
+	if (IsAddOnLoaded("totalRP3_UnitFrames")) then
+			
+		table.remove(TRP3RPNameQuestsConfigElements, 20)
+		
+		TRP3_RPNameInQuests_IgnoreUnitFrameMods = true
+	
+	end
+	
 
 	--Create Config Page
 	TRP3_API.configuration.registerConfigurationPage({
@@ -1024,7 +1089,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "This module enhances questing immersion by putting your TRP3 IC Name into Quest Text!",
-	version = "1.1.1",
+	version = "1.1.2",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,
 	minVersion = 110,
@@ -1071,7 +1136,7 @@ function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
 	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
 	
 	trp3RPNameInQuestsTooltip:AddLine(" ")
-	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address |c" .. classColorString .. UnitName("player") .. "|r:", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address " .. WrapTextInColorCode(UnitName("player"), classColorString) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	trp3RPNameInQuestsTooltip:AddLine(" ")
 	
 	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(UnitName("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
