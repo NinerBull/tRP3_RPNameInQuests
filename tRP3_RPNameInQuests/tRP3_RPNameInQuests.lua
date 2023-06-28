@@ -5,6 +5,7 @@ trp3rpnamequestsframe:RegisterEvent("ITEM_TEXT_READY");
 local TRPRPNAMEINQUESTS = select(2, ...);
 
 
+
 local function trp3RPNameInQuestsInit()
 
 
@@ -50,6 +51,11 @@ local function trp3RPNameInQuestsInit()
 		tRP3RPNameInQuests.CustomRaceName = 2
 	end
 	
+	
+	
+	
+	
+	--Remove old unused variables
 	if (tRP3RPNameInQuests.EnabledTextMods ~= nil) then
 		tRP3RPNameInQuests.EnabledTextMods = nil
 	end
@@ -60,6 +66,10 @@ local function trp3RPNameInQuestsInit()
 	
 	if (tRP3RPNameInQuests.PaperDollRPName ~= nil) then
 		tRP3RPNameInQuests.PaperDollRPName = nil
+	end
+	
+	if (tRP3RPNameInQuests.WhichRPNameText ~= nil) then
+		tRP3RPNameInQuests.WhichRPNameText = nil
 	end
 	
 	
@@ -840,7 +850,8 @@ local function trp3RPNameInQuestsInit()
 		{ "TRP3 Race Name", 2 },
 		{ "Custom Race Name (Set Below)", 3 },	
 	}
-
+	
+	local trp3RPNameInQuestsTextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
 
 
 	TRP3RPNameQuestsConfigElements = {
@@ -918,7 +929,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Select which text this addon should modify to include your RP Name/Race/Class." .. "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide."),
+				title = "Select which text this addon should modify to include your RP Name/Race/Class." .. "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1008,11 +1019,15 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide."),
+				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+			},
+			{
+				inherit = "TRP3_ConfigNote",
+				title = "Show my character's TRP3 Name:",
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Show my TRP3 Name in Player Unit Frame",
+				title = trp3RPNameInQuestsTextureDot .. " " .. "In the Player Unit Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
@@ -1026,7 +1041,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Show my TRP3 Name in Character Window",
+				title = trp3RPNameInQuestsTextureDot .. " " ..  "In the Character Window",
 				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
@@ -1046,7 +1061,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Show my TRP3 Name in Party/Raid Frames",
+				title = trp3RPNameInQuestsTextureDot .. " " ..  "In the Party/Raid Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Party/Raid Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
@@ -1066,7 +1081,7 @@ local function trp3RPNameInQuestsInit()
 	
 	if (IsAddOnLoaded("totalRP3_UnitFrames")) then
 			
-		table.remove(TRP3RPNameQuestsConfigElements, 20)
+		table.remove(TRP3RPNameQuestsConfigElements, 21)
 		
 		TRP3_RPNameInQuests_IgnoreUnitFrameMods = true
 	
