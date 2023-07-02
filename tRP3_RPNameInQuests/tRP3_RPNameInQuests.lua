@@ -28,8 +28,8 @@ local function trp3RPNameInQuestsInit()
 		end]]
 
 		
-		--Init
-	if tRP3RPNameInQuests == nil then		
+	--Init
+	if (type(tRP3RPNameInQuests) ~= "table") then		
 		tRP3RPNameInQuests = {}
 		print(NORMAL_FONT_COLOR:WrapTextInColorCode("<TRP3: RP Name in Quest Text>") .. " Type " .. NORMAL_FONT_COLOR:WrapTextInColorCode("/trp3 questtext") .. " to select how this character is addressed by NPCs.")
 	end
@@ -38,11 +38,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	--Upgrades from older version
-	if (type(tRP3RPNameInQuests) == "number") then
-		tRP3RPNameInQuests = {}
-	end
-	
+	--Upgrades from older versions
 	if (tRP3RPNameInQuests.CustomClassName == true) then
 		tRP3RPNameInQuests.CustomClassName = 2
 	end
@@ -77,15 +73,11 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	
-	
-	
 	-- Set Addon Variables
 	if (tRP3RPNameInQuests.WhichRPName == nil) then
 		tRP3RPNameInQuests.WhichRPName = 5
 	end
 	
-
 	if (tRP3RPNameInQuests.CustomClassName == nil) then
 		tRP3RPNameInQuests.CustomClassName = 1
 	end
@@ -93,7 +85,6 @@ local function trp3RPNameInQuestsInit()
 	if (tRP3RPNameInQuests.CustomClassNameText == nil) then
 		tRP3RPNameInQuests.CustomClassNameText = ""
 	end
-	
 	
 	if (tRP3RPNameInQuests.CustomRaceName == nil) then
 		tRP3RPNameInQuests.CustomRaceName = 1
@@ -126,10 +117,10 @@ local function trp3RPNameInQuestsInit()
 	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME = "trp3_rpnameinquests_customracename";
 	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT = "trp3_rpnameinquests_customracenametext";
 
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG = "trp3_rpnameinquests_textmod_questdialog";
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
+	TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS = "trp3_rpnameinquests_textmod_raidboss";
 
 	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
@@ -140,6 +131,7 @@ local function trp3RPNameInQuestsInit()
 	--Register and set value for variables
 
 	-- Character Specific
+	
 	--WhichRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
 	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
@@ -163,20 +155,22 @@ local function trp3RPNameInQuestsInit()
 
 
 	-- Account Wide
-	--NPCSpeech
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, true);
-
+	
 	--QuestDialog
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, true);
+	
+	--NPCSpeech
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, true);
+	
+	--TextItems
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, true);
 
 	--Mailbox
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, true);
 
-	--TextItems
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, true);
-
 	--RaidBossEmote
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, false);
+	
 
 	--UnitFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, false);
@@ -190,14 +184,23 @@ local function trp3RPNameInQuestsInit()
 
 
 	--Temp Values to check if /reload is needed
-	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH)
 	local TRP3_RPNameInQuests_OldVar_QuestDialog = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG)
-	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
+	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH)
 	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
+	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
 	local TRP3_RPNameInQuests_OldVar_RaidBossEmote = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS)
 	
-	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = false
 	
+
+	
+	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
+	-- (Go get it btw it's awesome)
+	-- https://github.com/keyboardturner/totalRP3_UnitFrames
+	
+	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = IsAddOnLoaded("totalRP3_UnitFrames") or false
+		
+	
+
 
 	local useNewAPI = true
 
@@ -208,10 +211,6 @@ local function trp3RPNameInQuestsInit()
 	if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) or (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)    then
 		useNewAPI = false
 	end
-
-
-
-
 
 
 
@@ -496,9 +495,9 @@ local function trp3RPNameInQuestsInit()
 			end
 		end
 	end)
+		
 	
-	
-	--Compact Party/Raid Frames
+	-- Party/Raid Frames
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
 			if (self.name) then
@@ -516,7 +515,7 @@ local function trp3RPNameInQuestsInit()
 
 
 
-	--Update Unit Frames when profile changed
+	-- Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			TRP3_RPNameInQuests_UpdateUnitFrames()
@@ -550,7 +549,7 @@ local function trp3RPNameInQuestsInit()
 
 
 
-	--Quests, Dialog, Gossip Etc.
+	-- Quests, Dialog, Gossip Etc.
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
 
 		-- Quest Window
@@ -783,8 +782,8 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	--Speech Bubbles
-	--with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
+	-- Speech Bubbles
+	-- with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
 	function TRP3_RPNameInQuests_ModSpeechBubbles()
 				
 			--Slight timer so the bubble has chance to fade in
@@ -822,10 +821,12 @@ local function trp3RPNameInQuestsInit()
 			
 	end
 	
+	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
 		UnitFrame_Update(PlayerFrame)
 		UnitFrame_Update(TargetFrame)
 	end
+	
 
 	-- TRP3 Options Page
 	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
@@ -857,7 +858,7 @@ local function trp3RPNameInQuestsInit()
 	TRP3RPNameQuestsConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = WrapTextInColorCode(UnitName("player") .. "'s", classColorString) .. " Quest Text Settings",
+				title = WrapTextInColorCode(UnitName("player"), classColorString) .. "'s Quest Text Settings",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
@@ -866,8 +867,8 @@ local function trp3RPNameInQuestsInit()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = "TRP3 Character Name Format",
-				help = "Select what Character Name NPCs should refer you to as, in the chosen format. This uses the Character Name from your currently selected TRP3 Profile.",
+				title = "Character Name Format",
+				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "This uses the Character Name from your currently selected TRP3 Profile.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
@@ -905,17 +906,17 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = "- - - - - - -",
+				title = "- - -",
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name (*)",
+				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
 				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom |c" .. classColorString .. "Class" .. "|r" .." Name (*)",
+				title = "Custom " .. WrapTextInColorCode("Class", classColorString)  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
 				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
@@ -933,8 +934,23 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "NPC Speech (/say, /yell, /emote etc)",
-				help = "If checked, this addon will modify all text and speech bubbles for NPCs.",
+				title = "Quest Text / Gossip",
+				help = "If checked, this addon will modify all Quest Text, Gossip Chat and Gossip Options.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;					
+					
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
+					
+					if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
+						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+					end
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "NPC Speech " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(/say, /yell, /emote etc)"),
+				help = "If checked, this addon will modify all text and speech bubbles for NPCs." .. "\n\n" .. "Does not affect speech from other players.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -949,15 +965,15 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Quest Dialog / Gossip",
-				help = "If checked, this addon will modify all quest text and dialog boxes.",
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
+				title = "Text Items " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(Books, Letters, Plaques etc)"),
+				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
 				OnHide = function(button)
-					local value = button:GetChecked() and true or false;					
-					
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
-					
-					if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
+					local value = button:GetChecked() and true or false;
+
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
+
+					if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 				end,
@@ -976,21 +992,6 @@ local function trp3RPNameInQuestsInit()
 						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
 					end
 					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = "Text Items (Books, Letters, Plaques etc)",
-				help = "If checked, this addon will modify text items such as books.",
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
-
-					if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
-					end
 				end,
 			},
 			{
@@ -1019,11 +1020,11 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = "Show my character's TRP3 Name:",
+				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show my Character's TRP3 Name:"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1075,16 +1076,9 @@ local function trp3RPNameInQuestsInit()
 		}
 		
 		
-	-- Do not include the Unit Frame option if totalRP3_UnitFrames is loaded.
-	-- (Go get it btw it's awesome)
-	-- https://github.com/keyboardturner/totalRP3_UnitFrames
-	
-	if (IsAddOnLoaded("totalRP3_UnitFrames")) then
-			
+	-- Remove Unit Frame Option if needed
+	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
 		table.remove(TRP3RPNameQuestsConfigElements, 21)
-		
-		TRP3_RPNameInQuests_IgnoreUnitFrameMods = true
-	
 	end
 	
 
@@ -1103,7 +1097,7 @@ end
 
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
-	description = "This module enhances questing immersion by putting your TRP3 IC Name into Quest Text!",
+	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
 	version = "1.1.2",
 	id = "trp3_rpnameinquests",
 	onStart = trp3RPNameInQuestsInit,

@@ -1,7 +1,7 @@
 ## Interface: 11403
 ## Title: Total RP 3: RP Name in Quest Text
 ## Version: 1.1.2
-## Notes: This AddOn attempts to put your Total RP 3 Character Name into quest text and dialogue.
+## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
 ## Author: NinerBull
 ## SavedVariablesPerCharacter: tRP3RPNameInQuests
 ## DefaultState: enabled
