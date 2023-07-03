@@ -2,40 +2,19 @@ local trp3rpnamequestsframe = CreateFrame("Frame")
 trp3rpnamequestsframe:RegisterEvent("ITEM_TEXT_READY");
 
 
-local TRPRPNAMEINQUESTS = select(2, ...);
+TRPRPNAMEINQUESTS = select(2, ...);
 
 
 
 local function trp3RPNameInQuestsInit()
 
-
-	--[[local function tprint (t, s)
-			for k, v in pairs(t) do
-				local kfmt = '["' .. tostring(k) ..'"]'
-				if type(k) ~= 'string' then
-					kfmt = '[' .. k .. ']'
-				end
-				local vfmt = '"'.. tostring(v) ..'"'
-				if type(v) == 'table' then
-					tprint(v, (s or '')..kfmt)
-				else
-					if type(v) ~= 'string' then
-						vfmt = tostring(v)
-					end
-					print(type(t)..(s or '')..kfmt..' = '..vfmt)
-				end
-			end
-		end]]
-
 		
 	--Init
 	if (type(tRP3RPNameInQuests) ~= "table") then		
 		tRP3RPNameInQuests = {}
-		print(NORMAL_FONT_COLOR:WrapTextInColorCode("<TRP3: RP Name in Quest Text>") .. " Type " .. NORMAL_FONT_COLOR:WrapTextInColorCode("/trp3 questtext") .. " to select how this character is addressed by NPCs.")
+		TRP3_API.utils.message.displayMessage(NORMAL_FONT_COLOR:WrapTextInColorCode("<TRP3: RP Name in Quest Text>") .. " Type " .. NORMAL_FONT_COLOR:WrapTextInColorCode("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1,false)
 	end
 
-	
-	
 	
 	
 	--Upgrades from older versions
@@ -102,8 +81,7 @@ local function trp3RPNameInQuestsInit()
 		
 
 
-	local classDisplayName, class = UnitClass("player");
-	local classColorString = RAID_CLASS_COLORS[class].colorStr;
+	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 		
 
 	--TRP3 Variables
@@ -260,9 +238,9 @@ local function trp3RPNameInQuestsInit()
 
 
 	-- Functions that do the actual renaming
-	local TRP3_RPNameInQuests_NameToChange = UnitName("player")
-	local TRP3_RPNameInQuests_RaceToChange = UnitRace("player")
-	local TRP3_RPNameInQuests_ClassToChange = UnitClass("player")
+	local TRP3_RPNameInQuests_NameToChange = TRP3_API.globals.player
+	local TRP3_RPNameInQuests_RaceToChange = TRP3_API.globals.player_race_loc
+	local TRP3_RPNameInQuests_ClassToChange = TRP3_API.globals.player_class_loc
 	
 	
 	
@@ -273,7 +251,7 @@ local function trp3RPNameInQuestsInit()
 		returnRPName = returnRPName or false
 	
 		thisTextToReturn = textToRename
-		--Get TRP 3 Name
+		--Get TRP3 Name
 		
 		
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 1) then
@@ -483,15 +461,17 @@ local function trp3RPNameInQuestsInit()
 	-- Unit Frame
 	hooksecurefunc("UnitFrame_Update", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-		
 			if (self.name) then
-								
-				if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
-					if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+			
+					local thisName = self.name:GetText() or nil
+					
+				if (thisName ~= nil) then			
+					if (TRP3_RPNameInQuests_NameToChange == thisName) then
+						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+						end
 					end
 				end
-			
 			end
 		end
 	end)
@@ -501,13 +481,16 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
 			if (self.name) then
-								
-				if (TRP3_RPNameInQuests_NameToChange == self.name:GetText()) then
-					if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+			
+					local thisName = self.name:GetText() or nil
+					
+				if (thisName ~= nil) then			
+					if (TRP3_RPNameInQuests_NameToChange == thisName) then
+						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+						end
 					end
 				end
-			
 			end
 		end
 	end)
@@ -858,11 +841,11 @@ local function trp3RPNameInQuestsInit()
 	TRP3RPNameQuestsConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = WrapTextInColorCode(UnitName("player"), classColorString) .. "'s Quest Text Settings",
+				title = classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "What Name, Race and Class should NPCs refer to " .. WrapTextInColorCode(UnitName("player"), classColorString) .. " as?" .."\n" .. "These options are " .. WrapTextInColorCode("Character Specific", classColorString) .. ".",
+				title = "What Name, Race and Class should NPCs refer to " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. " as?" .."\n" .. "These options are " .. classColorString:WrapTextInColorCode("Character Specific") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -892,7 +875,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = WrapTextInColorCode("Class", classColorString)  .. " Name Format",
+				title = classColorString:WrapTextInColorCode("Class")  .. " Name Format",
 				help = "Select what class NPCs should refer to you as. " .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
@@ -916,7 +899,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. WrapTextInColorCode("Class", classColorString)  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
+				title = "Custom " .. classColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
 				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
@@ -1054,9 +1037,9 @@ local function trp3RPNameInQuestsInit()
 					
 					tRP3RPNameInQuests.PaperDollRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME)
 					
-					tRP3RPNameInQuests.CustomClassNameText = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT)
+					tRP3RPNameInQuests.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
 					
-					tRP3RPNameInQuests.CustomRaceNameText = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
+					tRP3RPNameInQuests.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
 					
 				end,
 			},
@@ -1138,19 +1121,18 @@ function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
 		trp3RPNameInQuestsTooltip = CreateFrame("GameTooltip", "trp3RPNameInQuestsTooltip_Compartment", UIParent, "GameTooltipTemplate")
 	end
 	
-	local classDisplayName, class = UnitClass("player");
-	local classColorString = RAID_CLASS_COLORS[class].colorStr;
+	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 	
 	trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
 	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
 	
 	trp3RPNameInQuestsTooltip:AddLine(" ")
-	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address " .. WrapTextInColorCode(UnitName("player"), classColorString) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	trp3RPNameInQuestsTooltip:AddLine(" ")
 	
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(UnitName("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true), nil, nil, nil, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(TRP3_API.globals.player_race_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(TRP3_API.globals.player_class_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	
 	trp3RPNameInQuestsTooltip:AddLine(" ")
 	trp3RPNameInQuestsTooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
