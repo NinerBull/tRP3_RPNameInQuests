@@ -12,7 +12,7 @@ local function trp3RPNameInQuestsInit()
 	--Init
 	if (type(tRP3RPNameInQuests) ~= "table") then		
 		tRP3RPNameInQuests = {}
-		TRP3_API.utils.message.displayMessage(NORMAL_FONT_COLOR:WrapTextInColorCode("<TRP3: RP Name in Quest Text>") .. " Type " .. NORMAL_FONT_COLOR:WrapTextInColorCode("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1,false)
+		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Cyan("RP Name in Quest Text") .. " installed! Type " .. TRP3_API.Colors.Cyan("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1)
 	end
 
 	
@@ -462,9 +462,7 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("UnitFrame_Update", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			if (self.name) then
-			
-					local thisName = self.name:GetText() or nil
-					
+				local thisName = self.name:GetText() or nil
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
@@ -481,9 +479,7 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
 			if (self.name) then
-			
-					local thisName = self.name:GetText() or nil
-					
+				local thisName = self.name:GetText() or nil
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
