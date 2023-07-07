@@ -1,6 +1,7 @@
 local trp3rpnamequestsframe = CreateFrame("Frame")
 trp3rpnamequestsframe:RegisterEvent("ITEM_TEXT_READY");
-
+trp3rpnamequestsframe:RegisterEvent("KNOWN_TITLES_UPDATE");
+trp3rpnamequestsframe:RegisterEvent("UNIT_NAME_UPDATE");
 
 TRPRPNAMEINQUESTS = select(2, ...);
 
@@ -462,7 +463,10 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("UnitFrame_Update", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			if (self.name) then
-				local thisName = self.name:GetText() or nil
+				local thisName = nil
+				pcall(function () 
+					thisName = self.name:GetText()
+				end) 
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
@@ -470,6 +474,7 @@ local function trp3RPNameInQuestsInit()
 						end
 					end
 				end
+
 			end
 		end
 	end)
@@ -479,7 +484,10 @@ local function trp3RPNameInQuestsInit()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
 			if (self.name) then
-				local thisName = self.name:GetText() or nil
+				local thisName = nil
+				pcall(function () 
+					thisName = self.name:GetText()
+				end) 
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
@@ -506,7 +514,6 @@ local function trp3RPNameInQuestsInit()
 			TRP3_RPNameInQuests_UpdateUnitFrames()
 		end
 	end);
-	
 	
 
 	
@@ -697,10 +704,13 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	-- Books, etc.
-	-- /Interface/FrameXML/ItemTextFrame.lua
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
-		trp3rpnamequestsframe:SetScript("OnEvent", function(self, event, arg1, arg2)
+	
+	
+	trp3rpnamequestsframe:SetScript("OnEvent", function(self, event, arg1, arg2)
+		
+		-- Books, etc.
+		-- /Interface/FrameXML/ItemTextFrame.lua
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
 	
 			if event == "ITEM_TEXT_READY" then
 			
@@ -713,10 +723,23 @@ local function trp3RPNameInQuestsInit()
 				end
 				
 			end
+			
+		end
 		
 		
-		end)
-	end
+		--Update Nameplates if title/name changes
+		if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
+		
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+				TRP3_RPNameInQuests_UpdateUnitFrames()
+			end
+			
+		end
+		
+		
+	
+	end)
+
 	
 	
 	

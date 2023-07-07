@@ -29,7 +29,7 @@ You can access it via one of the following:
 * Typing `/trp3 questtext` in chat.
 * Clicking the "RP Name in Quest Text" option from the Addon Compartment (Retail Only)
 
-From here, you'll have multiple options to select from. Note that these options are OOC Character Specific, and are not tied to your TRP 3 Character Profile.
+From here, you'll have multiple options to select from. Note that these options are OOC Character Specific, and are not tied to your TRP3 Character Profile.
 
 * Select how NPCs should address you when they say your Name. (This is "Title + First Name + Last Name" by default.)
 * Select what Race NPCs call you. (This is "OOC Race Name" by default.)
