@@ -1,30 +1,33 @@
-local trp3rpnamequestsframe = CreateFrame("Frame")
-trp3rpnamequestsframe:RegisterEvent("ITEM_TEXT_READY");
-trp3rpnamequestsframe:RegisterEvent("KNOWN_TITLES_UPDATE");
-trp3rpnamequestsframe:RegisterEvent("UNIT_NAME_UPDATE");
+local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
+TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
+TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
+TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
 
 TRPRPNAMEINQUESTS = select(2, ...);
 
 
 
-local function trp3RPNameInQuestsInit()
+local function TRP3RPNameInQuests_Init()
 
 		
 	--Init
-	if (type(tRP3RPNameInQuests) ~= "table") then		
-		tRP3RPNameInQuests = {}
+	TRP3RPNameInQuests_CharVars = tRP3RPNameInQuests or nil
+	tRP3RPNameInQuests = nil
+	
+	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
+		TRP3RPNameInQuests_CharVars = {}
 		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Cyan("RP Name in Quest Text") .. " installed! Type " .. TRP3_API.Colors.Cyan("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1)
 	end
 
 	
 	
 	--Upgrades from older versions
-	if (tRP3RPNameInQuests.CustomClassName == true) then
-		tRP3RPNameInQuests.CustomClassName = 2
+	if (TRP3RPNameInQuests_CharVars.CustomClassName == true) then
+		TRP3RPNameInQuests_CharVars.CustomClassName = 2
 	end
 	
-	if (tRP3RPNameInQuests.CustomRaceName == true) then
-		tRP3RPNameInQuests.CustomRaceName = 2
+	if (TRP3RPNameInQuests_CharVars.CustomRaceName == true) then
+		TRP3RPNameInQuests_CharVars.CustomRaceName = 2
 	end
 	
 	
@@ -32,20 +35,20 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	--Remove old unused variables
-	if (tRP3RPNameInQuests.EnabledTextMods ~= nil) then
-		tRP3RPNameInQuests.EnabledTextMods = nil
+	if (TRP3RPNameInQuests_CharVars.EnabledTextMods ~= nil) then
+		TRP3RPNameInQuests_CharVars.EnabledTextMods = nil
 	end
 	
-	if (tRP3RPNameInQuests.UnitFrameRPName ~= nil) then
-		tRP3RPNameInQuests.UnitFrameRPName = nil
+	if (TRP3RPNameInQuests_CharVars.UnitFrameRPName ~= nil) then
+		TRP3RPNameInQuests_CharVars.UnitFrameRPName = nil
 	end
 	
-	if (tRP3RPNameInQuests.PaperDollRPName ~= nil) then
-		tRP3RPNameInQuests.PaperDollRPName = nil
+	if (TRP3RPNameInQuests_CharVars.PaperDollRPName ~= nil) then
+		TRP3RPNameInQuests_CharVars.PaperDollRPName = nil
 	end
 	
-	if (tRP3RPNameInQuests.WhichRPNameText ~= nil) then
-		tRP3RPNameInQuests.WhichRPNameText = nil
+	if (TRP3RPNameInQuests_CharVars.WhichRPNameText ~= nil) then
+		TRP3RPNameInQuests_CharVars.WhichRPNameText = nil
 	end
 	
 	
@@ -54,24 +57,24 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	-- Set Addon Variables
-	if (tRP3RPNameInQuests.WhichRPName == nil) then
-		tRP3RPNameInQuests.WhichRPName = 5
+	if (TRP3RPNameInQuests_CharVars.WhichRPName == nil) then
+		TRP3RPNameInQuests_CharVars.WhichRPName = 5
 	end
 	
-	if (tRP3RPNameInQuests.CustomClassName == nil) then
-		tRP3RPNameInQuests.CustomClassName = 1
+	if (TRP3RPNameInQuests_CharVars.CustomClassName == nil) then
+		TRP3RPNameInQuests_CharVars.CustomClassName = 1
 	end
 	
-	if (tRP3RPNameInQuests.CustomClassNameText == nil) then
-		tRP3RPNameInQuests.CustomClassNameText = ""
+	if (TRP3RPNameInQuests_CharVars.CustomClassNameText == nil) then
+		TRP3RPNameInQuests_CharVars.CustomClassNameText = ""
 	end
 	
-	if (tRP3RPNameInQuests.CustomRaceName == nil) then
-		tRP3RPNameInQuests.CustomRaceName = 1
+	if (TRP3RPNameInQuests_CharVars.CustomRaceName == nil) then
+		TRP3RPNameInQuests_CharVars.CustomRaceName = 1
 	end
 	
-	if (tRP3RPNameInQuests.CustomRaceNameText == nil) then
-		tRP3RPNameInQuests.CustomRaceNameText = ""
+	if (TRP3RPNameInQuests_CharVars.CustomRaceNameText == nil) then
+		TRP3RPNameInQuests_CharVars.CustomRaceNameText = ""
 	end
 	
 	
@@ -112,24 +115,24 @@ local function trp3RPNameInQuestsInit()
 	-- Character Specific
 	
 	--WhichRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, tRP3RPNameInQuests.WhichRPName);
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
 
 	--CustomClassName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, tRP3RPNameInQuests.CustomClassName);
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
 
 	--CustomClassNameText
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, tRP3RPNameInQuests.CustomClassNameText);
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
 
 	--CustomRaceName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, tRP3RPNameInQuests.CustomRaceName);
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
 
 	--CustomRaceNameText
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, tRP3RPNameInQuests.CustomRaceNameText);
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
 
 
 
@@ -706,7 +709,7 @@ local function trp3RPNameInQuestsInit()
 	
 	
 	
-	trp3rpnamequestsframe:SetScript("OnEvent", function(self, event, arg1, arg2)
+	TRP3RPNameInQuests_Frame:SetScript("OnEvent", function(self, event, arg1, arg2)
 		
 		-- Books, etc.
 		-- /Interface/FrameXML/ItemTextFrame.lua
@@ -854,10 +857,10 @@ local function trp3RPNameInQuestsInit()
 		{ "Custom Race Name (Set Below)", 3 },	
 	}
 	
-	local trp3RPNameInQuestsTextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
+	local TRP3RPNameInQuestsTextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
 
 
-	TRP3RPNameQuestsConfigElements = {
+	TRP3RPNameQuests_ConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
 				title = classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
@@ -875,7 +878,7 @@ local function trp3RPNameInQuestsInit()
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, value)
-					tRP3RPNameInQuests.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
+					TRP3RPNameInQuests_CharVars.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
 				end,
 
 			},
@@ -887,7 +890,7 @@ local function trp3RPNameInQuestsInit()
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
 				listCallback = function(value)
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
-					tRP3RPNameInQuests.CustomRaceName = value
+					TRP3RPNameInQuests_CharVars.CustomRaceName = value
 					
 					
 				end,
@@ -900,7 +903,7 @@ local function trp3RPNameInQuestsInit()
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
 				listCallback = function(value)
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, value)
-					tRP3RPNameInQuests.CustomClassName = value
+					TRP3RPNameInQuests_CharVars.CustomClassName = value
 					
 					
 					
@@ -1030,7 +1033,7 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = trp3RPNameInQuestsTextureDot .. " " .. "In the Player Unit Frame",
+				title = TRP3RPNameInQuestsTextureDot .. " " .. "In the Player Unit Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
@@ -1044,27 +1047,23 @@ local function trp3RPNameInQuestsInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = trp3RPNameInQuestsTextureDot .. " " ..  "In the Character Window",
+				title = TRP3RPNameInQuestsTextureDot .. " " ..  "In the Character Window",
 				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
 					
-					--Save Variables we can't save otherwise
-					tRP3RPNameInQuests.UnitFrameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME)
+					--Save Variables we can't save otherwise				
+					TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
 					
-					tRP3RPNameInQuests.PaperDollRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME)
-					
-					tRP3RPNameInQuests.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
-					
-					tRP3RPNameInQuests.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
+					TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
 					
 				end,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = trp3RPNameInQuestsTextureDot .. " " ..  "In the Party/Raid Frame",
+				title = TRP3RPNameInQuestsTextureDot .. " " ..  "In the Party/Raid Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Party/Raid Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
@@ -1080,7 +1079,7 @@ local function trp3RPNameInQuestsInit()
 		
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
-		table.remove(TRP3RPNameQuestsConfigElements, 21)
+		table.remove(TRP3RPNameQuests_ConfigElements, 21)
 	end
 	
 
@@ -1089,7 +1088,7 @@ local function trp3RPNameInQuestsInit()
 			id = "trp3_rpnameinquests_config",
 			menuText = "Quest Text",
 			pageText = "RP Name in Quest Text",
-			elements = TRP3RPNameQuestsConfigElements
+			elements = TRP3RPNameQuests_ConfigElements
 		});
 
 end
@@ -1102,26 +1101,26 @@ TRP3_API.module.registerModule({
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
 	version = "1.1.2",
 	id = "trp3_rpnameinquests",
-	onStart = trp3RPNameInQuestsInit,
+	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
 });
 
 
 -- Slash Command
-function trp3RPNameInQuestsOpenConfig()
+function TRP3RPNameInQuestsOpenConfig()
 	TRP3_API.navigation.openMainFrame();
 	TRP3_API.navigation.page.setPage("trp3_rpnameinquests_config");
 end
 
-local trp3RPNameInQuestsOpenConfigCommand = {
+local TRP3RPNameInQuestsOpenConfigCommand = {
 	id = "questtext",
 	helpLine = " Open the 'RP Name in Quest Text' Config.",
 	handler = function()
-		trp3RPNameInQuestsOpenConfig();
+		TRP3RPNameInQuestsOpenConfig();
 	end,
 }
 
-TRP3_API.slash.registerCommand(trp3RPNameInQuestsOpenConfigCommand);
+TRP3_API.slash.registerCommand(TRP3RPNameInQuestsOpenConfigCommand);
 
 
 
@@ -1129,36 +1128,36 @@ TRP3_API.slash.registerCommand(trp3RPNameInQuestsOpenConfigCommand);
 
 
 --Addon Compartment
-local trp3RPNameInQuestsTooltip
+local TRP3RPNameInQuests_Tooltip
 
-function trp3RPNameInQuests_CompartmentClick(addonName, buttonName)
-	trp3RPNameInQuestsOpenConfig()
+function TRP3RPNameInQuests_CompartmentClick(addonName, buttonName)
+	TRP3RPNameInQuestsOpenConfig()
 end
 
-function trp3RPNameInQuests_CompartmentHover(addonName, buttonName)
-	if (not trp3RPNameInQuestsTooltip) then
-		trp3RPNameInQuestsTooltip = CreateFrame("GameTooltip", "trp3RPNameInQuestsTooltip_Compartment", UIParent, "GameTooltipTemplate")
+function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
+	if (not TRP3RPNameInQuests_Tooltip) then
+		TRP3RPNameInQuests_Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests_Tooltip_Compartment", UIParent, "GameTooltipTemplate")
 	end
 	
 	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 	
-	trp3RPNameInQuestsTooltip:SetOwner(buttonName, "ANCHOR_LEFT");
-	trp3RPNameInQuestsTooltip:SetText("TRP3: RP Name in Quest Text")
+	TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
+	TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
 	
-	trp3RPNameInQuestsTooltip:AddLine(" ")
-	trp3RPNameInQuestsTooltip:AddLine("How NPCs will address " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	trp3RPNameInQuestsTooltip:AddLine(" ")
+	TRP3RPNameInQuests_Tooltip:AddLine(" ")
+	TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddLine(" ")
 	
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(TRP3_API.globals.player_race_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	trp3RPNameInQuestsTooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(TRP3_API.globals.player_class_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(TRP3_API.globals.player_race_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(TRP3_API.globals.player_class_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	
-	trp3RPNameInQuestsTooltip:AddLine(" ")
-	trp3RPNameInQuestsTooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddLine(" ")
+	TRP3RPNameInQuests_Tooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
 
-	trp3RPNameInQuestsTooltip:Show()
+	TRP3RPNameInQuests_Tooltip:Show()
 end
 
-function trp3RPNameInQuests_CompartmentLeave(buttonName)
-	trp3RPNameInQuestsTooltip:Hide()
+function TRP3RPNameInQuests_CompartmentLeave(buttonName)
+	TRP3RPNameInQuests_Tooltip:Hide()
 end

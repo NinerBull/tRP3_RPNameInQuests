@@ -3,7 +3,7 @@
 ## Version: 1.1.2
 ## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
 ## Author: NinerBull
-## SavedVariablesPerCharacter: tRP3RPNameInQuests
+## SavedVariablesPerCharacter: tRP3RPNameInQuests, TRP3RPNameInQuests_CharVars
 ## DefaultState: enabled
 ## RequiredDeps: totalRP3
 ## OptionalDeps: totalRP3_UnitFrames
@@ -14,8 +14,8 @@
 ## X-WoWI-ID: 26545
 
 ## IconTexture: Interface\Icons\vas_namechange.blp
-## AddonCompartmentFunc: trp3RPNameInQuests_CompartmentClick
-## AddonCompartmentFuncOnEnter: trp3RPNameInQuests_CompartmentHover
-## AddonCompartmentFuncOnLeave: trp3RPNameInQuests_CompartmentLeave
+## AddonCompartmentFunc: TRP3RPNameInQuests_CompartmentClick
+## AddonCompartmentFuncOnEnter: TRP3RPNameInQuests_CompartmentHover
+## AddonCompartmentFuncOnLeave: TRP3RPNameInQuests_CompartmentLeave
 
 tRP3_RPNameInQuests.lua
