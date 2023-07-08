@@ -857,10 +857,10 @@ local function TRP3RPNameInQuests_Init()
 		{ "Custom Race Name (Set Below)", 3 },	
 	}
 	
-	local TRP3RPNameInQuestsTextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
+	local TRP3RPNameInQuests_TextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
 
 
-	TRP3RPNameQuests_ConfigElements = {
+	TRP3RPNameInQuests_ConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
 				title = classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
@@ -1033,7 +1033,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuestsTextureDot .. " " .. "In the Player Unit Frame",
+				title = TRP3RPNameInQuests_TextureDot .. " " .. "In the Player Unit Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
@@ -1047,7 +1047,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuestsTextureDot .. " " ..  "In the Character Window",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Character Window",
 				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
@@ -1063,7 +1063,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuestsTextureDot .. " " ..  "In the Party/Raid Frame",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Party/Raid Frame",
 				help = "If checked, your current TRP3 Character Name will be shown in your Party/Raid Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
@@ -1079,7 +1079,7 @@ local function TRP3RPNameInQuests_Init()
 		
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
-		table.remove(TRP3RPNameQuests_ConfigElements, 21)
+		table.remove(TRP3RPNameInQuests_ConfigElements, 21)
 	end
 	
 
@@ -1088,7 +1088,7 @@ local function TRP3RPNameInQuests_Init()
 			id = "trp3_rpnameinquests_config",
 			menuText = "Quest Text",
 			pageText = "RP Name in Quest Text",
-			elements = TRP3RPNameQuests_ConfigElements
+			elements = TRP3RPNameInQuests_ConfigElements
 		});
 
 end
@@ -1107,20 +1107,20 @@ TRP3_API.module.registerModule({
 
 
 -- Slash Command
-function TRP3RPNameInQuestsOpenConfig()
+function TRP3RPNameInQuests_OpenConfig()
 	TRP3_API.navigation.openMainFrame();
 	TRP3_API.navigation.page.setPage("trp3_rpnameinquests_config");
 end
 
-local TRP3RPNameInQuestsOpenConfigCommand = {
+local TRP3RPNameInQuests_OpenConfigCommand = {
 	id = "questtext",
 	helpLine = " Open the 'RP Name in Quest Text' Config.",
 	handler = function()
-		TRP3RPNameInQuestsOpenConfig();
+		TRP3RPNameInQuests_OpenConfig();
 	end,
 }
 
-TRP3_API.slash.registerCommand(TRP3RPNameInQuestsOpenConfigCommand);
+TRP3_API.slash.registerCommand(TRP3RPNameInQuests_OpenConfigCommand);
 
 
 
@@ -1131,7 +1131,7 @@ TRP3_API.slash.registerCommand(TRP3RPNameInQuestsOpenConfigCommand);
 local TRP3RPNameInQuests_Tooltip
 
 function TRP3RPNameInQuests_CompartmentClick(addonName, buttonName)
-	TRP3RPNameInQuestsOpenConfig()
+	TRP3RPNameInQuests_OpenConfig()
 end
 
 function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
