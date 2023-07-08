@@ -80,10 +80,6 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	
-	
-	
-		
-
 
 	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 		
@@ -162,6 +158,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	--PartyFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, false);
+
 
 
 
@@ -421,8 +418,8 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	
-	--TheBigRename
-	function tRP3RPNameTheBigRename(textToRename)
+	--Complete Rename Function
+	function TRP3_RPNameInQuests_CompleteRename(textToRename)
 	
 		thisRenamedText = textToRename or ""
 	
@@ -525,11 +522,11 @@ local function TRP3RPNameInQuests_Init()
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 			if ( CharacterFrame:IsShown() ) then
 				if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-							CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
-						else
-							CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
-						end
+					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+						CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
+					else
+						CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
 				end
 			end
 		end
@@ -543,12 +540,12 @@ local function TRP3RPNameInQuests_Init()
 
 		-- Quest Window
 		hooksecurefunc("QuestInfo_Display", function()
-				
+
 			local thisQuestDescription = QuestInfoDescriptionText:GetText()
 			
 			if (thisQuestDescription ~= nil) then
 			
-				QuestInfoDescriptionText:SetText(tRP3RPNameTheBigRename(thisQuestDescription))
+				QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_CompleteRename(thisQuestDescription))
 				
 			end
 
@@ -566,7 +563,7 @@ local function TRP3RPNameInQuests_Init()
 				
 				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
 				
-				return tRP3RPNameTheBigRename(thisGossipText)
+				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
 				
 				
 			end
@@ -579,7 +576,7 @@ local function TRP3RPNameInQuests_Init()
 			
 				local thisGossipText = TRP3_RPNameInQuests_GetGossipTextHook()
 				
-				return tRP3RPNameTheBigRename(thisGossipText)
+				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
 				
 			end
 
@@ -594,7 +591,7 @@ local function TRP3RPNameInQuests_Init()
 		
 			local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
 			
-			return tRP3RPNameTheBigRename(thisGreetingText)
+			return TRP3_RPNameInQuests_CompleteRename(thisGreetingText)
 			
 		end
 
@@ -605,7 +602,7 @@ local function TRP3RPNameInQuests_Init()
 		GetQuestText = function (...)
 			local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
 			
-			return tRP3RPNameTheBigRename(thisQuestText)
+			return TRP3_RPNameInQuests_CompleteRename(thisQuestText)
 			
 		end
 
@@ -617,7 +614,7 @@ local function TRP3RPNameInQuests_Init()
 		
 			local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
 			
-			return tRP3RPNameTheBigRename(thisProgressText)
+			return TRP3_RPNameInQuests_CompleteRename(thisProgressText)
 			
 		end
 
@@ -629,7 +626,7 @@ local function TRP3RPNameInQuests_Init()
 		
 			local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
 			
-			return tRP3RPNameTheBigRename(thisRewardText)
+			return TRP3_RPNameInQuests_CompleteRename(thisRewardText)
 			
 		end
 
@@ -652,7 +649,7 @@ local function TRP3RPNameInQuests_Init()
 				
 				for key, value in pairs(thisGossipOptions) do
 								
-					thisGossipOptions[key]["name"] =  tRP3RPNameTheBigRename(thisGossipOptions[key]["name"])
+					thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
 					
 				end
 
@@ -695,7 +692,7 @@ local function TRP3RPNameInQuests_Init()
 				
 				local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
 				
-				OpenMailBodyText:SetText(tRP3RPNameTheBigRename(bodyText), true);
+				OpenMailBodyText:SetText(TRP3_RPNameInQuests_CompleteRename(bodyText), true);
 
 		end)
 	
@@ -720,9 +717,9 @@ local function TRP3RPNameInQuests_Init()
 				local creator = ItemTextGetCreator();
 				if ( creator ) then
 					creator = "\n\n"..ITEM_TEXT_FROM.."\n"..creator.."\n";
-					ItemTextPageText:SetText(tRP3RPNameTheBigRename(ItemTextGetText())..creator);
+					ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText())..creator);
 				else
-					ItemTextPageText:SetText(tRP3RPNameTheBigRename(ItemTextGetText()));
+					ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText()));
 				end
 				
 			end
@@ -752,7 +749,7 @@ local function TRP3RPNameInQuests_Init()
 	-- Chat Filters
 	local function TRP3_RPNameInQuests_ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...) 
 	
-		local thisNewMessage = tRP3RPNameTheBigRename(thisMessage)
+		local thisNewMessage = TRP3_RPNameInQuests_CompleteRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_RPNameRename(thisNPC)
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 				if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
@@ -775,8 +772,8 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
 	end
 	
+	-- Raid Boss Emote Frame
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS) == true) then
-		-- Raid Boss Emote Frame
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
 	end
@@ -790,7 +787,6 @@ local function TRP3RPNameInQuests_Init()
 	-- Speech Bubbles
 	-- with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
 	function TRP3_RPNameInQuests_ModSpeechBubbles()
-				
 			--Slight timer so the bubble has chance to fade in
 			C_Timer.After(.05, function()
 				for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
@@ -804,7 +800,7 @@ local function TRP3RPNameInQuests_Init()
 									
 										thisBubbleText = region:GetText()
 										
-										region:SetText(tRP3RPNameTheBigRename(thisBubbleText))
+										region:SetText(TRP3_RPNameInQuests_CompleteRename(thisBubbleText))
 										
 										--Resize bubble to accomodate new text
 										if (region:GetStringWidth() >= region:GetWrappedWidth()) then
@@ -819,11 +815,8 @@ local function TRP3RPNameInQuests_Init()
 							end
 						end
 					end
-				
 				end
-			
 			end)
-			
 	end
 	
 	
