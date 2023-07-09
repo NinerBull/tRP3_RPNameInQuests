@@ -40,9 +40,9 @@ If set as "Custom Race/Class Name", fill in the text boxes underneath to use a R
 You can also select which text this addon modifies. Turn on/off as necessary! All are on by default except "Raid Boss Emotes".
 
 ## Compatibility
-* **Dragonflight** - 10.1.0
-* **WotLK Classic** - 3.4.1
-* **Classic Era** - 1.14.3
+* **Dragonflight** - 10.1.5
+* **WotLK Classic** - 3.4.2
+* **Classic Era** - 1.14.4
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 

@@ -1,7 +1,10 @@
 local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
-TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
+
+if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
+end
 
 TRPRPNAMEINQUESTS = select(2, ...);
 
@@ -79,9 +82,8 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	
-	
+	TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
 
-	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 		
 
 	--TRP3 Variables
@@ -179,20 +181,6 @@ local function TRP3RPNameInQuests_Init()
 	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = IsAddOnLoaded("totalRP3_UnitFrames") or false
 		
 	
-
-
-	local useNewAPI = true
-
-	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) or (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC) then
-		useNewAPI = true
-	end
-
-	if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) or (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)    then
-		useNewAPI = false
-	end
-
-
-
 
 
 	-- Full TRP3 Name
@@ -553,35 +541,16 @@ local function TRP3RPNameInQuests_Init()
 		
 
 
-
-		
-		if (useNewAPI == true) then
-		
-			-- Get Gossip Text
-			local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
-			C_GossipInfo.GetText = function (...)
-				
-				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
-				
-				
-			end
-		
-		else
-		
-			-- Get Gossip Text
-			local TRP3_RPNameInQuests_GetGossipTextHook = GetGossipText
-			GetGossipText = function (...)
+		-- Get Gossip Text
+		local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
+		C_GossipInfo.GetText = function (...)
 			
-				local thisGossipText = TRP3_RPNameInQuests_GetGossipTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
-				
-			end
-
+			local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
+			
+			return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
+			
+			
 		end
-		
 		
 
 		
@@ -633,38 +602,23 @@ local function TRP3RPNameInQuests_Init()
 
 	
 
-
-
-
-
-
-
-		if (useNewAPI == true) then
-
-			-- Gossip Options
-			local TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
-			C_GossipInfo.GetOptions = function (...)
+		-- Gossip Options
+		local TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
+		C_GossipInfo.GetOptions = function (...)
+		
+			local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
 			
-				local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
+			for key, value in pairs(thisGossipOptions) do
+							
+				thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
 				
-				for key, value in pairs(thisGossipOptions) do
-								
-					thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
-					
-				end
-
-				return(thisGossipOptions)
-			
 			end
-		
-		else
-		
-		
-			--TO DO - Classic version maybe? Any point though? Perhaps Classic Era will be upgraded to DF's API.
 
+			return(thisGossipOptions)
+		
 		end
-	
-	
+		
+
 	
 	
 	
@@ -856,11 +810,11 @@ local function TRP3RPNameInQuests_Init()
 	TRP3RPNameInQuests_ConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
+				title = TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "What Name, Race and Class should NPCs refer to " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. " as?" .."\n" .. "These options are " .. classColorString:WrapTextInColorCode("Character Specific") .. ".",
+				title = "What Name, Race and Class should NPCs refer to " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. " as?" .."\n" .. "These options are " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Character Specific") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -890,7 +844,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = classColorString:WrapTextInColorCode("Class")  .. " Name Format",
+				title = TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .. " Name Format",
 				help = "Select what class NPCs should refer to you as. " .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
@@ -914,7 +868,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. classColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
+				title = "Custom " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
 				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
@@ -1132,13 +1086,13 @@ function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
 		TRP3RPNameInQuests_Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests_Tooltip_Compartment", UIParent, "GameTooltipTemplate")
 	end
 	
-	local classColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
+	local TRP3RPNameInQuests_ClassColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
 	
 	TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
 	TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
 	
 	TRP3RPNameInQuests_Tooltip:AddLine(" ")
-	TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. classColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+	TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 	TRP3RPNameInQuests_Tooltip:AddLine(" ")
 	
 	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
