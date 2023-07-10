@@ -14,8 +14,10 @@ local function TRP3RPNameInQuests_Init()
 
 		
 	--Init
-	TRP3RPNameInQuests_CharVars = tRP3RPNameInQuests or nil
-	tRP3RPNameInQuests = nil
+	if (type(tRP3RPNameInQuests) ~= "nil") then	
+		TRP3RPNameInQuests_CharVars = tRP3RPNameInQuests or nil
+		tRP3RPNameInQuests = nil
+	end
 	
 	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
 		TRP3RPNameInQuests_CharVars = {}
@@ -38,19 +40,19 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Remove old unused variables
-	if (TRP3RPNameInQuests_CharVars.EnabledTextMods ~= nil) then
+	if (type(TRP3RPNameInQuests_CharVars.EnabledTextMods) ~= "nil") then
 		TRP3RPNameInQuests_CharVars.EnabledTextMods = nil
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.UnitFrameRPName ~= nil) then
+	if (type(TRP3RPNameInQuests_CharVars.UnitFrameRPName) ~= "nil") then
 		TRP3RPNameInQuests_CharVars.UnitFrameRPName = nil
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.PaperDollRPName ~= nil) then
+	if (type(TRP3RPNameInQuests_CharVars.PaperDollRPName) ~= "nil") then
 		TRP3RPNameInQuests_CharVars.PaperDollRPName = nil
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.WhichRPNameText ~= nil) then
+	if (type(TRP3RPNameInQuests_CharVars.WhichRPNameText) ~= "nil") then
 		TRP3RPNameInQuests_CharVars.WhichRPNameText = nil
 	end
 	
@@ -60,29 +62,29 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	-- Set Addon Variables
-	if (TRP3RPNameInQuests_CharVars.WhichRPName == nil) then
+	if (type(TRP3RPNameInQuests_CharVars.WhichRPName) ~= "number") then
 		TRP3RPNameInQuests_CharVars.WhichRPName = 5
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.CustomClassName == nil) then
+	if (type(TRP3RPNameInQuests_CharVars.CustomClassName) ~= "number") then
 		TRP3RPNameInQuests_CharVars.CustomClassName = 1
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.CustomClassNameText == nil) then
+	if (type(TRP3RPNameInQuests_CharVars.CustomClassNameText) ~= "string") then
 		TRP3RPNameInQuests_CharVars.CustomClassNameText = ""
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.CustomRaceName == nil) then
+	if (type(TRP3RPNameInQuests_CharVars.CustomRaceName) ~= "number") then
 		TRP3RPNameInQuests_CharVars.CustomRaceName = 1
 	end
 	
-	if (TRP3RPNameInQuests_CharVars.CustomRaceNameText == nil) then
+	if (type(TRP3RPNameInQuests_CharVars.CustomRaceNameText) ~= "string") then
 		TRP3RPNameInQuests_CharVars.CustomRaceNameText = ""
 	end
 	
 	
 	
-	TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
+	local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
 
 		
 
@@ -1086,7 +1088,7 @@ function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
 		TRP3RPNameInQuests_Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests_Tooltip_Compartment", UIParent, "GameTooltipTemplate")
 	end
 	
-	local TRP3RPNameInQuests_ClassColorString = C_ClassColor.GetClassColor(TRP3_API.globals.player_class_loc);
+	local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
 	
 	TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
 	TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
