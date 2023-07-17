@@ -108,7 +108,7 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
 	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
-
+	TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
 
 	--Register and set value for variables
 
@@ -162,6 +162,9 @@ local function TRP3RPNameInQuests_Init()
 	
 	--PartyFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, false);
+	
+	--ZoneNameRPName
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, false);
 
 
 
@@ -238,42 +241,37 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Rename Character
-	function TRP3_RPNameInQuests_RPNameRename(textToRename, returnRPName)
+	function TRP3_RPNameInQuests_RPNameRename(textToRename, returnRPName, renameFullName)
 	
 		returnRPName = returnRPName or false
+		renameFullName = renameFullName or false
 	
 		thisTextToReturn = textToRename
 		--Get TRP3 Name
 		
+	
+		--rename char
+		thisTRP3CharName = TRP3_RPNameInQuests_GetFullRPName(renameFullName)
 		
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 1) then
-			-- ooc name, so do nothing
+		if (thisTRP3CharName == "") then
+			--empty, do nothing
+			thisTRP3CharName = TRP3_RPNameInQuests_NameToChange
 			
 		else
-			--rename char
-			thisTRP3CharName = TRP3_RPNameInQuests_GetFullRPName(false)
-			
-			if (thisTRP3CharName == "") then
-				--empty, do nothing
-				thisTRP3CharName = TRP3_RPNameInQuests_NameToChange
-				
-			else
-			
-				if (textToRename) then
-					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
-				end
+		
+			if (textToRename) then
+				textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
 			end
-			
-			
-			if (returnRPName == true) then
-				thisTextToReturn =  thisTRP3CharName
-			else
-				thisTextToReturn =  textToRename
-			end
-			
-			
-			
 		end
+		
+		if (returnRPName == true) then
+			thisTextToReturn =  thisTRP3CharName
+		else
+			thisTextToReturn =  textToRename
+		end
+		
+			
+
 	
 		return thisTextToReturn
 		
@@ -694,6 +692,7 @@ local function TRP3RPNameInQuests_Init()
 		end
 		
 		
+		
 	
 	end)
 
@@ -710,7 +709,10 @@ local function TRP3RPNameInQuests_Init()
 			local thisNewNPC = TRP3_RPNameInQuests_RPNameRename(thisNPC)
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 				if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
-					TRP3_RPNameInQuests_ModSpeechBubbles()
+					pcall(function () 
+						TRP3_RPNameInQuests_ModSpeechBubbles()
+					end) 
+					
 				end
 			end
 			
@@ -718,6 +720,7 @@ local function TRP3RPNameInQuests_Init()
 			return false, thisNewMessage, thisNewNPC, ...
 	
 	end
+	
 	
 	
 	-- NPC Speech
@@ -729,15 +732,25 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
 	end
 	
+	
 	-- Raid Boss Emote Frame
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS) == true) then
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
 	end
+	
 
-	
-	
-	
+	--Talking Head
+	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
+		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
+			C_Timer.After(0.3, function()
+				--Talker Name
+				self.NameFrame.Name:SetText(TRP3_RPNameInQuests_RPNameRename(self.NameFrame.Name:GetText(), true))
+				--Talker Text
+				self.TextFrame.Text:SetText(TRP3_RPNameInQuests_CompleteRename(self.TextFrame.Text:GetText()))
+			end);
+		end)
+	end
 	
 	
 	
@@ -775,6 +788,33 @@ local function TRP3RPNameInQuests_Init()
 				end
 			end)
 	end
+	
+	
+	
+	
+	
+	--Zone Texts
+	hooksecurefunc("SetZoneText", function(...)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+			varCurrentZoneTextString = ZoneTextString:GetText() or ""
+			varCurrentSubZoneTextString = SubZoneTextString:GetText() or ""
+			
+			ZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentZoneTextString, false, true))
+			SubZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentSubZoneTextString, false, true))
+		end
+
+	end)
+	
+	hooksecurefunc("Minimap_Update", function(...)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+			varCurrentMinimapZoneText = GetMinimapZoneText()
+			
+			MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, false, true))
+		end
+	end)
+	
+	
+	
 	
 	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
@@ -984,7 +1024,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " .. "In the Player Unit Frame",
-				help = "If checked, your current TRP3 Character Name will be shown in your Unit Frame.",
+				help = "If checked, your TRP3 Character Name will be shown in your Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -998,7 +1038,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Character Window",
-				help = "If checked, your current TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
+				help = "If checked, your TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1014,12 +1054,23 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Party/Raid Frame",
-				help = "If checked, your current TRP3 Character Name will be shown in your Party/Raid Frame.",
+				help = "If checked, your TRP3 Character Name will be shown in your Party/Raid Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, value)	
 					
+					
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = TRP3RPNameInQuests_TextureDot .. " " .. "In Zone Names" .. " " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(e.g. Garrison)"),
+				help = "If checked, your TRP3 Character Name will be shown in Zone Names where appropriate." .. "\n" .. "For example, your Draenor Garrison.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, value)	
 					
 				end,
 			},
