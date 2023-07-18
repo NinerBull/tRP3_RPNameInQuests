@@ -744,8 +744,6 @@ local function TRP3RPNameInQuests_Init()
 	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
 			C_Timer.After(0.3, function()
-				--Talker Name
-				self.NameFrame.Name:SetText(TRP3_RPNameInQuests_RPNameRename(self.NameFrame.Name:GetText(), true))
 				--Talker Text
 				self.TextFrame.Text:SetText(TRP3_RPNameInQuests_CompleteRename(self.TextFrame.Text:GetText()))
 			end);
