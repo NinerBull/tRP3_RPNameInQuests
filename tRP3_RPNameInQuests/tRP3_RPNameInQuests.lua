@@ -471,7 +471,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Party/Raid Frames
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true)) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 			if (self.name) then
 				local thisName = nil
 				pcall(function () 
