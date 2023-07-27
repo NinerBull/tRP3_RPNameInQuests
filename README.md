@@ -2,7 +2,7 @@
 An addon for World of Warcraft!
 
 
-![Info Img](https://media.forgecdn.net/attachments/658/184/trp3questtext.jpg)
+![Info Img](https://cdn-wow.mmoui.com/preview/pvw75727.jpg)
 
 
 ## About
