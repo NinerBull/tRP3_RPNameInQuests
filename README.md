@@ -1,9 +1,7 @@
 # Total RP 3: RP Name in Quest Text
 An addon for World of Warcraft!
 
-
 ![Info Img](https://cdn-wow.mmoui.com/preview/pvw75727.jpg)
-
 
 ## About
 This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Total-RP-3) that enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!

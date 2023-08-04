@@ -792,25 +792,27 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Zone Texts
-	hooksecurefunc("SetZoneText", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
-			varCurrentZoneTextString = ZoneTextString:GetText() or ""
-			varCurrentSubZoneTextString = SubZoneTextString:GetText() or ""
-			
-			ZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentZoneTextString, false, true))
-			SubZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentSubZoneTextString, false, true))
-		end
+	
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		hooksecurefunc("SetZoneText", function(...)
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+				varCurrentZoneTextString = ZoneTextString:GetText() or ""
+				varCurrentSubZoneTextString = SubZoneTextString:GetText() or ""
+				
+				ZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentZoneTextString, false, true))
+				SubZoneTextString:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentSubZoneTextString, false, true))
+			end
 
-	end)
-	
-	hooksecurefunc("Minimap_Update", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
-			varCurrentMinimapZoneText = GetMinimapZoneText()
-			
-			MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, false, true))
-		end
-	end)
-	
+		end)
+		
+		hooksecurefunc("Minimap_Update", function(...)
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+				varCurrentMinimapZoneText = GetMinimapZoneText()
+				
+				MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, false, true))
+			end
+		end)
+	end
 	
 	
 	
@@ -1076,6 +1078,11 @@ local function TRP3RPNameInQuests_Init()
 		}
 		
 		
+	-- Remove Zone Names from non-retail
+	if (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) then
+		table.remove(TRP3RPNameInQuests_ConfigElements, 23)
+	end
+	
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
 		table.remove(TRP3RPNameInQuests_ConfigElements, 21)
@@ -1134,29 +1141,33 @@ function TRP3RPNameInQuests_CompartmentClick(addonName, buttonName)
 end
 
 function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
-	if (not TRP3RPNameInQuests_Tooltip) then
-		TRP3RPNameInQuests_Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests_Tooltip_Compartment", UIParent, "GameTooltipTemplate")
-	end
-	
-	local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
-	
-	TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
-	TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
-	
-	TRP3RPNameInQuests_Tooltip:AddLine(" ")
-	TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	TRP3RPNameInQuests_Tooltip:AddLine(" ")
-	
-	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(TRP3_API.globals.player_race_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	TRP3RPNameInQuests_Tooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(TRP3_API.globals.player_class_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-	
-	TRP3RPNameInQuests_Tooltip:AddLine(" ")
-	TRP3RPNameInQuests_Tooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		if (not TRP3RPNameInQuests_Tooltip) then
+			TRP3RPNameInQuests_Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests_Tooltip_Compartment", UIParent, "GameTooltipTemplate")
+		end
+		
+		local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class));
+		
+		TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
+		TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
+		
+		TRP3RPNameInQuests_Tooltip:AddLine(" ")
+		TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddLine(" ")
+		
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_RPNameRename(TRP3_API.globals.player, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_RPRaceRename(TRP3_API.globals.player_race_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_RPClassRename(TRP3_API.globals.player_class_loc, true), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		
+		TRP3RPNameInQuests_Tooltip:AddLine(" ")
+		TRP3RPNameInQuests_Tooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
 
-	TRP3RPNameInQuests_Tooltip:Show()
+		TRP3RPNameInQuests_Tooltip:Show()
+	end
 end
 
 function TRP3RPNameInQuests_CompartmentLeave(buttonName)
-	TRP3RPNameInQuests_Tooltip:Hide()
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		TRP3RPNameInQuests_Tooltip:Hide()
+	end
 end

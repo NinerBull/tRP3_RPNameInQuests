@@ -14,8 +14,5 @@
 ## X-WoWI-ID: 26545
 
 ## IconTexture: Interface\Icons\vas_namechange.blp
-## AddonCompartmentFunc: TRP3RPNameInQuests_CompartmentClick
-## AddonCompartmentFuncOnEnter: TRP3RPNameInQuests_CompartmentHover
-## AddonCompartmentFuncOnLeave: TRP3RPNameInQuests_CompartmentLeave
 
 tRP3_RPNameInQuests.lua
