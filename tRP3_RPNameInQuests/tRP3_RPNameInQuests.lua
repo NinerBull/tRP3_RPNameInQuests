@@ -641,13 +641,28 @@ local function TRP3RPNameInQuests_Init()
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX) == true) then
 		hooksecurefunc("OpenMail_Update", function()
 
-				if ( not OpenMailFrame_IsValidMailID()) then
-					return;
+				if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+					if ( not OpenMailFrame_IsValidMailID()) then
+						return;
+					else
+						local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
+						
+						if(bodyText) then
+							OpenMailBodyText:SetText(TRP3_RPNameInQuests_CompleteRename(bodyText), true);
+						end
+					end
+				else
+					if ( not InboxFrame.openMailID ) then
+						return;
+					else
+						local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice = GetInboxText(InboxFrame.openMailID);
+						
+						if(bodyText) then
+							OpenMailBodyText:SetText(TRP3_RPNameInQuests_CompleteRename(bodyText), true);
+						end
+					end
 				end
 				
-				local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
-				
-				OpenMailBodyText:SetText(TRP3_RPNameInQuests_CompleteRename(bodyText), true);
 
 		end)
 	
