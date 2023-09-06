@@ -219,7 +219,7 @@ local function TRP3RPNameInQuests_Init()
 		--trim space
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("%s+", " ")
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
-		
+			
 		
 		return thisTRP3CharNameFull
 
@@ -252,7 +252,7 @@ local function TRP3RPNameInQuests_Init()
 	
 		--rename char
 		thisTRP3CharName = TRP3_RPNameInQuests_GetFullRPName(renameFullName)
-		
+				
 		if (thisTRP3CharName == "") then
 			--empty, do nothing
 			thisTRP3CharName = TRP3_RPNameInQuests_NameToChange
@@ -413,7 +413,7 @@ local function TRP3RPNameInQuests_Init()
 		thisRenamedText = textToRename or ""
 	
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) ~= 1) then
-			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))) then
+			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and ) then -- (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))
 				thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
 			end
 		end
@@ -1120,7 +1120,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.3",
+	version = "1.2.4b",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
