@@ -409,12 +409,33 @@ local function TRP3RPNameInQuests_Init()
 	
 	--Complete Rename Function
 	function TRP3_RPNameInQuests_CompleteRename(textToRename)
+
 	
 		thisRenamedText = textToRename or ""
-	
+		
+		
+		
+
+		
+		
+		--CharacterName
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) ~= 1) then
-			if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and ) then -- (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))
-				thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
+		
+			-- Find out if TRP Name is a short version of OOC Name
+			lengthOfOOCName = string.len(TRP3_RPNameInQuests_NameToChange)
+			lengthOfTRP3Name = string.len(TRP3_RPNameInQuests_RPNameRename(TRP3_RPNameInQuests_NameToChange, true))
+			
+			--print(lengthOfOOCName)
+			--print(lengthOfTRP3Name)
+		
+			if (lengthOfTRP3Name >= lengthOfOOCName) then
+				if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_RPNameRename("placeholder", true))))) then
+					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
+				end
+			else
+				if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange)) then
+					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
+				end
 			end
 		end
 		
@@ -1120,7 +1141,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.4b",
+	version = "1.2.4b2",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
