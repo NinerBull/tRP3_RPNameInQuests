@@ -1116,7 +1116,7 @@ local function TRP3RPNameInQuests_Init()
 		
 	-- Remove Zone Names from non-retail
 	if (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) then
-		table.remove(TRP3RPNameInQuests_ConfigElements, 23)
+		table.remove(TRP3RPNameInQuests_ConfigElements, 24)
 	end
 	
 	-- Remove Unit Frame Option if needed
