@@ -238,6 +238,42 @@ local function TRP3RPNameInQuests_Init()
 	local TRP3_RPNameInQuests_ClassToChange = TRP3_API.globals.player_class_loc
 	
 	
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		-- Some allied races use a different race name in quest text rather than their full race name
+		local thisPlayerRaceName, thisPlayerRaceFile, thisPlayerRaceID = UnitRace("player")
+		
+		thisActualRaceInfo = {}
+		
+		--print(thisPlayerRaceID)
+		
+		if (thisPlayerRaceID == 28) then -- Highmountain Tauren
+			thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(6)
+		end
+		
+		if (thisPlayerRaceID == 30) then -- Lightforged Draenei
+			 thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(11)
+		end
+		
+		if (thisPlayerRaceID == 31) then -- Zandalari Troll
+			thisActualRaceInfo.raceName = TRP3_RPNameInQuests_RaceToChange:match("(%w+)(.*)")
+		end
+		
+		if (thisPlayerRaceID == 34) then -- Dark Iron Dwarf
+			thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(3)
+		end
+		
+		if (thisPlayerRaceID == 36) then -- Mag'har Orc
+			 thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(2)
+		end
+		
+		
+		--print(thisActualRaceInfo.raceName)
+	end
+	
+	
+	if (thisActualRaceInfo.raceName ~= nil) then
+		TRP3_RPNameInQuests_RaceToChange = thisActualRaceInfo.raceName
+	end
 	
 	
 	--Rename Character
