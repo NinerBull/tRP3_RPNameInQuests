@@ -13,12 +13,7 @@ TRPRPNAMEINQUESTS = select(2, ...);
 local function TRP3RPNameInQuests_Init()
 
 		
-	--Init
-	if (type(tRP3RPNameInQuests) ~= "nil") then	
-		TRP3RPNameInQuests_CharVars = tRP3RPNameInQuests or nil
-		tRP3RPNameInQuests = nil
-	end
-	
+	--Init	
 	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
 		TRP3RPNameInQuests_CharVars = {}
 		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Cyan("RP Name in Quest Text") .. " installed! Type " .. TRP3_API.Colors.Cyan("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1)
@@ -267,13 +262,15 @@ local function TRP3RPNameInQuests_Init()
 		end
 		
 		
-		--print(thisActualRaceInfo.raceName)
+		if (thisActualRaceInfo.raceName ~= nil) then
+			TRP3_RPNameInQuests_RaceToChange = thisActualRaceInfo.raceName
+		end
+		
+		
 	end
 	
 	
-	if (thisActualRaceInfo.raceName ~= nil) then
-		TRP3_RPNameInQuests_RaceToChange = thisActualRaceInfo.raceName
-	end
+	
 	
 	
 	--Rename Character
@@ -583,8 +580,13 @@ local function TRP3RPNameInQuests_Init()
 
 	-- Quests, Dialog, Gossip Etc.
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
+	
+	
+	
+	
+	if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
 
-		-- Quest Window
+		-- Quest Window in Retail and Wrath
 		hooksecurefunc("QuestInfo_Display", function()
 
 			local thisQuestDescription = QuestInfoDescriptionText:GetText()
@@ -596,6 +598,26 @@ local function TRP3RPNameInQuests_Init()
 			end
 
 		end)
+		
+		
+	else
+		
+		-- Quest Window in Classic
+		hooksecurefunc("QuestLog_UpdateQuestDetails", function()
+
+			local thisQuestDescription = QuestLogQuestDescription:GetText()
+			
+			if (thisQuestDescription ~= nil) then
+			
+				QuestLogQuestDescription:SetText(TRP3_RPNameInQuests_CompleteRename(thisQuestDescription))
+				
+			end
+
+		end)
+	 
+	 
+	 end
+		
 		
 
 
@@ -1177,7 +1199,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.4",
+	version = "1.2.5",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
