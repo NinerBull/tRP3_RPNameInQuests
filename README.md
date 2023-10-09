@@ -44,7 +44,7 @@ You can also add your TRP3 Roleplay Name to various UI components, too. Note tha
 
 ## Compatibility
 * **Dragonflight** - 10.1.7
-* **WotLK Classic** - 3.4.2
+* **WotLK Classic** - 3.4.3
 * **Classic Era** - 1.14.4
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
