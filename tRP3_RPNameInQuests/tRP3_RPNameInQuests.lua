@@ -513,7 +513,9 @@ local function TRP3RPNameInQuests_Init()
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+							pcall(function () 
+								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+							end) 
 						end
 					end
 				end
@@ -534,7 +536,9 @@ local function TRP3RPNameInQuests_Init()
 				if (thisName ~= nil) then			
 					if (TRP3_RPNameInQuests_NameToChange == thisName) then
 						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+							pcall(function () 
+								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+								end) 
 						end
 					end
 				end
