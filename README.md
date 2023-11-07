@@ -43,7 +43,7 @@ You can also select which text this addon modifies. Turn on/off as necessary! Al
 You can also add your TRP3 Roleplay Name to various UI components, too. Note that this may not function with other 3rd party UI addons.
 
 ## Compatibility
-* **Dragonflight** - 10.1.7
+* **Dragonflight** - 10.2.0
 * **WotLK Classic** - 3.4.3
 * **Classic Era** - 1.14.4
 

@@ -178,6 +178,7 @@ local function TRP3RPNameInQuests_Init()
 	-- (Go get it btw it's awesome)
 	-- https://github.com/keyboardturner/totalRP3_UnitFrames
 	
+	-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future.
 	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = IsAddOnLoaded("totalRP3_UnitFrames") or false
 		
 	
@@ -527,6 +528,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Party/Raid Frames
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
+		-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future.
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 			if (self.name) then
 				local thisName = nil
@@ -1203,7 +1205,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.6",
+	version = "1.2.7",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
