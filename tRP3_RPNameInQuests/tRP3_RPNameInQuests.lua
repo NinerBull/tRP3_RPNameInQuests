@@ -31,25 +31,8 @@ local function TRP3RPNameInQuests_Init()
 	end
 	
 	
-	
-	
-	
-	--Remove old unused variables
-	if (type(TRP3RPNameInQuests_CharVars.EnabledTextMods) ~= "nil") then
-		TRP3RPNameInQuests_CharVars.EnabledTextMods = nil
-	end
-	
-	if (type(TRP3RPNameInQuests_CharVars.UnitFrameRPName) ~= "nil") then
-		TRP3RPNameInQuests_CharVars.UnitFrameRPName = nil
-	end
-	
-	if (type(TRP3RPNameInQuests_CharVars.PaperDollRPName) ~= "nil") then
-		TRP3RPNameInQuests_CharVars.PaperDollRPName = nil
-	end
-	
-	if (type(TRP3RPNameInQuests_CharVars.WhichRPNameText) ~= "nil") then
-		TRP3RPNameInQuests_CharVars.WhichRPNameText = nil
-	end
+
+
 	
 	
 
@@ -59,6 +42,10 @@ local function TRP3RPNameInQuests_Init()
 	-- Set Addon Variables
 	if (type(TRP3RPNameInQuests_CharVars.WhichRPName) ~= "number") then
 		TRP3RPNameInQuests_CharVars.WhichRPName = 5
+	end
+	
+	if (type(TRP3RPNameInQuests_CharVars.WhichRPNameText) ~= "string") then
+		TRP3RPNameInQuests_CharVars.WhichRPNameText = ""
 	end
 	
 	if (type(TRP3RPNameInQuests_CharVars.CustomClassName) ~= "number") then
@@ -87,6 +74,7 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG = {};
 
 	TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
+	TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT = "trp3_rpnameinquests_whichrpnametext";
 
 	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME = "trp3_rpnameinquests_customclassname";
 	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT = "trp3_rpnameinquests_customclassnametext";
@@ -112,6 +100,10 @@ local function TRP3RPNameInQuests_Init()
 	--WhichRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
 	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
+	
+	--WhichRPNameText
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
+	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
 
 	--CustomClassName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
@@ -210,6 +202,11 @@ local function TRP3RPNameInQuests_Init()
 			if (thisTRP3CharInfo.LN) then
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
 			end
+		end
+		
+		
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 9) then
+			thisTRP3CharNameFull = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT)
 		end
 		
 		--trim space
@@ -932,19 +929,20 @@ local function TRP3RPNameInQuests_Init()
 		{ "Title + First Name + Last Name", 5 },
 		{ "First Name", 6 },
 		{ "Last Name", 7 },
-		{ "First Name + Last Name", 8 },	
+		{ "First Name + Last Name", 8 },
+		{ "Custom* (Set Below)", 9 },		
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
 		{ "OOC Class Name", 1 },
 		{ "TRP3 Class Name", 2 },
-		{ "Custom Class Name (Set Below)", 3 },	
+		{ "Custom* (Set Below)", 3 },	
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNRACE = {
 		{ "OOC Race Name", 1 },
 		{ "TRP3 Race Name", 2 },
-		{ "Custom Race Name (Set Below)", 3 },	
+		{ "Custom* (Set Below)", 3 },	
 	}
 	
 	local TRP3RPNameInQuests_TextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
@@ -962,7 +960,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = "Character Name Format",
+				title = ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name Format",
 				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "This uses the Character Name from your currently selected TRP3 Profile.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
@@ -1005,14 +1003,20 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
+				title = "Custom " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
+				help = "Only used if 'Character Name Format' is set as 'Custom'.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
+			},
+			{
+				inherit = "TRP3_ConfigEditBox",
 				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "Only used if 'Race Name Format' is set as 'Custom Race Name'.",
+				help = "Only used if 'Race Name Format' is set as 'Custom'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "Only used if 'Class Name Format' is set as 'Custom Class Name'.",
+				help = "Only used if 'Class Name Format' is set as 'Custom'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
 			{
@@ -1144,7 +1148,9 @@ local function TRP3RPNameInQuests_Init()
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
 					
-					--Save Variables we can't save otherwise				
+					--Save Variables we can't save otherwise
+					TRP3RPNameInQuests_CharVars.WhichRPNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT))
+					
 					TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
 					
 					TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
@@ -1180,12 +1186,12 @@ local function TRP3RPNameInQuests_Init()
 		
 	-- Remove Zone Names from non-retail
 	if (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) then
-		table.remove(TRP3RPNameInQuests_ConfigElements, 24)
+		table.remove(TRP3RPNameInQuests_ConfigElements, 25)
 	end
 	
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
-		table.remove(TRP3RPNameInQuests_ConfigElements, 21)
+		table.remove(TRP3RPNameInQuests_ConfigElements, 22)
 	end
 	
 
@@ -1205,7 +1211,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.7",
+	version = "1.2.8",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
