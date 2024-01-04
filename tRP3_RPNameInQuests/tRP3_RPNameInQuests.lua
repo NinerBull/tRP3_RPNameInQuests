@@ -30,7 +30,17 @@ local function TRP3RPNameInQuests_Init()
 		TRP3RPNameInQuests_CharVars.CustomRaceName = 2
 	end
 	
+	if (TRP3RPNameInQuests_CharVars.CustomClassName == 3) then
+		TRP3RPNameInQuests_CharVars.CustomClassName = 99
+	end
 	
+	if (TRP3RPNameInQuests_CharVars.CustomRaceName == 3) then
+		TRP3RPNameInQuests_CharVars.CustomRaceName = 99
+	end
+	
+	if (TRP3RPNameInQuests_CharVars.WhichRPName == 9) then
+		TRP3RPNameInQuests_CharVars.WhichRPName = 99
+	end
 
 
 	
@@ -205,7 +215,7 @@ local function TRP3RPNameInQuests_Init()
 		end
 		
 		
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 9) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 99 and getFullName == false) then
 			thisTRP3CharNameFull = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT)
 		end
 		
@@ -343,7 +353,7 @@ local function TRP3RPNameInQuests_Init()
 			
 			
 			--Custom Race Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 3) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 99) then
 			
 				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT) ~= "") then
 				
@@ -408,7 +418,7 @@ local function TRP3RPNameInQuests_Init()
 			
 			
 			--Custom Class Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 3) then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 99) then
 			
 				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT) ~= "") then
 				
@@ -502,52 +512,54 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Unit Frame
 	hooksecurefunc("UnitFrame_Update", function(self)
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			if (self.name) then
-				local thisName = nil
-				pcall(function () 
-					thisName = self.name:GetText()
-				end) 
-				if (thisName ~= nil) then			
-					if (TRP3_RPNameInQuests_NameToChange == thisName) then
-						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-							pcall(function () 
-								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
-							end) 
+		--if (InCombatLockdown() == false) then
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+				if (self.name) then
+					local thisName = nil
+					pcall(function () 
+						thisName = self.name:GetText()
+					end) 
+					if (thisName ~= nil) then			
+						if (TRP3_RPNameInQuests_NameToChange == thisName) then
+							if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+								pcall(function () 
+									self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+								end) 
+							end
 						end
 					end
-				end
 
+				end
 			end
-		end
+		--end
 	end)
 		
 	
 	-- Party/Raid Frames
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future.
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (IsAddOnLoaded("Blizzard_CUFProfiles"))) then
-			if (self.name) then
-				local thisName = nil
-				pcall(function () 
-					thisName = self.name:GetText()
-				end) 
-				if (thisName ~= nil) then			
-					if (TRP3_RPNameInQuests_NameToChange == thisName) then
-						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-							pcall(function () 
-								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+		--if (InCombatLockdown() == false) then
+			-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future.
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+				if (self.name) then
+					local thisName = nil
+					pcall(function () 
+						thisName = self.name:GetText()
+					end) 
+					if (thisName ~= nil) then			
+						if (TRP3_RPNameInQuests_NameToChange == thisName) then
+							if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+								pcall(function () 
+									self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
 								end) 
+							end
 						end
 					end
 				end
 			end
-		end
+		--end
 	end)
 	
-
-
-
+	
 	-- Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
@@ -638,7 +650,7 @@ local function TRP3RPNameInQuests_Init()
 
 		
 		-- Get Greeting Text
-		local TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
+		TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
 		GetGreetingText = function (...)
 		
 			local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
@@ -650,7 +662,7 @@ local function TRP3RPNameInQuests_Init()
 
 
 		-- Get Quest Text
-		local TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
+		TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
 		GetQuestText = function (...)
 			local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
 			
@@ -661,7 +673,7 @@ local function TRP3RPNameInQuests_Init()
 
 
 		-- Get Quest Progress Text
-		local TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
+		TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
 		GetProgressText = function (...)
 		
 			local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
@@ -673,7 +685,7 @@ local function TRP3RPNameInQuests_Init()
 
 
 		-- Get Quest Reward Text
-		local TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
+		TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
 		GetRewardText = function (...)
 		
 			local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
@@ -683,10 +695,8 @@ local function TRP3RPNameInQuests_Init()
 		end
 
 
-	
-
 		-- Gossip Options
-		local TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
+		TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
 		C_GossipInfo.GetOptions = function (...)
 		
 			local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
@@ -915,8 +925,8 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
-		UnitFrame_Update(PlayerFrame)
-		UnitFrame_Update(TargetFrame)
+			UnitFrame_Update(PlayerFrame)
+			UnitFrame_Update(TargetFrame)
 	end
 	
 
@@ -930,19 +940,19 @@ local function TRP3RPNameInQuests_Init()
 		{ "First Name", 6 },
 		{ "Last Name", 7 },
 		{ "First Name + Last Name", 8 },
-		{ "Custom* (Set Below)", 9 },		
+		{ "Custom* (Set Below)", 99 },		
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
 		{ "OOC Class Name", 1 },
 		{ "TRP3 Class Name", 2 },
-		{ "Custom* (Set Below)", 3 },	
+		{ "Custom* (Set Below)", 99 },	
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNRACE = {
 		{ "OOC Race Name", 1 },
 		{ "TRP3 Race Name", 2 },
-		{ "Custom* (Set Below)", 3 },	
+		{ "Custom* (Set Below)", 99 },	
 	}
 	
 	local TRP3RPNameInQuests_TextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
