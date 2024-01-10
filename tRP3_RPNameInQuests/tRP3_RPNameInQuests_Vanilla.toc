@@ -12,6 +12,7 @@
 ## X-Website: https://github.com/NinerBull/tRP3_RPNameInQuests
 ## X-Curse-Project-ID: 822877
 ## X-WoWI-ID: 26545
+## X-Wago-ID: rNkP5z6a
 
 ## IconTexture: Interface\Icons\vas_namechange.blp
 ## AddonCompartmentFunc: TRP3RPNameInQuests_CompartmentClick
