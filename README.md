@@ -43,7 +43,7 @@ You can also select which text this addon modifies. Turn on/off as necessary! Al
 You can also add your TRP3 Roleplay Name to various UI components, too. Note that this may not function with other 3rd party UI addons.
 
 ## Compatibility
-* **Dragonflight** - 10.2.0
+* **Dragonflight** - 10.2.5
 * **WotLK Classic** - 3.4.3
 * **Classic Era** - 1.15.0
 
@@ -54,7 +54,7 @@ I have tested this addon successfully with the following:
 * Default UI Chat Window
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * [Immersion](https://github.com/seblindfors/Immersion)
-* ~~[Storyline](https://github.com/Total-RP/Storyline)~~
+* [Storyline](https://github.com/Total-RP/Storyline)
 * [GossipChatter](https://github.com/keyboardturner/GossipChatter)
 
 This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
