@@ -18,6 +18,7 @@ Download the latest version below, and unzip it in your `<warcraft>\<_version_>\
 
 * [CurseForge](https://www.curseforge.com/wow/addons/trp3-rpnameinquests)
 * [WoWInterface](https://www.wowinterface.com/downloads/fileinfo.php?id=26545)
+* [Wago](https://addons.wago.io/addons/trp3-rpnameinquests)
 * [GitHub](https://github.com/NinerBull/tRP3_RPNameInQuests/releases/latest)
 * Or put `https://github.com/NinerBull/tRP3_RPNameInQuests` into your favourite Addon Manager
 
