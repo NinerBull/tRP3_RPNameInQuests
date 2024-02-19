@@ -591,6 +591,27 @@ local function TRP3RPNameInQuests_Init()
 	end)
 
 
+	-- Character Sheet Level/Race/Class
+	hooksecurefunc("PaperDollFrame_SetLevel", function()
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
+			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
+				
+				local thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH)
+			
+				local level = UnitLevel("player");
+				local effectiveLevel = UnitEffectiveLevel("player");
+				
+				if ( effectiveLevel ~= level ) then
+					level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
+				end
+						
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL_NO_SPEC, level, thisTRP3CharColor:GenerateHexColor(), TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true));
+			else
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true));
+			end
+		end
+	end)
 
 
 	-- Quests, Dialog, Gossip Etc.
