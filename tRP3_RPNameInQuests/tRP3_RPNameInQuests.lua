@@ -597,7 +597,14 @@ local function TRP3RPNameInQuests_Init()
 			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
 				
-				local thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH)
+				local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
+				
+				if (thisTRP3CharInfo.CH ~= nil) then
+					thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
+				end
+				
+				local thisTRP3CharRace = thisTRP3CharInfo.RA or UnitRace("player")
+				local thisTRP3CharClass = thisTRP3CharInfo.CL or UnitClass("player")
 			
 				local level = UnitLevel("player");
 				local effectiveLevel = UnitEffectiveLevel("player");
@@ -605,10 +612,10 @@ local function TRP3RPNameInQuests_Init()
 				if ( effectiveLevel ~= level ) then
 					level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
 				end
-						
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL_NO_SPEC, level, thisTRP3CharColor:GenerateHexColor(), TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true));
+				
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
 			else
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), TRP3_RPNameInQuests_RPRaceRename(UnitRace("player"), true), TRP3_RPNameInQuests_RPClassRename(UnitClass("player"), true));
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
 			end
 		end
 	end)
@@ -920,7 +927,6 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Zone Texts
-	
 	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 		hooksecurefunc("SetZoneText", function(...)
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
@@ -1150,11 +1156,11 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add your TRP3 Character Name to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+				title = "Add your TRP3 Character Information to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show my Character's TRP3 Name:"),
+				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show my Character's TRP3 Info:"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1173,7 +1179,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Character Window",
-				help = "If checked, your TRP3 Character Name will be shown in the title bar of the Character Window (aka Paper Doll).",
+				help = "If checked, your TRP3 Character Name, Race and Class will be shown in the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
