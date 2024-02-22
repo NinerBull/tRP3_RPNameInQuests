@@ -594,19 +594,23 @@ local function TRP3RPNameInQuests_Init()
 	-- Character Sheet Level/Race/Class
 	hooksecurefunc("PaperDollFrame_SetLevel", function()
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
-			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
+		
+			local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
 				
+			local thisTRP3CharRace = thisTRP3CharInfo.RA or UnitRace("player")
+			local thisTRP3CharClass = thisTRP3CharInfo.CL or UnitClass("player")
+		
+			local level = UnitLevel("player");
+
+		
+			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+			
 				local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 				
 				if (thisTRP3CharInfo.CH ~= nil) then
 					thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
 				end
 				
-				local thisTRP3CharRace = thisTRP3CharInfo.RA or UnitRace("player")
-				local thisTRP3CharClass = thisTRP3CharInfo.CL or UnitClass("player")
-			
-				local level = UnitLevel("player");
 				local effectiveLevel = UnitEffectiveLevel("player");
 				
 				if ( effectiveLevel ~= level ) then
@@ -619,6 +623,7 @@ local function TRP3RPNameInQuests_Init()
 			end
 		end
 	end)
+	
 
 
 	-- Quests, Dialog, Gossip Etc.
