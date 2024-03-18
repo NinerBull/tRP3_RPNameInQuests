@@ -10,8 +10,8 @@ This is an _unofficial_ module for [Total RP 3](https://github.com/Total-RP/Tota
 ## Features
 With this addon, it accesses info from your currently selected Total RP 3 Character Profile, and with it:
 
-* Replaces your Character's OOC name (e.g. `Bestwarreu`) with your TRP3 IC name (e.g. `Sir Obvious Testman`) in Quests, Gossip Text, and Says/Yells/Emotes from NPCs!
-* Optionally replace your OOC Race and Class Name (e.g. `Orc / Warrior`) with your TRP3 IC Race and Class (e.g. `Ogre / Brawler`) or with your own Custom Text too!
+* Replaces your Character's OOC name (e.g. `Bestwarreu`) with your TRP3 IC name (e.g. `Sir Obvious Testman`) in Quests, Gossip Text, and Says/Yells/Emotes from NPCs! Alternatively, enter a Custom Name that NPCs will refer to you as.
+* Optionally, replace your OOC Race and Class Name (e.g. `Orc / Warrior`) with your TRP3 IC Race and Class (e.g. `Ogre / Brawler`) in the same text, or with your own Custom Race/Class too!
 
 ## Installation
 Download the latest version below, and unzip it in your `<warcraft>\<_version_>\Interface\Addons` folder if installing manually.
@@ -37,14 +37,14 @@ From here, you'll have multiple options to select from. Note that these options 
 * Select what Race NPCs call you. (This is "OOC Race Name" by default.)
 * Select what Class NPCs call you. (This is "OOC Class Name" by default.)
 
-If set as "Custom Race/Class Name", fill in the text boxes underneath to use a Race/Class which is seperate from your TRP3 Profile!
+If set as "Custom Name/Race/Class", fill in the text boxes underneath to use a Name/Race/Class which is seperate from your TRP3 Profile!
 
-You can also select which text this addon modifies. Turn on/off as necessary! All are on by default except "Raid Boss Emotes".
+You can also select which text this addon modifies. Turn on/off as desired.
 
-You can also add your TRP3 Roleplay Name to various UI components, too. Note that this may not function with other 3rd party UI addons.
+You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 ## Compatibility
-* **Dragonflight** - 10.2.5
+* **Dragonflight** - 10.2.6
 * **WotLK Classic** - 3.4.3
 * **Classic Era** - 1.15.1
 
@@ -64,7 +64,7 @@ This addon should hopefully be compatible with other addons that modify quest wi
 WoW's API only seems to give quest text/dialogue that already has your character's OOC Name/Class/Race in it. It does not have placeholders such as `<name>` or `<race>`.
 Due to this, the addon works by doing a find/replace for your OOC Info, and replaces it with your IC info, when enabled.
 
-**Unfortunately this has the side effect that ANY text whether intended for your character or not can be replaced,** which will be much more apparent with Custom Class/Race enabled.
+**Unfortunately this has the side effect that ANY text whether intended for your character or not can be replaced,** which will be much more apparent with Custom Class/Race enabled. _This is reduced by ticking the "Only modify Race/Class adjacent to punctuation" option, which is enabled by default._
 
 For example, let's say you are an **Orc OOC**, but have your IC Race set as **Ogre**, and you have the **Use Custom Class option Enabled**.
 
