@@ -2,15 +2,135 @@ local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
 
+
+TRP3RPNameInQuests_ModuleEnabled = false
+
+
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
 end
+
+
+
+
+	--Moved Gossip Text Here for Potential Dialogue UI Fix
+
+	-- Get Gossip Text
+			local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
+			C_GossipInfo.GetText = function (...)
+			
+			
+				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
+			
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+					return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
+				else
+					return thisGossipText
+				end
+				
+				
+			end
+			
+
+			
+			-- Get Greeting Text
+			TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
+			GetGreetingText = function (...)
+			
+				local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
+				
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+					return TRP3_RPNameInQuests_CompleteRename(thisGreetingText)
+				else
+					return thisGreetingText
+				end
+				
+			end
+
+
+
+			-- Get Quest Text
+			TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
+			GetQuestText = function (...)
+				local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
+				
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+					return TRP3_RPNameInQuests_CompleteRename(thisQuestText)
+				else
+					return thisQuestText
+				end
+				
+			end
+
+
+
+			-- Get Quest Progress Text
+			TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
+			GetProgressText = function (...)
+			
+				local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
+				
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+					return TRP3_RPNameInQuests_CompleteRename(thisProgressText)
+				else
+					return thisProgressText
+				end
+				
+			end
+
+
+
+			-- Get Quest Reward Text
+			TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
+			GetRewardText = function (...)
+			
+				local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
+				
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+					return TRP3_RPNameInQuests_CompleteRename(thisRewardText)
+				else
+					return thisRewardText
+				end
+				
+			end
+
+
+			-- Gossip Options
+			TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
+			C_GossipInfo.GetOptions = function (...)
+			
+				local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
+				
+				if (TRP3RPNameInQuests_ModuleEnabled == true) then
+				
+					for key, value in pairs(thisGossipOptions) do
+									
+						thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
+						
+					end
+				
+				end
+
+				return(thisGossipOptions)
+			
+			end
+
+
+
+
+
+
+
+
 
 TRPRPNAMEINQUESTS = select(2, ...);
 
 
 
 local function TRP3RPNameInQuests_Init()
+
+
+	TRP3RPNameInQuests_ModuleEnabled = true
 
 		
 	--Init	
@@ -738,80 +858,7 @@ local function TRP3RPNameInQuests_Init()
 			
 
 
-			-- Get Gossip Text
-			local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
-			C_GossipInfo.GetText = function (...)
-				
-				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
-				
-				
-			end
-			
-
-			
-			-- Get Greeting Text
-			TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
-			GetGreetingText = function (...)
-			
-				local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGreetingText)
-				
-			end
-
-
-
-			-- Get Quest Text
-			TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
-			GetQuestText = function (...)
-				local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisQuestText)
-				
-			end
-
-
-
-			-- Get Quest Progress Text
-			TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
-			GetProgressText = function (...)
-			
-				local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisProgressText)
-				
-			end
-
-
-
-			-- Get Quest Reward Text
-			TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
-			GetRewardText = function (...)
-			
-				local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisRewardText)
-				
-			end
-
-
-			-- Gossip Options
-			TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
-			C_GossipInfo.GetOptions = function (...)
-			
-				local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
-				
-				for key, value in pairs(thisGossipOptions) do
-								
-					thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
-					
-				end
-
-				return(thisGossipOptions)
-			
-			end
+		--Quest Text Etc was here previously.	
 			
 
 	
