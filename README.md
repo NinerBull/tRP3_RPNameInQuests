@@ -57,6 +57,7 @@ I have tested this addon successfully with the following:
 * [Immersion](https://github.com/seblindfors/Immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
 * [GossipChatter](https://github.com/keyboardturner/GossipChatter)
+* [Dialogue UI](https://github.com/Peterodox/YUI-Dialogue)
 
 This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
 
