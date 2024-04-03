@@ -1,12 +1,12 @@
-## Interface: 11501
+## Interface: 11502
 ## Title: Total RP 3: RP Name in Quest Text
-## Version: 1.2.11
+## Version: 1.2.12
 ## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
 ## Author: ConineSpiritwolf
 ## SavedVariablesPerCharacter: TRP3RPNameInQuests_CharVars
 ## DefaultState: enabled
 ## RequiredDeps: totalRP3
-## OptionalDeps: totalRP3_UnitFrames
+## OptionalDeps: DialogueUI, totalRP3_UnitFrames
 
 ## X-Category: Roleplay
 ## X-Website: https://github.com/NinerBull/tRP3_RPNameInQuests
