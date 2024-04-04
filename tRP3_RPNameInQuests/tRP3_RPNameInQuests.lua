@@ -198,6 +198,7 @@ local function TRP3RPNameInQuests_Init()
 
 
 	-- Full TRP3 Name
+	-- Do not rename this, DialogueUI looks for and uses this function
 	function TRP3_RPNameInQuests_GetFullRPName(getFullName)
 	
 	
