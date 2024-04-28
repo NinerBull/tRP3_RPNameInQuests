@@ -188,9 +188,8 @@ local function TRP3RPNameInQuests_Init()
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
 	-- (Go get it btw it's awesome)
 	-- https://github.com/keyboardturner/totalRP3_UnitFrames
-	
-	-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future when Cata prepatch drops.
-	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = IsAddOnLoaded("totalRP3_UnitFrames") or false
+
+	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = C_AddOns.IsAddOnLoaded("totalRP3_UnitFrames") or false
 	local TRP3_RPNameInQuests_NameToChange = TRP3_API.globals.player or UnitName("player")
 	local TRP3_RPNameInQuests_RaceToChange = TRP3_API.globals.player_race_loc or UnitRace("player")
 	local TRP3_RPNameInQuests_ClassToChange = TRP3_API.globals.player_class_loc or UnitClass("player")
@@ -198,7 +197,6 @@ local function TRP3RPNameInQuests_Init()
 
 
 	-- Full TRP3 Name
-	-- Do not rename this, DialogueUI looks for and uses this function
 	function TRP3_RPNameInQuests_GetFullRPName(getFullName)
 	
 	
@@ -524,6 +522,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Complete Rename Function
+	-- Do not rename this, DialogueUI looks for and uses this function
 	function TRP3_RPNameInQuests_CompleteRename(textToRename)
 
 	
@@ -608,8 +607,7 @@ local function TRP3RPNameInQuests_Init()
 	-- Party/Raid Frames
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		--if (InCombatLockdown() == false) then
-			-- TODO: Will need to change to C_AddOns.IsAddOnLoaded in future.
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 				if (self.name) then
 					local thisName = nil
 					pcall(function () 

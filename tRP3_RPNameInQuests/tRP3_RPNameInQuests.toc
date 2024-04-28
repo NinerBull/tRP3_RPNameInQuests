@@ -1,4 +1,4 @@
-## Interface: 100206
+## Interface: 100206, 40400, 11502
 ## Title: Total RP 3: RP Name in Quest Text
 ## Version: 1.2.12
 ## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
