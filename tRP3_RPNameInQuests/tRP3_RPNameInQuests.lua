@@ -701,19 +701,42 @@ local function TRP3RPNameInQuests_Init()
 		
 		
 		if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
-
-			-- Quest Window in Retail and Wrath
-			hooksecurefunc("QuestInfo_Display", function()
-
-				local thisQuestDescription = QuestInfoDescriptionText:GetText()
+		
+		
+			if (C_AddOns.IsAddOnLoaded("Classic Quest Log")) then
+			
+				GetQuestLogQuestTextRPNameQuestText = GetQuestLogQuestText
 				
-				if (thisQuestDescription ~= nil) then
+				GetQuestLogQuestText = function(...) 
 				
-					QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_CompleteRename(thisQuestDescription))
+					questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
 					
+					return TRP3_RPNameInQuests_CompleteRename(questDescription), questObjectives
+				
 				end
+			
+			
+			else 
+			
+				-- Quest Window in Retail and Cata
+				hooksecurefunc("QuestInfo_Display", function()
 
-			end)
+					local thisQuestDescription = QuestInfoDescriptionText:GetText()
+					
+					if (thisQuestDescription ~= nil) then
+					
+						QuestInfoDescriptionText:SetText(TRP3_RPNameInQuests_CompleteRename(thisQuestDescription))
+						
+					end
+
+				end)
+			
+			end
+		
+
+			
+			
+			
 			
 			
 		else
@@ -1359,7 +1382,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.13",
+	version = "1.2.14",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
