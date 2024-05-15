@@ -648,10 +648,10 @@ local function TRP3RPNameInQuests_Init()
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 			if ( CharacterFrame:IsShown() ) then
 				if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
-					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-						CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
-					else
+					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 						CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					else
+						CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
 					end
 				end
 			end
@@ -671,23 +671,28 @@ local function TRP3RPNameInQuests_Init()
 			local level = UnitLevel("player");
 
 		
-			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-			
+			if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
+			else
+				
 				local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 				
 				if (thisTRP3CharInfo.CH ~= nil) then
 					thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
 				end
 				
-				local effectiveLevel = UnitEffectiveLevel("player");
-				
-				if ( effectiveLevel ~= level ) then
-					level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
-				end
+					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+					
+						local effectiveLevel = UnitEffectiveLevel("player");
+						
+						if ( effectiveLevel ~= level ) then
+							level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
+						end
+					
+					end
 				
 				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
-			else
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
+				
 			end
 		end
 	end)
