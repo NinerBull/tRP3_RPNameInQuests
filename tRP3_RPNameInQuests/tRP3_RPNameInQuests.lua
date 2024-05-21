@@ -580,7 +580,107 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	-- Unit Frame
-	hooksecurefunc("UnitFrame_Update", function(self)
+
+
+	hooksecurefunc("UnitFrame_OnEvent", function(self)
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+		
+			if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+	
+				if (PlayerFrame.name) then
+					if (PlayerFrame.name:GetText() == TRP3_RPNameInQuests_NameToChange) then
+						PlayerFrame.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
+				end
+				
+				if (TargetFrame.name) then
+					if (TargetFrame.name:GetText() == TRP3_RPNameInQuests_NameToChange) then
+						TargetFrame.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
+				end
+				
+				if (TargetFrameToT.name) then
+					if (TargetFrameToT.name:GetText() == TRP3_RPNameInQuests_NameToChange) then
+						TargetFrameToT.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+					end
+				end
+			
+			end
+		end
+	end)
+	
+	
+	
+	--[[
+	hooksecurefunc("PlayerFrame_OnEvent", function(...)
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+			if (PlayerFrame.name) then
+					local thisName = nil
+					pcall(function () 
+						thisName = PlayerFrame.name:GetText()
+					end) 
+					if (thisName ~= nil) then			
+						if (TRP3_RPNameInQuests_NameToChange == thisName) then
+							if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+								pcall(function () 
+									PlayerFrame.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+								end) 
+							end
+						end
+					end
+
+				end
+		end
+	end)
+	
+	hooksecurefunc(TargetFrame, "Update", function(...)
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+			if (TargetFrame.name) then
+					local thisName = nil
+					pcall(function () 
+						thisName = TargetFrame.name:GetText()
+					end) 
+					if (thisName ~= nil) then			
+						if (TRP3_RPNameInQuests_NameToChange == thisName) then
+							if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+								pcall(function () 
+									TargetFrame.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+								end) 
+							end
+						end
+					end
+
+				end
+		end
+	end)
+	]]	
+	
+	--[[
+	hooksecurefunc(TargetFrameToT, "Update", function(...)
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+			if (TargetFrameToT.name) then
+					local thisName = nil
+					pcall(function () 
+						thisName = TargetFrameToT.name:GetText()
+					end) 
+					if (thisName ~= nil) then			
+						if (TRP3_RPNameInQuests_NameToChange == thisName) then
+							if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+								pcall(function () 
+									TargetFrameToT.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+								end) 
+							end
+						end
+					end
+
+				end
+		end
+	end)
+	]]--
+	
+	
+	-- Unit Frame
+	--[[hooksecurefunc("UnitFrame_Update", function(self)
 		--if (InCombatLockdown() == false) then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 				if (self.name) then
@@ -601,7 +701,8 @@ local function TRP3RPNameInQuests_Init()
 				end
 			end
 		--end
-	end)
+	end)]]
+
 		
 	
 	-- Party/Raid Frames
@@ -1073,8 +1174,10 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
+		--if (not UnitAffectingCombat("player")) then
 			UnitFrame_Update(PlayerFrame)
 			UnitFrame_Update(TargetFrame)
+		--end
 	end
 	
 
