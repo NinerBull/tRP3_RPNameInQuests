@@ -226,6 +226,7 @@ local function TRP3RPNameInQuests_Init()
 		
 		
 		--Remove double of title, if it exists
+		--[[
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
 		
 			if (thisTRP3CharInfo.TI) then
@@ -235,6 +236,7 @@ local function TRP3RPNameInQuests_Init()
 			end
 		
 		end
+		]]
 		
 		
 		
@@ -321,12 +323,12 @@ local function TRP3RPNameInQuests_Init()
 			--empty, do nothing
 			thisTRP3CharName = TRP3_RPNameInQuests_NameToChange
 		else
-			if (textToRename) then
+			if (textToRename and not(string.find(textToRename, thisTRP3CharName))) then
 				textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
 			end
 		end
 		thisTextToReturn =  textToRename
-		
+
 		return thisTextToReturn
 		
 	end
@@ -1374,7 +1376,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.16b",
+	version = "1.2.16",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
