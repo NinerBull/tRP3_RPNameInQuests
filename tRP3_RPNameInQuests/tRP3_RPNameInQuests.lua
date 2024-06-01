@@ -103,6 +103,8 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
 	TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
+	
+	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
 
 	--Register and set value for variables
 
@@ -170,7 +172,8 @@ local function TRP3RPNameInQuests_Init()
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, false);
 	
 	
-
+	--Alternate RP Name Replacement
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, false);
 
 
 
@@ -225,18 +228,22 @@ local function TRP3RPNameInQuests_Init()
 		end
 		
 		
-		--Remove double of title, if it exists
-		--[[
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
 		
-			if (thisTRP3CharInfo.TI) then
-				if (string.find(thisTRP3CharNameFull, thisTRP3CharInfo.TI .. " " .. thisTRP3CharInfo.TI)) then
-					thisTRP3CharNameFull = thisTRP3CharNameFull:gsub(thisTRP3CharInfo.TI .. " " .. thisTRP3CharInfo.TI, thisTRP3CharInfo.TI)
+		
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT) == true) then
+			--Remove double of title, if it exists
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
+			
+				if (thisTRP3CharInfo.TI) then
+					if (string.find(thisTRP3CharNameFull, thisTRP3CharInfo.TI .. " " .. thisTRP3CharInfo.TI)) then
+						thisTRP3CharNameFull = thisTRP3CharNameFull:gsub(thisTRP3CharInfo.TI .. " " .. thisTRP3CharInfo.TI, thisTRP3CharInfo.TI)
+					end
 				end
+			
 			end
 		
 		end
-		]]
+		
 		
 		
 		
@@ -323,9 +330,21 @@ local function TRP3RPNameInQuests_Init()
 			--empty, do nothing
 			thisTRP3CharName = TRP3_RPNameInQuests_NameToChange
 		else
-			if (textToRename and not(string.find(textToRename, thisTRP3CharName))) then
-				textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+		
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT) == true) then
+				if (textToRename) then
+					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+				end
+			
+			else
+			
+				if (textToRename and not(string.find(textToRename, thisTRP3CharName))) then
+					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+				end
+
+			
 			end
+			
 		end
 		thisTextToReturn =  textToRename
 
@@ -1345,6 +1364,26 @@ local function TRP3RPNameInQuests_Init()
 					
 				end,
 			},
+			{
+				inherit = "TRP3_ConfigNote",
+				title = " ",
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = "Troubleshooting",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "Use alternate method to insert RP Name into quest text",
+				help = "Check this box if your TRP3 Name does not appear in quest text, even when it should. This will use a slightly different way to add/replace your TRP3 Name into quest text.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+					
+					
+				end,
+			},
 			
 		}
 		
@@ -1376,7 +1415,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.16",
+	version = "1.2.17b",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
