@@ -1,13 +1,13 @@
 local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
+TRP3RPNameInQuests_Frame:RegisterEvent("SHOW_SUBTITLE");
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
 end
 
 TRPRPNAMEINQUESTS = select(2, ...);
-
 
 
 local function TRP3RPNameInQuests_Init()
@@ -859,15 +859,20 @@ local function TRP3RPNameInQuests_Init()
 			end
 			
 
-	
-	
+		
+		
 	
 	
 	end --eo QuestDialog
 	
 	
-	
-	
+	--Cinematic Subtitles
+	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
+			SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
+		end
+	end)
+
 	
 	
 	
@@ -1076,6 +1081,8 @@ local function TRP3RPNameInQuests_Init()
 			end
 		end)
 	end
+	
+	
 	
 	
 	
@@ -1415,7 +1422,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.17b",
+	version = "1.2.17",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 110,
