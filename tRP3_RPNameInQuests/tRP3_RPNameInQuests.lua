@@ -868,7 +868,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	--Cinematic Subtitles
 	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 			SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
 		end
 	end)
@@ -1134,7 +1134,7 @@ local function TRP3RPNameInQuests_Init()
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
 				title = ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name Format",
-				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "This uses the Character Name from your currently selected TRP3 Profile.",
+				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "Selecting anything other than 'OOC Character Name' or 'Custom' will use your currently selected TRP3 Character Profile's information.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
@@ -1146,7 +1146,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				title = NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name Format",
-				help = "Select what race NPCs should refer to you as." .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
+				help = "Select what Race NPCs should refer to you as.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
 				listCallback = function(value)
@@ -1159,7 +1159,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				title = TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .. " Name Format",
-				help = "Select what class NPCs should refer to you as. " .. "\n\n" .. "Note: Will also affect any regular quest text mentioning your OOC Class Name.",
+				help = "Select what Class NPCs should refer to you as.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
 				listCallback = function(value)
@@ -1177,19 +1177,19 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "Only used if 'Character Name Format' is set as 'Custom'.",
+				help = "The value entered here will only be used if 'Character Name Format' is set as 'Custom'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "Only used if 'Race Name Format' is set as 'Custom'.",
+				help = "The value entered here will only be used if 'Race Name Format' is set as 'Custom'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
 				title = "Custom " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "Only used if 'Class Name Format' is set as 'Custom'.",
+				help = "The value entered here will only be used if 'Class Name Format' is set as 'Custom'.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
 			{
@@ -1207,7 +1207,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Quest Text / Gossip",
-				help = "If checked, this addon will modify all Quest Text, Gossip Chat and Gossip Options.",
+				help = "If checked, this addon will modify all text that appears in quest dialogues, including Quest Text, Gossip Chat and Gossip Options.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;					
@@ -1222,7 +1222,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "NPC Speech " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(/say, /yell, /emote etc)"),
-				help = "If checked, this addon will modify all text and speech bubbles for NPCs." .. "\n\n" .. "Does not affect speech from other players.",
+				help = "If checked, this addon will modify speech from NPCs including Says, Yells, Emotes, Talking Heads, and Cinematic Subtitles." .. "\n\n" .. "Does not affect speech from other players.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1238,7 +1238,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Text Items " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(Books, Letters, Plaques etc)"),
-				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world.",
+				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world, or use from your bags.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1253,7 +1253,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Mailbox",
-				help = "If checked, this addon will modify all Non-AH Mail in your Mailbox.",
+				help = "If checked, this addon will modify most mail in your Mailbox." .. "\n\n" .. "Does not affect mails that use a template, for example, Auction House invoices.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1269,7 +1269,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Raid Boss Warnings",
-				help = "If checked, this addon will modify Raid Boss Warnings/Emotes.",
+				help = "If checked, this addon will modify Raid Boss Warnings/Emotes." .. "\n" .. "These are the large yellow text warnings that appear in the middle of the screen.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1285,7 +1285,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Only modify Race/Class adjacent to punctuation",
-				help = "If checked, your RP Race or Class will only be modified in quest text if it is next to a full stop, comma, question mark, or exclamation mark.",
+				help = "If checked, your RP Race or Class will only be modified in quest text if it is next to a full stop, comma, question mark, or exclamation mark." .. "\n\n" .. "For example, 'How are you, " .. TRP3_API.globals.player_class_loc .. "?' would be replaced, as the question mark is next to your class name, but 'How could a " .. TRP3_API.globals.player_class_loc .. " defeat me?' would not.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1381,8 +1381,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Use alternate method to insert RP Name into quest text",
-				help = "Check this box if your TRP3 Name does not appear in quest text, even when it should. This will use a slightly different way to add/replace your TRP3 Name into quest text.",
+				title = "Use alternate method to insert RP Name into Quest Text",
+				help = "If your TRP3 Character Name does not appear in quest text as expected, try enabling this option.".. "\n" .. "This will use a slightly different method to add/replace your Character's Name in text which may fix the issue.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
