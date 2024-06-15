@@ -1,7 +1,6 @@
 local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
-TRP3RPNameInQuests_Frame:RegisterEvent("SHOW_SUBTITLE");
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
@@ -867,11 +866,13 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Cinematic Subtitles
-	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
-			SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
-		end
-	end)
+	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+				SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
+			end
+		end)
+	end
 
 	
 	
@@ -1053,35 +1054,32 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Zone Texts
-	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	
+	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
 	
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
-		
-			TRP3RPNameGetZoneText = GetZoneText
-			function GetZoneText()
-				return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetZoneText(), true)
-			end
-			
-			
-			TRP3RPNameGetSubZoneText = GetSubZoneText
-			function GetSubZoneText()
-				return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetSubZoneText(), true)
-			end
+		TRP3RPNameGetZoneText = GetZoneText
+		function GetZoneText()
+			return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetZoneText(), true)
+		end
 		
 		
+		TRP3RPNameGetSubZoneText = GetSubZoneText
+		function GetSubZoneText()
+			return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetSubZoneText(), true)
 		end
 	
-		
-		hooksecurefunc("Minimap_Update", function(...)
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
-				varCurrentMinimapZoneText = GetMinimapZoneText()
-				
-				MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, true))
-			end
-		end)
-	end
 	
+	end
+
+	
+	hooksecurefunc("Minimap_Update", function(...)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+			varCurrentMinimapZoneText = GetMinimapZoneText()
+			
+			MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, true))
+		end
+	end)
+
 	
 	
 	
@@ -1207,7 +1205,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Quest Text / Gossip",
-				help = "If checked, this addon will modify all text that appears in quest dialogues, including Quest Text, Gossip Chat and Gossip Options.",
+				help = "If checked, this addon will modify all text that appears in quest dialogues, including Quest Text, Gossip Text and Gossip Options.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;					
@@ -1222,7 +1220,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "NPC Speech " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(/say, /yell, /emote etc)"),
-				help = "If checked, this addon will modify speech from NPCs including Says, Yells, Emotes, Talking Heads, and Cinematic Subtitles." .. "\n\n" .. "Does not affect speech from other players.",
+				help = "If checked, this addon will modify speech from NPCs including Says, Yells, Emotes, Talking Heads, and Cinematic/Cutscene Subtitles." .. "\n\n" .. "Does not affect speech from other players.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1238,7 +1236,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = "Text Items " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(Books, Letters, Plaques etc)"),
-				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world, or use from your bags.",
+				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world or use from your bags.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1393,12 +1391,6 @@ local function TRP3RPNameInQuests_Init()
 			},
 			
 		}
-		
-		
-	-- Remove Zone Names from non-retail
-	if (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) then
-		table.remove(TRP3RPNameInQuests_ConfigElements, 26)
-	end
 	
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
