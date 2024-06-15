@@ -1132,7 +1132,7 @@ local function TRP3RPNameInQuests_Init()
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
 				title = ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name Format",
-				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "Selecting anything other than 'OOC Character Name' or 'Custom' will use your currently selected TRP3 Character Profile's information.",
+				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "Selecting anything other than 'OOC Character Name' or 'Custom' will use information from your currently selected TRP3 Character Profile.",
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
