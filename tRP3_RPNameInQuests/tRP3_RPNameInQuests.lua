@@ -337,7 +337,7 @@ local function TRP3RPNameInQuests_Init()
 			
 			else
 			
-				if (textToRename and not(string.find(textToRename, thisTRP3CharName))) then
+				if (textToRename and not(string.find(textToRename, thisTRP3CharName  .. "%A"))) then
 					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
 				end
 
