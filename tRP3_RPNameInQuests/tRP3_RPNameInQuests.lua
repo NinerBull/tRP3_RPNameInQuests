@@ -316,9 +316,14 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Rename Character
-	function TRP3_RPNameInQuests_RPNameRename(textToRename, renameFullName)
+	function TRP3_RPNameInQuests_RPNameRename(textToRename, renameFullName, doUpperCase)
 	
 		renameFullName = renameFullName or false
+		doUpperCase = doUpperCase or false
+	
+		if (doUpperCase == true) then
+			--textToRename = string.upper(textToRename)
+		end
 	
 		thisTextToReturn = textToRename
 		
@@ -332,15 +337,25 @@ local function TRP3RPNameInQuests_Init()
 		
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT) == true) then
 				if (textToRename) then
-					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+					if (doUpperCase == true) then
+						textToRename = textToRename:gsub(string.upper(TRP3_RPNameInQuests_NameToChange), string.upper(thisTRP3CharName))
+					else
+						textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+					end
 				end
 			
 			else
-			
-				if (textToRename and not(string.find(textToRename, thisTRP3CharName  .. "%A"))) then
-					textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
-				end
+				
+				if (doUpperCase == true) then
+					if (textToRename and not(string.find(textToRename, string.upper(thisTRP3CharName)  .. "%A"))) then
+						textToRename = textToRename:gsub(string.upper(TRP3_RPNameInQuests_NameToChange), string.upper(thisTRP3CharName))
+					end
+				else
+					if (textToRename and not(string.find(textToRename, thisTRP3CharName  .. "%A"))) then
+						textToRename = textToRename:gsub(TRP3_RPNameInQuests_NameToChange, thisTRP3CharName)
+					end
 
+				end
 			
 			end
 			
@@ -369,9 +384,10 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Rename Race
-	function TRP3_RPNameInQuests_RPRaceRename(textToRename, doLowerCase)
+	function TRP3_RPNameInQuests_RPRaceRename(textToRename, doLowerCase, doUpperCase)
 	
 		doLowerCase = doLowerCase or false
+		doUpperCase = doUpperCase or false
 		thisTextToReturn = textToRename
 		local thisTRP3CharInfoR = TRP3_API.profile.getData("player/characteristics")
 		thisRaceName = TRP3_RPNameInQuests_RaceToChange
@@ -396,26 +412,34 @@ local function TRP3RPNameInQuests_Init()
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION) == true) then
 			
 			
-				if (doLowerCase == false) then
-					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3_RPNameInQuests_RaceToChange,", " .. thisRaceName)
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "," ,thisRaceName .. ",")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "%." ,thisRaceName .. ".")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "%?" ,thisRaceName .. "?")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "!" ,thisRaceName .. "!")
-				else
+				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(", " .. TRP3_RPNameInQuests_RaceToChange),string.lower(", " .. thisRaceName))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange .. ","),string.lower(thisRaceName .. ","))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange .. "%."),string.lower(thisRaceName .. "."))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange .. "%?"),string.lower(thisRaceName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange .. "!"),string.lower(thisRaceName .. "!"))
+				elseif (doUpperCase == true) then
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(", " .. TRP3_RPNameInQuests_RaceToChange),string.upper(", " .. thisRaceName))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_RaceToChange .. ","),string.upper(thisRaceName .. ","))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_RaceToChange .. "%."),string.upper(thisRaceName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_RaceToChange .. "%?"),string.upper(thisRaceName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_RaceToChange .. "!"),string.upper(thisRaceName .. "!"))
+				else
+					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3_RPNameInQuests_RaceToChange,", " .. thisRaceName)
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "," ,thisRaceName .. ",")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "%." ,thisRaceName .. ".")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "%?" ,thisRaceName .. "?")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange .. "!" ,thisRaceName .. "!")
 				end
 			
 			else
 			
-				if (doLowerCase == false) then
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange,thisRaceName)
-				else
+				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_RaceToChange),string.lower(thisRaceName))
+				elseif (doUpperCase == true) then
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_RaceToChange),string.upper(thisRaceName))
+				else
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_RaceToChange,thisRaceName)
 				end
 			
 			end
@@ -464,9 +488,10 @@ local function TRP3RPNameInQuests_Init()
 
 	 
 	--Rename Class
-	 function TRP3_RPNameInQuests_RPClassRename(textToRename, doLowerCase)
+	 function TRP3_RPNameInQuests_RPClassRename(textToRename, doLowerCase, doUpperCase)
 	
 		doLowerCase = doLowerCase or false
+		doUpperCase = doUpperCase or false
 		thisTextToReturn = textToRename
 		local thisTRP3CharInfoC = TRP3_API.profile.getData("player/characteristics")
 		thisClassName = TRP3_RPNameInQuests_ClassToChange
@@ -490,26 +515,35 @@ local function TRP3RPNameInQuests_Init()
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION) == true) then
 				--Replace text next to punctuation
 				
-				if (doLowerCase == false) then
-					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3_RPNameInQuests_ClassToChange,", " ..thisClassName)
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. ",",thisClassName .. ",")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "%.",thisClassName .. ".")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "%?",thisClassName .. "?")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "!",thisClassName .. "!")
-				else
+				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(", " .. TRP3_RPNameInQuests_ClassToChange),string.lower(", " .. thisClassName))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange .. ","),string.lower(thisClassName .. ","))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange .. "%."),string.lower(thisClassName .. "."))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange .. "%?"),string.lower(thisClassName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange .. "!"),string.lower(thisClassName .. "!"))
+				elseif (doUpperCase == true) then
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(", " .. TRP3_RPNameInQuests_ClassToChange),string.upper(", " .. thisClassName))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_ClassToChange .. ","),string.upper(thisClassName .. ","))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_ClassToChange .. "%."),string.upper(thisClassName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_ClassToChange .. "%?"),string.upper(thisClassName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_ClassToChange .. "!"),string.upper(thisClassName .. "!"))
+				else
+					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3_RPNameInQuests_ClassToChange,", " ..thisClassName)
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. ",",thisClassName .. ",")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "%.",thisClassName .. ".")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "%?",thisClassName .. "?")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange .. "!",thisClassName .. "!")
 				end
 
 			else
 			
-				if (doLowerCase == false) then
-					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange,thisClassName)
-				else
+				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3_RPNameInQuests_ClassToChange),string.lower(thisClassName))
+				elseif (doUpperCase == true) then
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3_RPNameInQuests_ClassToChange),string.upper(thisClassName))
+				else
+					thisTextToReturn = thisTextToReturn:gsub(TRP3_RPNameInQuests_ClassToChange,thisClassName)
+					
 				end
 			
 			end
@@ -578,9 +612,17 @@ local function TRP3RPNameInQuests_Init()
 				if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_ReturnRPName(true))))) then
 					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
 				end
+				
+				if (strmatch(thisRenamedText, string.upper(TRP3_RPNameInQuests_NameToChange)) and (not (strmatch(thisRenamedText, TRP3_RPNameInQuests_ReturnRPName(true))))) then
+					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText, false, true)
+				end
+				
 			else
 				if (strmatch(thisRenamedText, TRP3_RPNameInQuests_NameToChange)) then
 					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText)
+				end
+				if (strmatch(thisRenamedText, string.upper(TRP3_RPNameInQuests_NameToChange))) then
+					thisRenamedText =  TRP3_RPNameInQuests_RPNameRename(thisRenamedText, false, true)
 				end
 			end
 		end
@@ -593,6 +635,9 @@ local function TRP3RPNameInQuests_Init()
 			if (strmatch(thisRenamedText, string.lower(TRP3_RPNameInQuests_ClassToChange))) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPClassRename(thisRenamedText, true)
 			end
+			if (strmatch(thisRenamedText, string.upper(TRP3_RPNameInQuests_ClassToChange))) then
+				thisRenamedText =  TRP3_RPNameInQuests_RPClassRename(thisRenamedText, false, true)
+			end
 		end
 		
 		--RaceName
@@ -602,6 +647,9 @@ local function TRP3RPNameInQuests_Init()
 			end
 			if (strmatch(thisRenamedText, string.lower(TRP3_RPNameInQuests_RaceToChange))) then
 				thisRenamedText =  TRP3_RPNameInQuests_RPRaceRename(thisRenamedText, true)
+			end
+			if (strmatch(thisRenamedText, string.upper(TRP3_RPNameInQuests_RaceToChange))) then
+				thisRenamedText =  TRP3_RPNameInQuests_RPRaceRename(thisRenamedText, false, true)
 			end
 		end
 
@@ -785,7 +833,7 @@ local function TRP3RPNameInQuests_Init()
 			-- Get Gossip Text
 			local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
 			C_GossipInfo.GetText = function (...)
-				
+			
 				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
 				
 				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
