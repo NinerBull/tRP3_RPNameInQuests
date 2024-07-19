@@ -1,5 +1,5 @@
 # Total RP 3: RP Name in Quest Text
-An addon for World of Warcraft!
+An addon for World of Warcraft - The War Within, Cataclysm Classic and Classic Era!
 
 ![Info Img](https://cdn-wow.mmoui.com/preview/pvw75727.jpg)
 
@@ -44,9 +44,9 @@ You can also select which text this addon modifies. Turn on/off as desired.
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 ## Compatibility
-* **Dragonflight** - 10.2.7
+* **The War Within** - 11.0.0
 * **Cataclysm Classic** - 4.4.0
-* **Classic Era** - 1.15.2
+* **Classic Era** - 1.15.3
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
