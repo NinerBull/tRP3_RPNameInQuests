@@ -1,6 +1,20 @@
+--[[
+================================================
+Total RP 3: RP Name in Quest Text
+https://github.com/NinerBull/tRP3_RPNameInQuests
+================================================
+
+------------------------------------------
+Requires Total RP 3 
+https://github.com/Total-RP/Total-RP-3
+------------------------------------------
+]]--
+
+
 local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
+TRP3RPNameInQuests_Frame:RegisterEvent("ADDON_LOADED")
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
@@ -12,7 +26,7 @@ TRPRPNAMEINQUESTS = select(2, ...);
 local function TRP3RPNameInQuests_Init()
 
 		
-	--Init	
+	--Create table to save user's variables	
 	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
 		TRP3RPNameInQuests_CharVars = {}
 		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Cyan("RP Name in Quest Text") .. " installed! Type " .. TRP3_API.Colors.Cyan("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1)
@@ -48,7 +62,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	
-	-- Set Addon Variables
+	-- Set Default Addon Variables
 	if (type(TRP3RPNameInQuests_CharVars.WhichRPName) ~= "number") then
 		TRP3RPNameInQuests_CharVars.WhichRPName = 5
 	end
@@ -74,7 +88,7 @@ local function TRP3RPNameInQuests_Init()
 	end
 	
 	
-	
+	-- Player's Class Colour
 	local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 
 		
@@ -105,9 +119,9 @@ local function TRP3RPNameInQuests_Init()
 	
 	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
 
-	--Register and set value for variables
+	-- Register and set value for variables
 
-	-- Character Specific
+	-- ==Character Specific==
 	
 	--WhichRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
@@ -135,7 +149,7 @@ local function TRP3RPNameInQuests_Init()
 
 
 
-	-- Account Wide
+	-- ==Account Wide==
 	
 	--QuestDialog
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, true);
@@ -192,13 +206,13 @@ local function TRP3RPNameInQuests_Init()
 	-- https://github.com/keyboardturner/totalRP3_UnitFrames
 
 	local TRP3_RPNameInQuests_IgnoreUnitFrameMods = C_AddOns.IsAddOnLoaded("totalRP3_UnitFrames") or false
-	local TRP3_RPNameInQuests_NameToChange = TRP3_API.globals.player or UnitName("player")
+	local TRP3_RPNameInQuests_NameToChange = TRP3_API.globals.player or UnitNameUnmodified("player")
 	local TRP3_RPNameInQuests_RaceToChange = TRP3_API.globals.player_race_loc or UnitRace("player")
 	local TRP3_RPNameInQuests_ClassToChange = TRP3_API.globals.player_class_loc or UnitClass("player")
 	
 
 
-	-- Full TRP3 Name
+	-- Full TRP3 Name (Including Title)
 	function TRP3_RPNameInQuests_GetFullRPName(getFullName)
 	
 	
@@ -246,17 +260,19 @@ local function TRP3RPNameInQuests_Init()
 		
 		
 		
-		
+		-- If the player wants to use a custom name, grab that instead
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 99 and getFullName == false) then
 			thisTRP3CharNameFull = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT)
 		end
 		
-		--trim space
+		-- Trim extra space on the left and right of the string
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("%s+", " ")
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
 		
+		
+		-- If for some reason the character name is empty, default back to the player's OOC name
 		if (thisTRP3CharNameFull == "") then
-			thisTRP3CharNameFull = TRP3_API.globals.player or UnitName("player")
+			thisTRP3CharNameFull = TRP3_API.globals.player or UnitNameUnmodified("player")
 		end
 			
 		
@@ -272,16 +288,12 @@ local function TRP3RPNameInQuests_Init()
 
 
 	-- Functions that do the actual renaming
-	
-	
-	
+
 	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 		-- Some allied races use a different race name in quest text rather than their full race name
 		local thisPlayerRaceName, thisPlayerRaceFile, thisPlayerRaceID = UnitRace("player")
 		
 		thisActualRaceInfo = {}
-		
-		--print(thisPlayerRaceID)
 		
 		if (thisPlayerRaceID == 28) then -- Highmountain Tauren
 			thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(6)
@@ -595,15 +607,12 @@ local function TRP3RPNameInQuests_Init()
 	-- Do not rename this, DialogueUI looks for and uses this function
 	function TRP3_RPNameInQuests_CompleteRename(textToRename)
 
-	
 		thisRenamedText = textToRename or ""
-		
-	
 		
 		--CharacterName
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) ~= 1) then
 		
-			-- Find out if TRP Name is a short version of OOC Name
+			-- Find out if TRP3 Name is a short version of OOC Name
 			lengthOfOOCName = string.len(TRP3_RPNameInQuests_NameToChange)
 			lengthOfTRP3Name = string.len(TRP3_RPNameInQuests_RPNameRename(TRP3_RPNameInQuests_NameToChange, true))
 			
@@ -664,26 +673,56 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	-- Unit Frame
+	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			if self.name then
-				if UnitIsPlayer("player") and (TRP3_RPNameInQuests_GetFullRPName(true) ~= "")  then
-					if (self.name:GetText() == TRP3_RPNameInQuests_NameToChange) then
-						self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+			if self.name and self.unit then
+				if (UnitIsPlayer(tostring(self.unit))) then
+					if ((tostring(self.unit) == "player" or tostring(self.unit) == "target" or tostring(self.unit) == "targettarget") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
+						pcall(function () 
+							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+						end)
+					else
+						if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+							pcall(function () 
+								local thisRealmString = ""
+								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
+									thisRealmString = FOREIGN_SERVER_LABEL
+								--[[elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+									thisRealmString = INTERACTIVE_SERVER_LABEL]]--
+								end
+								self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.unit)) .. thisRealmString)
+							end)
+						end
 					end
 				end
 			end
 		end
 	end)
 	
-	
+	-- Also Unit Frame
 	hooksecurefunc("UnitFrame_OnEvent", function(self, thisEvent, thisUnit)
 		if self.name and thisEvent == "UNIT_NAME_UPDATE" and thisUnit == self.thisUnit then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-				if self.name then
-					if UnitIsPlayer("player") and (TRP3_RPNameInQuests_GetFullRPName(true) ~= "")  then
-						if (self.name:GetText() == TRP3_RPNameInQuests_NameToChange) then
-							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+				if self.name and self.thisUnit then
+					if (UnitIsPlayer(tostring(self.thisUnit))) then
+						if ((tostring(self.thisUnit) == "player" or tostring(self.thisUnit) == "target" or tostring(self.thisUnit) == "targettarget") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
+							pcall(function () 
+								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+							end)
+						else
+							--if (UnitRealmRelationship(tostring(self.thisUnit)) == 1) then
+							if (UnitName(self.thisUnit) ~= TRP3_API.register.getUnitRPName(tostring(self.thisUnit))) then
+								pcall(function () 
+									local thisRealmString = ""
+									if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+										thisRealmString = FOREIGN_SERVER_LABEL
+									--[[elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+										thisRealmString = INTERACTIVE_SERVER_LABEL]]--
+									end
+									self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.thisUnit)) .. thisRealmString)
+								end)
+							end
 						end
 					end
 				end
@@ -696,37 +735,66 @@ local function TRP3RPNameInQuests_Init()
 		
 	
 	-- Party/Raid Frames
+	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to the Raid Frames.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
-			if (self.name) then
-				local thisName = nil
-				pcall(function () 
-					thisName = self.name:GetText()
-				end) 
-				if (thisName ~= nil) then			
-					if (TRP3_RPNameInQuests_NameToChange == thisName) then
-						if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+			if self.name and self.unit then
+				if (UnitIsPlayer(tostring(self.unit))) then
+					--[[if ((tostring(self.unit) == "player") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
+						pcall(function () 
+							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+						end)
+					else]]
+						if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 							pcall(function () 
-								self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
-							end) 
+								local thisRealmString = ""
+								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
+									thisRealmString = FOREIGN_SERVER_LABEL
+								--[[elseif if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
+									thisRealmString = INTERACTIVE_SERVER_LABEL]]--
+								end
+								self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.unit)) .. thisRealmString)
+							end)
 						end
-					end
+					--[[end]]
 				end
 			end
 		end
 	end)
 	
 	
+	
+	--[[
+	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(self)
+	
+		if ( not self.optionTable.healthBarColorOverride ) then
+				
+			local useClassColors = CompactUnitFrame_GetOptionUseClassColors(self, self.optionTable);
+			if (UnitIsPlayer(self.unit) and useClassColors ) then
+				self.healthBar:SetStatusBarColor(1, 0, 0);
+			end
+		
+		end
+		
+	end)
+	]]
+	
+	
+	
 	-- Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			TRP3_RPNameInQuests_UpdateUnitFrames()
+			if (InCombatLockdown() == false) then
+				TRP3_RPNameInQuests_UpdateUnitFrames()
+			end
 		end
 	end);
 	
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			TRP3_RPNameInQuests_UpdateUnitFrames()
+			if (InCombatLockdown() == false) then
+				TRP3_RPNameInQuests_UpdateUnitFrames()
+			end
 		end
 	end);
 	
@@ -789,6 +857,8 @@ local function TRP3RPNameInQuests_Init()
 		end
 	end)
 	
+
+
 
 
 	-- Quests, Dialog, Gossip Etc.
@@ -1002,7 +1072,6 @@ local function TRP3RPNameInQuests_Init()
 		end
 		
 		
-		
 	
 	end)
 
@@ -1040,6 +1109,14 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_PARTY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /p Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /w Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_PING", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_HORDE", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_ALLIANCE", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_NEUTRAL", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_SKILL", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_OPENING", TRP3_RPNameInQuests_ChatFilterFunc)
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_TRADESKILLS", TRP3_RPNameInQuests_ChatFilterFunc)
 	end
 	
 	
@@ -1084,7 +1161,8 @@ local function TRP3RPNameInQuests_Init()
 										if (region:GetStringWidth() >= region:GetWrappedWidth()) then
 											region:SetWidth(region:GetWrappedWidth())
 										else
-											region:SetWidth(region:GetStringWidth())
+											--region:SetWidth(region:GetStringWidth())
+											region:SetWidth(region:GetWrappedWidth())
 										end
 										
 										
