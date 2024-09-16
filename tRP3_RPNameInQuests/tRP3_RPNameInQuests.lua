@@ -115,6 +115,7 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
 	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
+	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR = "trp3_rpnameinquests_partyframerpcolor";
 	TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
 	
 	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
@@ -180,6 +181,9 @@ local function TRP3RPNameInQuests_Init()
 	
 	--PartyFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, false);
+	
+	--PartyFrameRPColor
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, false);
 	
 	--ZoneNameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, false);
@@ -764,20 +768,65 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	
-	--[[
-	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(self)
+	-- https://github.com/Gethe/wow-ui-source/blob/2e827a602452a4d90608d3aba54f2e037a00e36a/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	
-		if ( not self.optionTable.healthBarColorOverride ) then
+	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
+	
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+			
+			local unitIsConnected = UnitIsConnected(frame.unit);
+			local unitIsDead = unitIsConnected and UnitIsDead(frame.unit);
+			local unitIsPlayer = UnitIsPlayer(frame.unit) or UnitIsPlayer(frame.displayedUnit);
+			local unitIsActivePlayer = UnitIsUnit(frame.unit, "player") or UnitIsUnit(frame.displayedUnit, "player");
+			
+			
+			
+			if ( not unitIsConnected or (unitIsDead and not unitIsPlayer) ) then
 				
-			local useClassColors = CompactUnitFrame_GetOptionUseClassColors(self, self.optionTable);
-			if (UnitIsPlayer(self.unit) and useClassColors ) then
-				self.healthBar:SetStatusBarColor(1, 0, 0);
+			elseif ( C_GameRules.IsGameRuleActive(Enum.GameRule.PlayerNameplateAlternateHealthColor) and unitIsPlayer and not unitIsActivePlayer and UnitCanAttack("player", frame.unit) ) then
+				
+			else
+				if ( frame.optionTable.healthBarColorOverride ) then
+					
+					
+				else
+					
+					
+					local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
+					
+					if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
+							
+					elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
+				
+						
+					elseif ( frame.optionTable.colorHealthBySelection ) then
+						
+					elseif ( UnitIsFriend("player", frame.unit) ) then
+
+						if (UnitIsPlayer(frame.unit) and (AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay())) then
+							
+							local thisCustomClassColor = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay():GetRGBTable() or nil
+						
+							if (thisCustomClassColor ~= nil) then
+						
+								frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
+							
+							end
+						
+						end
+						
+						
+					else
+
+					end
+				end
 			end
+			
 		
 		end
-		
+	
 	end)
-	]]
+	--AddOn_TotalRP3.Player.CreateFromUnit("target"):GetCustomColorForDisplay()
 	
 	
 	
@@ -1109,7 +1158,6 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_PARTY", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /p Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /w Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
-		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_PING", TRP3_RPNameInQuests_ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_HORDE", TRP3_RPNameInQuests_ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_BG_SYSTEM_ALLIANCE", TRP3_RPNameInQuests_ChatFilterFunc)
@@ -1430,16 +1478,16 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add your TRP3 Character Information to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+				title = "Add TRP3 Character Information to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show my Character's TRP3 Info:"),
+				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show Character TRP3 Info:"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " .. "In the Player Unit Frame",
-				help = "If checked, your TRP3 Character Name will be shown in your Unit Frame.",
+				title = TRP3RPNameInQuests_TextureDot .. " " .. "In the Unit Frame",
+				help = "If checked, TRP3 Character Names will be shown in the Unit Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1453,7 +1501,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Character Window",
-				help = "If checked, your TRP3 Character Name, Race and Class will be shown in the Character Window (aka Paper Doll).",
+				help = "If checked, TRP3 Character Name, Race and Class will be shown in the Character Window (aka Paper Doll).",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1471,7 +1519,7 @@ local function TRP3RPNameInQuests_Init()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Party/Raid Frame",
-				help = "If checked, your TRP3 Character Name will be shown in your Party/Raid Frame.",
+				help = "If checked, TRP3 Character Names will be shown in the Party/Raid Frame.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1482,8 +1530,21 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  "Also Use Class Color in Raid Frames",
+				help = "If checked, Raid Frames will use the custom TRP3 Class Color for their background, if available.",
+				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
+				dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
+				OnHide = function(button)
+					local value = button:GetChecked() and true or false;
+					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, value)	
+					
+					
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
 				title = TRP3RPNameInQuests_TextureDot .. " " .. "In Zone Names" .. " " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(e.g. Garrison)"),
-				help = "If checked, your TRP3 Character Name will be shown in Zone Names where appropriate." .. "\n" .. "For example, your Draenor Garrison.",
+				help = "If checked, TRP3 Character Names will be shown in Zone Names where appropriate." .. "\n" .. "For example, your Draenor Garrison.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1540,7 +1601,7 @@ end
 TRP3_API.module.registerModule({
 	name = "RP Name in Quest Text",
 	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
-	version = "1.2.19",
+	version = "1.2.20",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 130,
