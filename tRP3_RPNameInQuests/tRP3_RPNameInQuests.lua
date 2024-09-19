@@ -767,9 +767,8 @@ local function TRP3RPNameInQuests_Init()
 	end)
 	
 	
-	
+	-- 
 	-- https://github.com/Gethe/wow-ui-source/blob/2e827a602452a4d90608d3aba54f2e037a00e36a/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
-	
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
 	
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
@@ -1530,7 +1529,7 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  "Also Use Class Color in Raid Frames",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  "Also Use Custom Class Color in Raid Frames",
 				help = "If checked, Raid Frames will use the custom TRP3 Class Color for their background, if available.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
 				dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
