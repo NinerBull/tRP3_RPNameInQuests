@@ -272,6 +272,7 @@ local function TRP3RPNameInQuests_Init()
 		-- Trim extra space on the left and right of the string
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("%s+", " ")
 		thisTRP3CharNameFull = thisTRP3CharNameFull:gsub("^%s*(.-)%s*$", "%1")
+		--string.join(" ", string1, string2);
 		
 		
 		-- If for some reason the character name is empty, default back to the player's OOC name
@@ -392,6 +393,31 @@ local function TRP3RPNameInQuests_Init()
 		return TRP3_RPNameInQuests_GetFullRPName(renameFullName)
 		
 	end
+	
+	-- Return RP Name Target
+	function TRP3_RPNameInQuests_ReturnRPNameTarget(thisTarget, withTitle)
+	
+		thisTarget = thisTarget or "player"
+		withTitle = withTitle or false
+		
+		local thisPlayer = AddOn_TotalRP3.Player.CreateFromUnit(tostring(thisTarget))
+	
+		local thisFullName = thisPlayer:GetFullName() or TRP3_RPNameInQuests_NameToChange
+		local thisFullTitle = thisPlayer:GetTitle()
+		
+		if (withTitle == true) then
+			if (thisFullTitle ~= nil) then
+				thisFullName = string.join(" ", thisFullTitle, thisFullName)
+			end
+		end
+		
+		thisFullName = thisFullName:gsub("%s+", " ")
+		thisFullName = thisFullName:gsub("^%s*(.-)%s*$", "%1")
+		
+		return thisFullName
+	
+	end
+	
 	
 	
 	
@@ -682,22 +708,16 @@ local function TRP3RPNameInQuests_Init()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			if self.name and self.unit then
 				if (UnitIsPlayer(tostring(self.unit))) then
-					if ((tostring(self.unit) == "player" or tostring(self.unit) == "target" or tostring(self.unit) == "targettarget") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
+					if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 						pcall(function () 
-							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+							local thisRealmString = ""
+							if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
+								thisRealmString = FOREIGN_SERVER_LABEL
+							--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+								--thisRealmString = INTERACTIVE_SERVER_LABEL
+							end
+							self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
 						end)
-					else
-						if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
-							pcall(function () 
-								local thisRealmString = ""
-								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
-									thisRealmString = FOREIGN_SERVER_LABEL
-								--[[elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
-									thisRealmString = INTERACTIVE_SERVER_LABEL]]--
-								end
-								self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.unit)) .. thisRealmString)
-							end)
-						end
 					end
 				end
 			end
@@ -705,7 +725,7 @@ local function TRP3RPNameInQuests_Init()
 	end)
 	
 	-- Also Unit Frame
-	hooksecurefunc("UnitFrame_OnEvent", function(self, thisEvent, thisUnit)
+	--[[hooksecurefunc("UnitFrame_OnEvent", function(self, thisEvent, thisUnit)
 		if self.name and thisEvent == "UNIT_NAME_UPDATE" and thisUnit == self.thisUnit then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 				if self.name and self.thisUnit then
@@ -719,10 +739,10 @@ local function TRP3RPNameInQuests_Init()
 							if (UnitName(self.thisUnit) ~= TRP3_API.register.getUnitRPName(tostring(self.thisUnit))) then
 								pcall(function () 
 									local thisRealmString = ""
-									if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+									if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_COALESCED) then
 										thisRealmString = FOREIGN_SERVER_LABEL
-									--[[elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
-										thisRealmString = INTERACTIVE_SERVER_LABEL]]--
+									--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+										--thisRealmString = INTERACTIVE_SERVER_LABEL
 									end
 									self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.thisUnit)) .. thisRealmString)
 								end)
@@ -732,7 +752,7 @@ local function TRP3RPNameInQuests_Init()
 				end
 			end
 		end
-	end)
+	end)]]
 	
 
 
@@ -757,7 +777,7 @@ local function TRP3RPNameInQuests_Init()
 								--[[elseif if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
 									thisRealmString = INTERACTIVE_SERVER_LABEL]]--
 								end
-								self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.unit)) .. thisRealmString)
+								self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit) .. thisRealmString)
 							end)
 						end
 					--[[end]]
@@ -801,10 +821,12 @@ local function TRP3RPNameInQuests_Init()
 					elseif ( frame.optionTable.colorHealthBySelection ) then
 						
 					elseif ( UnitIsFriend("player", frame.unit) ) then
+					
+						thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
 
-						if (UnitIsPlayer(frame.unit) and (AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay())) then
+						if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
 							
-							local thisCustomClassColor = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay():GetRGBTable() or nil
+							local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
 						
 							if (thisCustomClassColor ~= nil) then
 						
@@ -852,13 +874,13 @@ local function TRP3RPNameInQuests_Init()
 	hooksecurefunc("ToggleCharacter", function()
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 			if ( CharacterFrame:IsShown() ) then
-				if (TRP3_RPNameInQuests_GetFullRPName(true) ~= "") then
+				if (TRP3_RPNameInQuests_ReturnRPNameTarget() ~= "") then
 					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 						-- Era Only
-						CharacterNameText:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
+						CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					else
 						-- Retail and Cata
-						CharacterFrame:SetTitle(TRP3_RPNameInQuests_GetFullRPName(true));
+						CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					end
 				end
 			end
