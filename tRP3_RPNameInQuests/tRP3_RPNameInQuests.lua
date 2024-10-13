@@ -109,7 +109,6 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
 	TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS = "trp3_rpnameinquests_textmod_raidboss";
 	TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION = "trp3_rpnameinquests_textmod_raceclasspunctuation";
 
 	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
@@ -163,9 +162,6 @@ local function TRP3RPNameInQuests_Init()
 
 	--Mailbox
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, true);
-
-	--RaidBossEmote
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, false);
 	
 	--RaceClassPunctuationAdjacent
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, true);
@@ -199,7 +195,6 @@ local function TRP3RPNameInQuests_Init()
 	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH)
 	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
 	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
-	local TRP3_RPNameInQuests_OldVar_RaidBossEmote = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS)
 	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME)
 	
 	
@@ -707,7 +702,7 @@ local function TRP3RPNameInQuests_Init()
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			if self.name and self.unit then
-				if (UnitIsPlayer(tostring(self.unit))) then
+				--if (UnitIsPlayer(tostring(self.unit))) then
 					if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 						pcall(function () 
 							local thisRealmString = ""
@@ -719,7 +714,7 @@ local function TRP3RPNameInQuests_Init()
 							self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
 						end)
 					end
-				end
+				--end
 			end
 		end
 	end)
@@ -1186,14 +1181,11 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_SKILL", TRP3_RPNameInQuests_ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_OPENING", TRP3_RPNameInQuests_ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_TRADESKILLS", TRP3_RPNameInQuests_ChatFilterFunc)
-	end
-	
-	
-	-- Raid Boss Emote Frame
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS) == true) then
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
 	end
+	
+
 	
 
 	--Talking Head
@@ -1461,22 +1453,6 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Raid Boss Warnings",
-				help = "If checked, this addon will modify Raid Boss Warnings/Emotes." .. "\n" .. "These are the large yellow text warnings that appear in the middle of the screen.",
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODRAIDBOSS, value)
-
-					if (TRP3_RPNameInQuests_OldVar_RaidBossEmote ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
-					end
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
 				title = "Only modify Race/Class adjacent to punctuation",
 				help = "If checked, your RP Race or Class will only be modified in quest text if it is next to a full stop, comma, question mark, or exclamation mark." .. "\n\n" .. "For example, 'How are you, " .. TRP3_API.globals.player_class_loc .. "?' would be replaced, as the question mark is next to your class name, but 'How could a " .. TRP3_API.globals.player_class_loc .. " defeat me?' would not.",
 				configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
@@ -1602,7 +1578,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
-		table.remove(TRP3RPNameInQuests_ConfigElements, 23)
+		table.remove(TRP3RPNameInQuests_ConfigElements, 22)
 	end
 	
 
