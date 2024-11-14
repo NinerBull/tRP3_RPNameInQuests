@@ -44,9 +44,9 @@ You can also select which text this addon modifies. Turn on/off as desired.
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 ## Compatibility
-* **The War Within** - 11.0.2 & 11.0.5
-* **Cataclysm Classic** - 4.4.0 & 4.4.1
-* **Classic Era** - 1.15.4
+* **The War Within** - 11.0.5 & 11.0.7
+* **Cataclysm Classic** - 4.4.1
+* **Classic Era** - 1.15.5
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
