@@ -10,6 +10,8 @@ https://github.com/Total-RP/Total-RP-3
 ------------------------------------------
 ]]--
 
+local _, L = ...;
+
 
 local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
@@ -29,7 +31,8 @@ local function TRP3RPNameInQuests_Init()
 	--Create table to save user's variables	
 	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
 		TRP3RPNameInQuests_CharVars = {}
-		TRP3_API.utils.message.displayMessage(TRP3_API.Colors.Cyan("RP Name in Quest Text") .. " installed! Type " .. TRP3_API.Colors.Cyan("/trp3 questtext") .. " to select how this character is addressed by NPCs.",1)
+		TRP3_API.utils.message.displayMessage(string.format(L.FIRST_TIME_INSTALL_GREET, TRP3_API.Colors.Cyan("RP Name in Quest Text"), TRP3_API.Colors.Cyan("/trp3 questtext")),1)
+		
 	end
 
 	
@@ -1280,27 +1283,27 @@ local function TRP3RPNameInQuests_Init()
 
 	-- TRP3 Options Page
 	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
-		{ "OOC Character Name", 1 },
-		{ "Title", 2 },
-		{ "Title + First Name", 3 },
-		{ "Title + Last Name", 4 },
-		{ "Title + First Name + Last Name", 5 },
-		{ "First Name", 6 },
-		{ "Last Name", 7 },
-		{ "First Name + Last Name", 8 },
-		{ "Custom* (Set Below)", 99 },		
+		{ L.DROPDOWNSTUFF_OPT1, 1 },
+		{ L.DROPDOWNSTUFF_OPT2, 2 },
+		{ L.DROPDOWNSTUFF_OPT3, 3 },
+		{ L.DROPDOWNSTUFF_OPT4, 4 },
+		{ L.DROPDOWNSTUFF_OPT5, 5 },
+		{ L.DROPDOWNSTUFF_OPT6, 6 },
+		{ L.DROPDOWNSTUFF_OPT7, 7 },
+		{ L.DROPDOWNSTUFF_OPT8, 8 },
+		{ L.DROPDOWNSTUFF_OPT9, 99 },		
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
-		{ "OOC Class Name", 1 },
-		{ "TRP3 Class Name", 2 },
-		{ "Custom* (Set Below)", 99 },	
+		{ L.DROPDOWNCLASS_OPT1, 1 },
+		{ L.DROPDOWNCLASS_OPT2, 2 },
+		{ L.DROPDOWNCLASS_OPT3, 99 },	
 	}
 
 	local TRPRPNAMEINQUESTS_DROPDOWNRACE = {
-		{ "OOC Race Name", 1 },
-		{ "TRP3 Race Name", 2 },
-		{ "Custom* (Set Below)", 99 },	
+		{ L.DROPDOWNRACE_OPT1, 1 },
+		{ L.DROPDOWNRACE_OPT2, 2 },
+		{ L.DROPDOWNRACE_OPT3, 99 },	
 	}
 	
 	local TRP3RPNameInQuests_TextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
@@ -1309,17 +1312,18 @@ local function TRP3RPNameInQuests_Init()
 	TRP3RPNameInQuests_ConfigElements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. "'s Quest Text Settings",
+				title =  string.format(L.CHARSETTINGS_MAINTITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)),
+				
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "What Name, Race and Class should NPCs refer to " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. " as?" .."\n" .. "These options are " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Character Specific") .. ".",
+				title = string.format(L.CHARSETTINGS_MAINTITLE_HELP, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player), TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CHARSPECIFIC)),
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name Format",
-				help = "Select what Name Format NPCs should refer you to as." .. "\n\n" .. "Selecting anything other than 'OOC Character Name' or 'Custom' will use information from your currently selected TRP3 Character Profile.",
+				title = string.format(L.CHARSETTINGS_NAMEFORMAT_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER)),
+				help = L.CHARSETTINGS_NAMEFORMAT_HELP,
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
 				listCallback = function(value)
@@ -1330,8 +1334,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name Format",
-				help = "Select what Race NPCs should refer to you as.",
+				title = string.format(L.CHARSETTINGS_RACEFORMAT_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE)),
+				help = L.CHARSETTINGS_RACEFORMAT_HELP,
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
 				listCallback = function(value)
@@ -1343,8 +1347,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
-				title = TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .. " Name Format",
-				help = "Select what Class NPCs should refer to you as.",
+				title = string.format(L.CHARSETTINGS_CLASSFORMAT_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS)),
+				help = L.CHARSETTINGS_CLASSFORMAT_HELP,
 				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
 				listCallback = function(value)
@@ -1361,20 +1365,20 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Character") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "The value entered here will only be used if 'Character Name Format' is set as 'Custom'.",
+				title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+				help = L.CHARSETTINGS_CUSTOMNAME_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. NORMAL_FONT_COLOR:WrapTextInColorCode("Race") .. " Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "The value entered here will only be used if 'Race Name Format' is set as 'Custom'.",
+				title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+				help = L.CHARSETTINGS_CUSTOMRACE_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = "Custom " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode("Class")  .." Name " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(*)"),
-				help = "The value entered here will only be used if 'Class Name Format' is set as 'Custom'.",
+				title = string.format(L.CHARSETTINGS_CUSTOMCLASS_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+				help = L.CHARSETTINGS_CUSTOMCLASS_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
 			},
 			{
@@ -1383,16 +1387,16 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Text to Modify",
+				title = L.MODIFYSETTINGS_TITLE,
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Select which text this addon should modify to include your RP Name/Race/Class." .. "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+				title = string.format(L.MODIFYSETTINGS_HELP, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Quest Text / Gossip",
-				help = "If checked, this addon will modify all text that appears in quest dialogues, including Quest Text, Gossip Text and Gossip Options.",
+				title = L.MODIFYSETTINGS_QUESTTEXT_TITLE,
+				help = L.MODIFYSETTINGS_QUESTTEXT_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;					
@@ -1400,14 +1404,14 @@ local function TRP3RPNameInQuests_Init()
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
 					
 					if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 					end
 				end,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "NPC Speech " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(/say, /yell, /emote etc)"),
-				help = "If checked, this addon will modify speech from NPCs including Says, Yells, Emotes, Talking Heads, and Cinematic/Cutscene Subtitles." .. "\n\n" .. "Does not affect speech from other players.",
+				title = string.format(L.MODIFYSETTINGS_NPCSPEECH_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_NPCSPEECH_TITLE2)),
+				help = L.MODIFYSETTINGS_NPCSPEECH_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1415,15 +1419,15 @@ local function TRP3RPNameInQuests_Init()
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, value)
 					
 					if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 					end
 					
 				end,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Text Items " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(Books, Letters, Plaques etc)"),
-				help = "If checked, this addon will modify text items such as Books, Letters and other text items you can find in the world or use from your bags.",
+				title = string.format(L.MODIFYSETTINGS_TEXTITEMS_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_TEXTITEMS_TITLE2)),
+				help = L.MODIFYSETTINGS_TEXTITEMS_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1431,14 +1435,14 @@ local function TRP3RPNameInQuests_Init()
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
 
 					if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 					end
 				end,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Mailbox",
-				help = "If checked, this addon will modify most mail in your Mailbox." .. "\n\n" .. "Does not affect mails that use a template, for example, Auction House invoices.",
+				title = L.MODIFYSETTINGS_MAILBOX_TITLE,
+				help = L.MODIFYSETTINGS_MAILBOX_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1446,15 +1450,15 @@ local function TRP3RPNameInQuests_Init()
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
 					
 					if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 					end
 					
 				end,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Only modify Race/Class adjacent to punctuation",
-				help = "If checked, your RP Race or Class will only be modified in quest text if it is next to a full stop, comma, question mark, or exclamation mark." .. "\n\n" .. "For example, 'How are you, " .. TRP3_API.globals.player_class_loc .. "?' would be replaced, as the question mark is next to your class name, but 'How could a " .. TRP3_API.globals.player_class_loc .. " defeat me?' would not.",
+				title = L.MODIFYSETTINGS_RCPUNC_TITLE,
+				help = string.format(L.MODIFYSETTINGS_RCPUNC_HELP, TRP3_API.globals.player_class_loc, TRP3_API.globals.player_class_loc),
 				configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1471,20 +1475,20 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Extra Functions",
+				title = L.EXTRAFUNC_TITLE
 			},
 			{
 				inherit = "TRP3_ConfigParagraph",
-				title = "Add TRP3 Character Information to other UI elements." .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode("These functions may not be compatible with custom UI addons or frameworks.") ..  "\n" .. "These options are " .. ORANGE_FONT_COLOR:WrapTextInColorCode("Account Wide") .. ".",
+				title = L.EXTRAFUNC_HELP1 .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_HELP2) ..  "\n" .. string.format(L.EXTRAFUNC_HELP3, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
 			},
 			{
 				inherit = "TRP3_ConfigNote",
-				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode("Show Character TRP3 Info:"),
+				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_TITLE),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " .. "In the Unit Frame",
-				help = "If checked, TRP3 Character Names will be shown in the Unit Frame.",
+				title = TRP3RPNameInQuests_TextureDot .. " " .. L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE,
+				help = L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1497,8 +1501,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Character Window",
-				help = "If checked, TRP3 Character Name, Race and Class will be shown in the Character Window (aka Paper Doll).",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE,
+				help = L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1515,8 +1519,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  "In the Party/Raid Frame",
-				help = "If checked, TRP3 Character Names will be shown in the Party/Raid Frame.",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE,
+				help = L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1527,8 +1531,8 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  "Also Use Custom Class Color in Raid Frames",
-				help = "If checked, Raid Frames will use the custom TRP3 Class Color for their background, if available.",
+				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE,
+				help = L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
 				dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
 				OnHide = function(button)
@@ -1540,15 +1544,15 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " .. "In Zone Names" .. " " .. LIGHTGRAY_FONT_COLOR:WrapTextInColorCode("(e.g. Garrison)"),
-				help = "If checked, TRP3 Character Names will be shown in Zone Names where appropriate." .. "\n" .. "For example, your Draenor Garrison.",
+				title = TRP3RPNameInQuests_TextureDot .. " " .. string.format(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE, LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2)),
+				help = L.EXTRAFUNC_SHOWINFO_ZONENAME_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
 					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, value)	
 					
 					if (TRP3_RPNameInQuests_OldVar_ZoneNameRPName ~= value) then
-						TRP3_API.popup.showConfirmPopup("This change requires you to /reload the UI.", ReloadUI);
+						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 					end
 					
 				end,
@@ -1559,12 +1563,12 @@ local function TRP3RPNameInQuests_Init()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = "Troubleshooting",
+				title = L.TROUBLESHOOTING_TITLE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Use alternate method to insert RP Name into Quest Text",
-				help = "If your TRP3 Character Name does not appear in quest text as expected, try enabling this option.".. "\n" .. "This will use a slightly different method to add/replace your Character's Name in text which may fix the issue.",
+				title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
+				help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
 				configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
 				OnHide = function(button)
 					local value = button:GetChecked() and true or false;
@@ -1585,8 +1589,8 @@ local function TRP3RPNameInQuests_Init()
 	--Create Config Page
 	TRP3_API.configuration.registerConfigurationPage({
 			id = "trp3_rpnameinquests_config",
-			menuText = "Quest Text",
-			pageText = "RP Name in Quest Text",
+			menuText = L.ADDON_NAME_SHORT,
+			pageText = L.ADDON_NAME,
 			elements = TRP3RPNameInQuests_ConfigElements
 		});
 
@@ -1596,8 +1600,8 @@ end
 
 
 TRP3_API.module.registerModule({
-	name = "RP Name in Quest Text",
-	description = "Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!",
+	name = L.ADDON_NAME,
+	description = L.ADDON_DESC,
 	version = "1.2.21",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
@@ -1613,7 +1617,7 @@ end
 
 local TRP3RPNameInQuests_OpenConfigCommand = {
 	id = "questtext",
-	helpLine = " Open the 'RP Name in Quest Text' Config.",
+	helpLine = " " .. L.SLASHCMD_HELP,
 	handler = function()
 		TRP3RPNameInQuests_OpenConfig();
 	end,
@@ -1642,18 +1646,18 @@ function TRP3RPNameInQuests_CompartmentHover(addonName, buttonName)
 		local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 		
 		TRP3RPNameInQuests_Tooltip:SetOwner(buttonName, "ANCHOR_LEFT");
-		TRP3RPNameInQuests_Tooltip:SetText("TRP3: RP Name in Quest Text")
+		TRP3RPNameInQuests_Tooltip:SetText(L.TRP3 .. ": " .. L.ADDON_NAME)
 		
 		TRP3RPNameInQuests_Tooltip:AddLine(" ")
-		TRP3RPNameInQuests_Tooltip:AddLine("How NPCs will address " .. TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player) .. ":", WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddLine(string.format(L.ADCOM_HOW, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)), WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 		TRP3RPNameInQuests_Tooltip:AddLine(" ")
 		
-		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Name:", TRP3_RPNameInQuests_GetFullRPName(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Race:", TRP3_RPNameInQuests_ReturnRPRace(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-		TRP3RPNameInQuests_Tooltip:AddDoubleLine("Class:", TRP3_RPNameInQuests_ReturnRPClass(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine(L.ADCOM_NAME, TRP3_RPNameInQuests_GetFullRPName(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine(L.ADCOM_RACE, TRP3_RPNameInQuests_ReturnRPRace(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddDoubleLine(L.ADCOM_CLASS, TRP3_RPNameInQuests_ReturnRPClass(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
 		
 		TRP3RPNameInQuests_Tooltip:AddLine(" ")
-		TRP3RPNameInQuests_Tooltip:AddLine("Click to change settings.", GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+		TRP3RPNameInQuests_Tooltip:AddLine(L.ADCOM_CLICK_TO_CHANGE, GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
 
 		TRP3RPNameInQuests_Tooltip:Show()
 	end
