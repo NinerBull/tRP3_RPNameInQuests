@@ -85,14 +85,14 @@ local _, L = ...;
 	L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE = "In the Unit Frame"
 	L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP = "If checked, TRP3 Character Names will be shown in the Unit Frame."
 	
-	L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE = "In the Unit Frame"
+	L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE = "In the Character Window"
 	L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP = "If checked, TRP3 Character Name, Race and Class will be shown in the Character Window (aka Paper Doll)."
 	
 	L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE = "In the Party/Raid Frame"
 	L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP = "If checked, TRP3 Character Names will be shown in the Party/Raid Frame."
 	
 	L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE = "Also Use Custom Class Color in Raid Frames"
-	L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP = "If checked, Raid Frames will use the custom TRP3 Class Color for their background, if available."
+	L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP = "If checked, Raid Frames will use the Character's TRP3 Class Color for their background, if available."
 	
 	L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE = "In Zone Names %s"
 	L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2 = "(e.g. Garrison)"
