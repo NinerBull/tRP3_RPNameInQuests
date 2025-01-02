@@ -789,7 +789,7 @@ local function TRP3RPNameInQuests_Init()
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
 	
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 			
 			local unitIsConnected = UnitIsConnected(frame.unit);
 			local unitIsDead = unitIsConnected and UnitIsDead(frame.unit);
@@ -807,39 +807,36 @@ local function TRP3RPNameInQuests_Init()
 					
 					
 				else
+					
+					
+					local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
+					
+					if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
+							
+					elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
 				
-					if (CompactUnitFrame_GetOptionUseClassColors) then 
-					
-						local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
 						
-						if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
-								
-						elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
-					
-							
-						elseif ( frame.optionTable.colorHealthBySelection ) then
-							
-						elseif ( UnitIsFriend("player", frame.unit) ) then
+					elseif ( frame.optionTable.colorHealthBySelection ) then
 						
-							thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
+					elseif ( UnitIsFriend("player", frame.unit) ) then
+					
+						thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
 
-							if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
-								
-								local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
+						if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
 							
-								if (thisCustomClassColor ~= nil) then
-							
-									frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
-								
-								end
+							local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
+						
+							if (thisCustomClassColor ~= nil) then
+						
+								frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
 							
 							end
-							
-							
-						else
-
+						
 						end
 						
+						
+					else
+
 					end
 				end
 			end
