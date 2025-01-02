@@ -705,8 +705,8 @@ local function TRP3RPNameInQuests_Init()
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 			if self.name and self.unit then
-				--if (UnitIsPlayer(tostring(self.unit))) then
-					if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+				if (UnitPlayerControlled(tostring(self.unit))) then
+					if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 						pcall(function () 
 							local thisRealmString = ""
 							if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
@@ -717,7 +717,7 @@ local function TRP3RPNameInQuests_Init()
 							self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
 						end)
 					end
-				--end
+				end
 			end
 		end
 	end)
@@ -761,13 +761,13 @@ local function TRP3RPNameInQuests_Init()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 			if self.name and self.unit then
-				if (UnitIsPlayer(tostring(self.unit))) then
+				if (UnitPlayerControlled(tostring(self.unit))) then
 					--[[if ((tostring(self.unit) == "player") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
 						pcall(function () 
 							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
 						end)
 					else]]
-						if (UnitName(self.unit) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+						if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 							pcall(function () 
 								local thisRealmString = ""
 								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
@@ -786,7 +786,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	-- 
-	-- https://github.com/Gethe/wow-ui-source/blob/2e827a602452a4d90608d3aba54f2e037a00e36a/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
+	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
 	
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
@@ -807,36 +807,39 @@ local function TRP3RPNameInQuests_Init()
 					
 					
 				else
-					
-					
-					local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
-					
-					if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
-							
-					elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
 				
-						
-					elseif ( frame.optionTable.colorHealthBySelection ) then
-						
-					elseif ( UnitIsFriend("player", frame.unit) ) then
+					if (CompactUnitFrame_GetOptionUseClassColors) then 
 					
-						thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
-
-						if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
+						local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
+						
+						if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
+								
+						elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
+					
 							
-							local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
+						elseif ( frame.optionTable.colorHealthBySelection ) then
+							
+						elseif ( UnitIsFriend("player", frame.unit) ) then
 						
-							if (thisCustomClassColor ~= nil) then
-						
-								frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
+							thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
+
+							if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
+								
+								local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
+							
+								if (thisCustomClassColor ~= nil) then
+							
+									frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
+								
+								end
 							
 							end
-						
+							
+							
+						else
+
 						end
 						
-						
-					else
-
 					end
 				end
 			end
