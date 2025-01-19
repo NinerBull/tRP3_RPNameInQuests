@@ -17,6 +17,8 @@ local TRP3RPNameInQuests_Frame = CreateFrame("Frame")
 TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
 TRP3RPNameInQuests_Frame:RegisterEvent("ADDON_LOADED")
+TRP3RPNameInQuests_Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests_Frame:RegisterEvent("KNOWN_TITLES_UPDATE");
@@ -1135,6 +1137,15 @@ local function TRP3RPNameInQuests_Init()
 		
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 				TRP3_RPNameInQuests_UpdateUnitFrames()
+			end
+			
+		end
+		
+		
+		if ( event == "PLAYER_ENTERING_WORLD") then
+		
+			if (C_AddOns.DoesAddOnExist("tRP3_RPNameInQuests")) then
+				C_AddOns.DisableAddOn("tRP3_RPNameInQuests")
 			end
 			
 		end
