@@ -1144,9 +1144,9 @@ local function TRP3RPNameInQuests_Init()
 		
 		if ( event == "PLAYER_ENTERING_WORLD") then
 		
-			if (C_AddOns.DoesAddOnExist("tRP3_RPNameInQuests")) then
+			--[[if (C_AddOns.DoesAddOnExist("tRP3_RPNameInQuests")) then
 				C_AddOns.DisableAddOn("tRP3_RPNameInQuests")
-			end
+			end]]
 			
 		end
 		
