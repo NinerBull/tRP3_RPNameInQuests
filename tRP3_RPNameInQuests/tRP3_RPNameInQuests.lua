@@ -1613,7 +1613,7 @@ end
 TRP3_API.module.registerModule({
 	name = L.ADDON_NAME,
 	description = L.ADDON_DESC,
-	version = "1.2.22b",
+	version = "1.2.22",
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 130,
