@@ -1054,13 +1054,13 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Cinematic Subtitles
-	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+	--if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 		hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
 				SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
 			end
 		end)
-	end
+	--end
 
 	
 	
