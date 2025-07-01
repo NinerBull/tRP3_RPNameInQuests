@@ -51,13 +51,12 @@ You can also add your TRP3 Roleplay Name/Race/Class to various UI components, su
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
 I have tested this addon successfully with the following:
-* Default UI Quest Frames
-* Default UI Chat Window
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * [Immersion](https://github.com/seblindfors/Immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
 * [GossipChatter](https://github.com/keyboardturner/GossipChatter)
 * [DialogueUI](https://github.com/Peterodox/YUI-Dialogue)
+* [Interaction](https://github.com/Adaptvx/Interaction)
 
 This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
 
