@@ -1197,10 +1197,17 @@ local function TRP3RPNameInQuests_Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_TRADESKILLS", TRP3_RPNameInQuests_ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", TRP3_RPNameInQuests_ChatFilterFunc) -- NPC Boss /w Chat
+		
+		-- Raid Boss Emote
+		hooksecurefunc("RaidNotice_AddMessage", function(noticeFrame, ...)
+			noticeFrame.slot1:SetText(TRP3_RPNameInQuests_CompleteRename(noticeFrame.slot1:GetText()))
+			noticeFrame.slot2:SetText(TRP3_RPNameInQuests_CompleteRename(noticeFrame.slot2:GetText()))
+		end)
+	
 	end
 	
 
-	
+
 
 	--Talking Head
 	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
