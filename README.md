@@ -44,7 +44,7 @@ You can also select which text this addon modifies. Turn on/off as desired.
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 ## Compatibility
-* **The War Within** - 11.1.7
+* **The War Within** - 11.2.0
 * **MoP Classic** - 5.5.0
 * **Classic Era** - 1.15.7
 

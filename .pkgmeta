@@ -1,0 +1,13 @@
+package-as: tRP3_RPNameInQuests
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+	
+ignore:
+  - *.md
+  - LICENSE
+  - .pkgmeta
+  
+move-folders:
+  tRP3_RPNameInQuests/tRP3_RPNameInQuests: tRP3_RPNameInQuests
