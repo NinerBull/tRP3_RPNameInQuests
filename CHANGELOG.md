@@ -1,1 +1,2 @@
-- Placeholder
+- Potential fix for Lua error when "Show Character TRP3 Info in the Unit Frame" or "Show Character TRP3 Info In the Party/Raid Frame" is checked.
+- Updated TOC for 11.2.0 and 3.4.5.

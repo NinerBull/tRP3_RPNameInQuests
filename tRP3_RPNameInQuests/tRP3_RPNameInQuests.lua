@@ -34,10 +34,8 @@ local function TRP3RPNameInQuests_Init()
 	if (type(TRP3RPNameInQuests_CharVars) ~= "table") then		
 		TRP3RPNameInQuests_CharVars = {}
 		TRP3_API.utils.message.displayMessage(string.format(L.FIRST_TIME_INSTALL_GREET, TRP3_API.Colors.Cyan("RP Name in Quest Text"), TRP3_API.Colors.Cyan("/trp3 questtext")),1)
-		
 	end
 
-	
 	
 	--Upgrades from older versions
 	if (TRP3RPNameInQuests_CharVars.CustomClassName == true) then
@@ -60,12 +58,6 @@ local function TRP3RPNameInQuests_Init()
 		TRP3RPNameInQuests_CharVars.WhichRPName = 99
 	end
 
-
-	
-	
-
-	
-	
 	
 	-- Set Default Addon Variables
 	if (type(TRP3RPNameInQuests_CharVars.WhichRPName) ~= "number") then
@@ -96,7 +88,6 @@ local function TRP3RPNameInQuests_Init()
 	-- Player's Class Colour
 	local TRP3RPNameInQuests_ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 
-		
 
 	--TRP3 Variables
 	TRPRPNAMEINQUESTS.CONFIG = {};
@@ -170,9 +161,6 @@ local function TRP3RPNameInQuests_Init()
 	
 	--RaceClassPunctuationAdjacent
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, true);
-	
-	
-	
 
 	--UnitFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, false);
@@ -202,8 +190,6 @@ local function TRP3RPNameInQuests_Init()
 	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
 	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME)
 	
-	
-
 	
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
 	-- (Go get it btw it's awesome)
@@ -705,11 +691,11 @@ local function TRP3RPNameInQuests_Init()
 	-- Unit Frame
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			if self.name and self.unit then
-				if (UnitPlayerControlled(tostring(self.unit))) then
-					if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
-						pcall(function () 
+		pcall(function () 
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+				if self.name and self.unit then
+					if (UnitPlayerControlled(tostring(self.unit))) then
+						if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 							local thisRealmString = ""
 							if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
 								thisRealmString = FOREIGN_SERVER_LABEL
@@ -717,11 +703,11 @@ local function TRP3RPNameInQuests_Init()
 								--thisRealmString = INTERACTIVE_SERVER_LABEL
 							end
 							self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
-						end)
+						end
 					end
 				end
 			end
-		end
+		end)
 	end)
 	
 	-- Also Unit Frame
@@ -761,29 +747,22 @@ local function TRP3RPNameInQuests_Init()
 	-- Party/Raid Frames
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to the Raid Frames.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
-			if self.name and self.unit then
-				if (UnitPlayerControlled(tostring(self.unit))) then
-					--[[if ((tostring(self.unit) == "player") and (self.name:GetText() == TRP3_RPNameInQuests_NameToChange))  then
-						pcall(function () 
-							self.name:SetText(TRP3_RPNameInQuests_GetFullRPName(true));
-						end)
-					else]]
+		pcall(function () 
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+				if self.name and self.unit then
+					if (UnitPlayerControlled(tostring(self.unit))) then
 						if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
-							pcall(function () 
 								local thisRealmString = ""
 								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
 									thisRealmString = FOREIGN_SERVER_LABEL
-								--[[elseif if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
-									thisRealmString = INTERACTIVE_SERVER_LABEL]]--
 								end
 								self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit) .. thisRealmString)
-							end)
+							
 						end
-					--[[end]]
+					end
 				end
 			end
-		end
+		end)
 	end)
 	
 	
@@ -798,8 +777,6 @@ local function TRP3RPNameInQuests_Init()
 			local unitIsPlayer = UnitIsPlayer(frame.unit) or UnitIsPlayer(frame.displayedUnit);
 			local unitIsActivePlayer = UnitIsUnit(frame.unit, "player") or UnitIsUnit(frame.displayedUnit, "player");
 			
-			
-			
 			if ( not unitIsConnected or (unitIsDead and not unitIsPlayer) ) then
 				
 			elseif ( C_GameRules.IsGameRuleActive(Enum.GameRule.PlayerNameplateAlternateHealthColor) and unitIsPlayer and not unitIsActivePlayer and UnitCanAttack("player", frame.unit) ) then
@@ -807,9 +784,7 @@ local function TRP3RPNameInQuests_Init()
 			else
 				if ( frame.optionTable.healthBarColorOverride ) then
 					
-					
 				else
-					
 					
 					local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
 					
@@ -817,7 +792,6 @@ local function TRP3RPNameInQuests_Init()
 							
 					elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
 				
-						
 					elseif ( frame.optionTable.colorHealthBySelection ) then
 						
 					elseif ( UnitIsFriend("player", frame.unit) ) then
@@ -879,7 +853,7 @@ local function TRP3RPNameInQuests_Init()
 						-- Era Only
 						CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					else
-						-- Retail and Cata
+						-- Retail and MoP
 						CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					end
 				end
@@ -904,7 +878,7 @@ local function TRP3RPNameInQuests_Init()
 				-- Era Only
 				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
 			else
-				-- Retail and Cata
+				-- Retail and MoP
 				local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
 				
 				if (thisTRP3CharInfo.CH ~= nil) then
@@ -936,7 +910,7 @@ local function TRP3RPNameInQuests_Init()
 	
 		
 		
-		-- Retail and Cata
+		-- Retail and MoP
 		if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
 		
 			-- If Classic Quest Log is Installed
@@ -1054,13 +1028,11 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	--Cinematic Subtitles
-	--if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-		hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
-				SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
-			end
-		end)
-	--end
+	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+			SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
+		end
+	end)
 
 	
 	
@@ -1140,16 +1112,6 @@ local function TRP3RPNameInQuests_Init()
 			end
 			
 		end
-		
-		
-		if ( event == "PLAYER_ENTERING_WORLD") then
-		
-			--[[if (C_AddOns.DoesAddOnExist("tRP3_RPNameInQuests")) then
-				C_AddOns.DisableAddOn("tRP3_RPNameInQuests")
-			end]]
-			
-		end
-		
 		
 	
 	end)
@@ -1270,12 +1232,10 @@ local function TRP3RPNameInQuests_Init()
 			return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetZoneText(), true)
 		end
 		
-		
 		TRP3RPNameGetSubZoneText = GetSubZoneText
 		function GetSubZoneText()
 			return TRP3_RPNameInQuests_RPNameRename(TRP3RPNameGetSubZoneText(), true)
 		end
-	
 	
 	end
 
@@ -1290,12 +1250,11 @@ local function TRP3RPNameInQuests_Init()
 
 	
 	
-	
-	
-	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
+		pcall(function () 
 			UnitFrame_Update(PlayerFrame)
 			UnitFrame_Update(TargetFrame)
+		end)
 	end
 	
 
@@ -1328,275 +1287,275 @@ local function TRP3RPNameInQuests_Init()
 
 
 	TRP3RPNameInQuests_ConfigElements = {
-			{
-				inherit = "TRP3_ConfigH1",
-				title =  string.format(L.CHARSETTINGS_MAINTITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)),
-				
-			},
-			{
-				inherit = "TRP3_ConfigParagraph",
-				title = string.format(L.CHARSETTINGS_MAINTITLE_HELP, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player), TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CHARSPECIFIC)),
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "trp3_rpnameinquests_whichrpnamewidget",
-				title = string.format(L.CHARSETTINGS_NAMEFORMAT_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER)),
-				help = L.CHARSETTINGS_NAMEFORMAT_HELP,
-				listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
-				listCallback = function(value)
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, value)
-					TRP3RPNameInQuests_CharVars.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
-				end,
-
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				title = string.format(L.CHARSETTINGS_RACEFORMAT_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE)),
-				help = L.CHARSETTINGS_RACEFORMAT_HELP,
-				listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
-				listCallback = function(value)
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
-					TRP3RPNameInQuests_CharVars.CustomRaceName = value
-					
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				title = string.format(L.CHARSETTINGS_CLASSFORMAT_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS)),
-				help = L.CHARSETTINGS_CLASSFORMAT_HELP,
-				listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
-				listCallback = function(value)
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, value)
-					TRP3RPNameInQuests_CharVars.CustomClassName = value
-					
-					
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigNote",
-				title = "- - -",
-			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
-				help = L.CHARSETTINGS_CUSTOMNAME_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
-			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
-				help = L.CHARSETTINGS_CUSTOMRACE_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
-			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = string.format(L.CHARSETTINGS_CUSTOMCLASS_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
-				help = L.CHARSETTINGS_CUSTOMCLASS_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
-			},
-			{
-				inherit = "TRP3_ConfigNote",
-				title = " ",
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = L.MODIFYSETTINGS_TITLE,
-			},
-			{
-				inherit = "TRP3_ConfigParagraph",
-				title = string.format(L.MODIFYSETTINGS_HELP, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.MODIFYSETTINGS_QUESTTEXT_TITLE,
-				help = L.MODIFYSETTINGS_QUESTTEXT_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;					
-					
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
-					
-					if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
-						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-					end
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = string.format(L.MODIFYSETTINGS_NPCSPEECH_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_NPCSPEECH_TITLE2)),
-				help = L.MODIFYSETTINGS_NPCSPEECH_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, value)
-					
-					if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
-						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-					end
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = string.format(L.MODIFYSETTINGS_TEXTITEMS_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_TEXTITEMS_TITLE2)),
-				help = L.MODIFYSETTINGS_TEXTITEMS_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
-
-					if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
-						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-					end
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.MODIFYSETTINGS_MAILBOX_TITLE,
-				help = L.MODIFYSETTINGS_MAILBOX_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
-					
-					if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
-						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-					end
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.MODIFYSETTINGS_RCPUNC_TITLE,
-				help = string.format(L.MODIFYSETTINGS_RCPUNC_HELP, TRP3_API.globals.player_class_loc, TRP3_API.globals.player_class_loc),
-				configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, value)
-
-
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigNote",
-				title = " ",
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = L.EXTRAFUNC_TITLE
-			},
-			{
-				inherit = "TRP3_ConfigParagraph",
-				title = L.EXTRAFUNC_HELP1 .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_HELP2) ..  "\n" .. string.format(L.EXTRAFUNC_HELP3, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
-			},
-			{
-				inherit = "TRP3_ConfigNote",
-				title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_TITLE),
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " .. L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE,
-				help = L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
-					
-					--Update Unit Frames
-					TRP3_RPNameInQuests_UpdateUnitFrames()
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE,
-				help = L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
-					
-					--Save Variables we can't save otherwise
-					TRP3RPNameInQuests_CharVars.WhichRPNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT))
-					
-					TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
-					
-					TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE,
-				help = L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, value)	
-					
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE,
-				help = L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
-				dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, value)	
-					
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = TRP3RPNameInQuests_TextureDot .. " " .. string.format(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE, LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2)),
-				help = L.EXTRAFUNC_SHOWINFO_ZONENAME_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, value)	
-					
-					if (TRP3_RPNameInQuests_OldVar_ZoneNameRPName ~= value) then
-						TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-					end
-					
-				end,
-			},
-			{
-				inherit = "TRP3_ConfigNote",
-				title = " ",
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = L.TROUBLESHOOTING_TITLE,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
-				help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
-				configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
-				OnHide = function(button)
-					local value = button:GetChecked() and true or false;
-					TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
-					
-					
-				end,
-			},
+		{
+			inherit = "TRP3_ConfigH1",
+			title =  string.format(L.CHARSETTINGS_MAINTITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)),
 			
-		}
+		},
+		{
+			inherit = "TRP3_ConfigParagraph",
+			title = string.format(L.CHARSETTINGS_MAINTITLE_HELP, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(TRP3_API.globals.player), TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CHARSPECIFIC)),
+		},
+		{
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "trp3_rpnameinquests_whichrpnamewidget",
+			title = string.format(L.CHARSETTINGS_NAMEFORMAT_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER)),
+			help = L.CHARSETTINGS_NAMEFORMAT_HELP,
+			listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
+			listCallback = function(value)
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, value)
+				TRP3RPNameInQuests_CharVars.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
+			end,
+
+		},
+		{
+			inherit = "TRP3_ConfigDropDown",
+			title = string.format(L.CHARSETTINGS_RACEFORMAT_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE)),
+			help = L.CHARSETTINGS_RACEFORMAT_HELP,
+			listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
+			listCallback = function(value)
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
+				TRP3RPNameInQuests_CharVars.CustomRaceName = value
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigDropDown",
+			title = string.format(L.CHARSETTINGS_CLASSFORMAT_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS)),
+			help = L.CHARSETTINGS_CLASSFORMAT_HELP,
+			listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
+			listCallback = function(value)
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, value)
+				TRP3RPNameInQuests_CharVars.CustomClassName = value
+				
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigNote",
+			title = "- - -",
+		},
+		{
+			inherit = "TRP3_ConfigEditBox",
+			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+			help = L.CHARSETTINGS_CUSTOMNAME_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
+		},
+		{
+			inherit = "TRP3_ConfigEditBox",
+			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+			help = L.CHARSETTINGS_CUSTOMRACE_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
+		},
+		{
+			inherit = "TRP3_ConfigEditBox",
+			title = string.format(L.CHARSETTINGS_CUSTOMCLASS_TITLE, TRP3RPNameInQuests_ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
+			help = L.CHARSETTINGS_CUSTOMCLASS_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
+		},
+		{
+			inherit = "TRP3_ConfigNote",
+			title = " ",
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.MODIFYSETTINGS_TITLE,
+		},
+		{
+			inherit = "TRP3_ConfigParagraph",
+			title = string.format(L.MODIFYSETTINGS_HELP, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.MODIFYSETTINGS_QUESTTEXT_TITLE,
+			help = L.MODIFYSETTINGS_QUESTTEXT_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;					
+				
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
+				
+				if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = string.format(L.MODIFYSETTINGS_NPCSPEECH_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_NPCSPEECH_TITLE2)),
+			help = L.MODIFYSETTINGS_NPCSPEECH_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, value)
+				
+				if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = string.format(L.MODIFYSETTINGS_TEXTITEMS_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_TEXTITEMS_TITLE2)),
+			help = L.MODIFYSETTINGS_TEXTITEMS_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
+
+				if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.MODIFYSETTINGS_MAILBOX_TITLE,
+			help = L.MODIFYSETTINGS_MAILBOX_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
+				
+				if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.MODIFYSETTINGS_RCPUNC_TITLE,
+			help = string.format(L.MODIFYSETTINGS_RCPUNC_HELP, TRP3_API.globals.player_class_loc, TRP3_API.globals.player_class_loc),
+			configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, value)
+
+
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigNote",
+			title = " ",
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.EXTRAFUNC_TITLE
+		},
+		{
+			inherit = "TRP3_ConfigParagraph",
+			title = L.EXTRAFUNC_HELP1 .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_HELP2) ..  "\n" .. string.format(L.EXTRAFUNC_HELP3, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
+		},
+		{
+			inherit = "TRP3_ConfigNote",
+			title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_TITLE),
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3RPNameInQuests_TextureDot .. " " .. L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE,
+			help = L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
+				
+				--Update Unit Frames
+				TRP3_RPNameInQuests_UpdateUnitFrames()
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE,
+			help = L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
+				
+				--Save Variables we can't save otherwise
+				TRP3RPNameInQuests_CharVars.WhichRPNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT))
+				
+				TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
+				
+				TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE,
+			help = L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, value)	
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3RPNameInQuests_TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE,
+			help = L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
+			dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, value)	
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = TRP3RPNameInQuests_TextureDot .. " " .. string.format(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE, LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2)),
+			help = L.EXTRAFUNC_SHOWINFO_ZONENAME_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, value)	
+				
+				if (TRP3_RPNameInQuests_OldVar_ZoneNameRPName ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigNote",
+			title = " ",
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.TROUBLESHOOTING_TITLE,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
+			help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+				
+				
+			end,
+		},
+		
+	}
 	
 	-- Remove Unit Frame Option if needed
 	if (TRP3_RPNameInQuests_IgnoreUnitFrameMods == true) then
@@ -1606,11 +1565,11 @@ local function TRP3RPNameInQuests_Init()
 
 	--Create Config Page
 	TRP3_API.configuration.registerConfigurationPage({
-			id = "trp3_rpnameinquests_config",
-			menuText = L.ADDON_NAME_SHORT,
-			pageText = L.ADDON_NAME,
-			elements = TRP3RPNameInQuests_ConfigElements
-		});
+		id = "trp3_rpnameinquests_config",
+		menuText = L.ADDON_NAME_SHORT,
+		pageText = L.ADDON_NAME,
+		elements = TRP3RPNameInQuests_ConfigElements
+	});
 
 end
 
