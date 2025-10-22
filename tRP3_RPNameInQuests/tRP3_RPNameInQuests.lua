@@ -852,8 +852,11 @@ local function TRP3RPNameInQuests_Init()
 					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 						-- Era Only
 						CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
+					else if (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
+						-- MoP
+						CharacterFrameTitleText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					else
-						-- Retail and MoP
+						-- Retail
 						CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					end
 				end

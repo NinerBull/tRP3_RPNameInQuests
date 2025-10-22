@@ -1,1 +1,3 @@
-- Updated TOC for 11.2.5 and 5.5.1.
+- Fixed Character Name not appearing correctly on the character sheet in MoP when "Show Character TRP3 Info in the Character Window" is enabled.
+- Addon will no longer try to modify Unit/Party/Raid Frames while in combat, when "Show Character TRP3 Info in the Unit Frames"  or "Show Character TRP3 Info in the Party/Raid Frames" are enabled, to try prevent taint.
+- Updated TOC for 1.15.8.

@@ -1,4 +1,4 @@
-## Interface: 110205, 50501, 30405, 11507
+## Interface: 110205, 50501, 30405, 11508
 ## Title: Total RP 3: RP Name in Quest Text
 ## Version: @project-version@
 ## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
