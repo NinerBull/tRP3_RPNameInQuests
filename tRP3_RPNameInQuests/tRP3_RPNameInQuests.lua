@@ -691,23 +691,25 @@ local function TRP3RPNameInQuests_Init()
 	-- Unit Frame
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
-		pcall(function () 
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-				if self.name and self.unit then
-					if (UnitPlayerControlled(tostring(self.unit))) then
-						if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
-							local thisRealmString = ""
-							if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
-								thisRealmString = FOREIGN_SERVER_LABEL
-							--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
-								--thisRealmString = INTERACTIVE_SERVER_LABEL
+		--if (not InCombatLockdown()) then
+			securecallfunction(function () 
+				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+					if self.name and self.unit then
+						if (UnitPlayerControlled(tostring(self.unit))) then
+							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+								local thisRealmString = ""
+								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
+									thisRealmString = FOREIGN_SERVER_LABEL
+								--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
+									--thisRealmString = INTERACTIVE_SERVER_LABEL
+								end
+								self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
 							end
-							self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit, true) .. thisRealmString)
 						end
 					end
 				end
-			end
-		end)
+			end)
+		--end
 	end)
 	
 	-- Also Unit Frame
@@ -747,79 +749,79 @@ local function TRP3RPNameInQuests_Init()
 	-- Party/Raid Frames
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to the Raid Frames.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		pcall(function () 
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
-				if self.name and self.unit then
-					if (UnitPlayerControlled(tostring(self.unit))) then
-						if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
-								local thisRealmString = ""
-								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
-									thisRealmString = FOREIGN_SERVER_LABEL
-								end
-								self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit) .. thisRealmString)
-							
+		--if (not InCombatLockdown()) then
+			securecallfunction(function () 
+				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+					if self.name and self.unit then
+						if (UnitPlayerControlled(tostring(self.unit))) then
+							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+									local thisRealmString = ""
+									if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
+										thisRealmString = FOREIGN_SERVER_LABEL
+									end
+									self.name:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget(self.unit) .. thisRealmString)
+								
+							end
 						end
 					end
 				end
-			end
-		end)
+			end)
+		--end
 	end)
 	
 	
 	-- 
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
-	
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
-			
-			local unitIsConnected = UnitIsConnected(frame.unit);
-			local unitIsDead = unitIsConnected and UnitIsDead(frame.unit);
-			local unitIsPlayer = UnitIsPlayer(frame.unit) or UnitIsPlayer(frame.displayedUnit);
-			local unitIsActivePlayer = UnitIsUnit(frame.unit, "player") or UnitIsUnit(frame.displayedUnit, "player");
-			
-			if ( not unitIsConnected or (unitIsDead and not unitIsPlayer) ) then
+		--if (not InCombatLockdown()) then
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 				
-			elseif ( C_GameRules.IsGameRuleActive(Enum.GameRule.PlayerNameplateAlternateHealthColor) and unitIsPlayer and not unitIsActivePlayer and UnitCanAttack("player", frame.unit) ) then
+				local unitIsConnected = UnitIsConnected(frame.unit);
+				local unitIsDead = unitIsConnected and UnitIsDead(frame.unit);
+				local unitIsPlayer = UnitIsPlayer(frame.unit) or UnitIsPlayer(frame.displayedUnit);
+				local unitIsActivePlayer = UnitIsUnit(frame.unit, "player") or UnitIsUnit(frame.displayedUnit, "player");
 				
-			else
-				if ( frame.optionTable.healthBarColorOverride ) then
+				if ( not unitIsConnected or (unitIsDead and not unitIsPlayer) ) then
+					
+				elseif ( C_GameRules.IsGameRuleActive(Enum.GameRule.PlayerNameplateAlternateHealthColor) and unitIsPlayer and not unitIsActivePlayer and UnitCanAttack("player", frame.unit) ) then
 					
 				else
-					
-					local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
-					
-					if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
-							
-					elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
-				
-					elseif ( frame.optionTable.colorHealthBySelection ) then
-						
-					elseif ( UnitIsFriend("player", frame.unit) ) then
-					
-						thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
-
-						if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
-							
-							local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
-						
-							if (thisCustomClassColor ~= nil) then
-						
-								frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
-							
-							end
-						
-						end
-						
+					if ( frame.optionTable.healthBarColorOverride ) then
 						
 					else
+						
+						local useClassColors = CompactUnitFrame_GetOptionUseClassColors(frame, frame.optionTable);
+						
+						if ( (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.unit) or UnitTreatAsPlayerForDisplay(frame.unit)) and classColor and useClassColors ) then
+								
+						elseif ( CompactUnitFrame_IsTapDenied(frame) ) then
+					
+						elseif ( frame.optionTable.colorHealthBySelection ) then
+							
+						elseif ( UnitIsFriend("player", frame.unit) ) then
+						
+							thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
 
+							if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
+								
+								local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
+							
+								if (thisCustomClassColor ~= nil) then
+							
+									frame.healthBar:SetStatusBarColor(thisCustomClassColor.r, thisCustomClassColor.g, thisCustomClassColor.b);
+								
+								end
+							
+							end
+							
+							
+						else
+
+						end
 					end
 				end
 			end
-			
-		
-		end
-	
+		--end
 	end)
 	--AddOn_TotalRP3.Player.CreateFromUnit("target"):GetCustomColorForDisplay()
 	
@@ -828,17 +830,17 @@ local function TRP3RPNameInQuests_Init()
 	-- Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			if (InCombatLockdown() == false) then
+			--if (InCombatLockdown() == false) then
 				TRP3_RPNameInQuests_UpdateUnitFrames()
-			end
+			--end
 		end
 	end);
 	
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			if (InCombatLockdown() == false) then
+			--if (InCombatLockdown() == false) then
 				TRP3_RPNameInQuests_UpdateUnitFrames()
-			end
+			--end
 		end
 	end);
 	
@@ -852,11 +854,8 @@ local function TRP3RPNameInQuests_Init()
 					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 						-- Era Only
 						CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
-					else if (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
-						-- MoP
-						CharacterFrameTitleText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					else
-						-- Retail
+						-- Retail and MoP
 						CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
 					end
 				end
@@ -1185,6 +1184,7 @@ local function TRP3RPNameInQuests_Init()
 		end)
 	end
 	
+
 	
 	
 	-- Speech Bubbles
@@ -1255,7 +1255,7 @@ local function TRP3RPNameInQuests_Init()
 	
 	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
-		pcall(function () 
+		securecallfunction(function () 
 			UnitFrame_Update(PlayerFrame)
 			UnitFrame_Update(TargetFrame)
 		end)
