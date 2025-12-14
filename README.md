@@ -45,8 +45,8 @@ You can also add your TRP3 Roleplay Name/Race/Class to various UI components, su
 
 ## Compatibility
 * **The War Within** - 11.2.7
-* **MoP Classic** - 5.5.2
-* **Classic Era** - 1.15.8
+* **MoP Classic** - 5.5.3
+* **Classic Era** - 2.5.5
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 

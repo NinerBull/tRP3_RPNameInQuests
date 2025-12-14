@@ -1,2 +1,2 @@
-- Fixed Character Name not appearing correctly on the character sheet in MoP when "Show Character TRP3 Info in the Character Window" is enabled.
-- Updated TOC for 11.2.7, 5.5.2 and 1.15.8
+- Added a "Don't modify text during a Dungeon/Raid/PVP Encounter" under Troubleshooting.
+  - Ticking this will prevent the addon modifying any text during an Encounter Lockdown (Active Raid Boss/Dungeon/PVP Match).

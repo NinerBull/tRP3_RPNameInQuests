@@ -114,6 +114,7 @@ local function TRP3RPNameInQuests_Init()
 	TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
 	
 	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
+	TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER = "trp3_rpnameinquests_notinencounter";
 
 	-- Register and set value for variables
 
@@ -180,6 +181,9 @@ local function TRP3RPNameInQuests_Init()
 	
 	--Alternate RP Name Replacement
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, false);
+	
+	--Don't Modify in Encounter
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, false);
 
 
 
@@ -202,9 +206,33 @@ local function TRP3RPNameInQuests_Init()
 	
 
 
+
+	function TRP3_RPNameInQuests_ShouldNotEditText()
+	
+		local InEncounter 
+		
+		if (C_InstanceEncounter) then
+			InEncounter = C_InstanceEncounter.IsEncounterInProgress()
+		else
+			InEncounter = IsEncounterInProgress()
+		end
+		
+	
+		--Should we not try to edit text right now?
+		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and InEncounter == true then
+			return true
+		else
+			return false
+		end
+		
+	end
+	
+	
+	
+	
+
 	-- Full TRP3 Name (Including Title)
 	function TRP3_RPNameInQuests_GetFullRPName(getFullName)
-	
 	
 		getFullName = getFullName or false
 			
@@ -327,6 +355,10 @@ local function TRP3RPNameInQuests_Init()
 		if (doUpperCase == true) then
 			--textToRename = string.upper(textToRename)
 		end
+		
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return textToRename
+		end
 	
 		thisTextToReturn = textToRename
 		
@@ -380,11 +412,16 @@ local function TRP3RPNameInQuests_Init()
 		
 	end
 	
+	
 	-- Return RP Name Target
 	function TRP3_RPNameInQuests_ReturnRPNameTarget(thisTarget, withTitle)
 	
 		thisTarget = thisTarget or "player"
 		withTitle = withTitle or false
+		
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return UnitName(thisTarget)
+		end
 		
 		local thisPlayer = AddOn_TotalRP3.Player.CreateFromUnit(tostring(thisTarget))
 	
@@ -416,6 +453,11 @@ local function TRP3RPNameInQuests_Init()
 	
 		doLowerCase = doLowerCase or false
 		doUpperCase = doUpperCase or false
+		
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return textToRename
+		end
+		
 		thisTextToReturn = textToRename
 		local thisTRP3CharInfoR = TRP3_API.profile.getData("player/characteristics")
 		thisRaceName = TRP3_RPNameInQuests_RaceToChange
@@ -486,6 +528,10 @@ local function TRP3RPNameInQuests_Init()
 	 --Return RP Race
 	function TRP3_RPNameInQuests_ReturnRPRace()
 	
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return UnitRace("player")
+		end
+	
 		local thisTRP3CharInfoR = TRP3_API.profile.getData("player/characteristics")
 		thisRaceName = TRP3_RPNameInQuests_RaceToChange
 		
@@ -517,6 +563,10 @@ local function TRP3RPNameInQuests_Init()
 	 
 	--Rename Class
 	 function TRP3_RPNameInQuests_RPClassRename(textToRename, doLowerCase, doUpperCase)
+	 
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return textToRename
+		end
 	
 		doLowerCase = doLowerCase or false
 		doUpperCase = doUpperCase or false
@@ -589,6 +639,10 @@ local function TRP3RPNameInQuests_Init()
 	
 	--Return Class Name
 	 function TRP3_RPNameInQuests_ReturnRPClass()
+	 
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return UnitClass("player")
+		end
 	
 		local thisTRP3CharInfoC = TRP3_API.profile.getData("player/characteristics")
 		thisClassName = TRP3_RPNameInQuests_ClassToChange
@@ -622,6 +676,10 @@ local function TRP3RPNameInQuests_Init()
 	--Complete Rename Function
 	-- Do not rename this, DialogueUI looks for and uses this function
 	function TRP3_RPNameInQuests_CompleteRename(textToRename)
+	
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return textToRename
+		end
 
 		thisRenamedText = textToRename or ""
 		
@@ -691,7 +749,7 @@ local function TRP3RPNameInQuests_Init()
 	-- Unit Frame
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
-		--if (not InCombatLockdown()) then
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
 			securecallfunction(function () 
 				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
 					if self.name and self.unit then
@@ -709,7 +767,7 @@ local function TRP3RPNameInQuests_Init()
 					end
 				end
 			end)
-		--end
+		end
 	end)
 	
 	-- Also Unit Frame
@@ -749,7 +807,7 @@ local function TRP3RPNameInQuests_Init()
 	-- Party/Raid Frames
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to the Raid Frames.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		--if (not InCombatLockdown()) then
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
 			securecallfunction(function () 
 				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 					if self.name and self.unit then
@@ -766,14 +824,14 @@ local function TRP3RPNameInQuests_Init()
 					end
 				end
 			end)
-		--end
+		end
 	end)
 	
 	
 	-- 
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
-		--if (not InCombatLockdown()) then
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 				
 				local unitIsConnected = UnitIsConnected(frame.unit);
@@ -821,7 +879,7 @@ local function TRP3RPNameInQuests_Init()
 					end
 				end
 			end
-		--end
+		end
 	end)
 	--AddOn_TotalRP3.Player.CreateFromUnit("target"):GetCustomColorForDisplay()
 	
@@ -830,17 +888,17 @@ local function TRP3RPNameInQuests_Init()
 	-- Update Unit Frames when profile changed
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			--if (InCombatLockdown() == false) then
+			if not TRP3_RPNameInQuests_ShouldNotEditText() then
 				TRP3_RPNameInQuests_UpdateUnitFrames()
-			--end
+			end
 		end
 	end);
 	
 	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
 		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-			--if (InCombatLockdown() == false) then
+			if not TRP3_RPNameInQuests_ShouldNotEditText() then
 				TRP3_RPNameInQuests_UpdateUnitFrames()
-			--end
+			end
 		end
 	end);
 	
@@ -848,18 +906,17 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Character Sheet
 	hooksecurefunc("ToggleCharacter", function()
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
-			if ( CharacterFrame:IsShown() ) then
-				if (TRP3_RPNameInQuests_ReturnRPNameTarget() ~= "") then
-					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
-						-- Era Only
-						CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
-					elseif (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
-						-- MoP
-						CharacterFrameTitleText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
-					else
-						-- Retail
-						CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
+				if ( CharacterFrame:IsShown() ) then
+					if (TRP3_RPNameInQuests_ReturnRPNameTarget() ~= "") then
+						if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+							-- Era Only
+							CharacterNameText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
+						else
+							-- Retail and MoP
+							CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
+						end
 					end
 				end
 			end
@@ -869,39 +926,41 @@ local function TRP3RPNameInQuests_Init()
 
 	-- Character Sheet Level/Race/Class
 	hooksecurefunc("PaperDollFrame_SetLevel", function()
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
-		
-			local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
-				
-			local thisTRP3CharRace = thisTRP3CharInfo.RA or UnitRace("player")
-			local thisTRP3CharClass = thisTRP3CharInfo.CL or UnitClass("player")
-		
-			local level = UnitLevel("player");
-
-		
-			if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
-				-- Era Only
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
-			else
-				-- Retail and MoP
-				local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
-				
-				if (thisTRP3CharInfo.CH ~= nil) then
-					thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
-				end
-				
-					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
+			
+				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
 					
-						local effectiveLevel = UnitEffectiveLevel("player");
+				local thisTRP3CharRace = thisTRP3CharInfo.RA or UnitRace("player")
+				local thisTRP3CharClass = thisTRP3CharInfo.CL or UnitClass("player")
+			
+				local level = UnitLevel("player");
+
+			
+				if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+					-- Era Only
+					CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
+				else
+					-- Retail and MoP
+					local thisTRP3CharColor = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
+					
+					if (thisTRP3CharInfo.CH ~= nil) then
+						thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
+					end
+					
+						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 						
-						if ( effectiveLevel ~= level ) then
-							level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
+							local effectiveLevel = UnitEffectiveLevel("player");
+							
+							if ( effectiveLevel ~= level ) then
+								level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
+							end
+						
 						end
 					
-					end
-				
-				CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
-				
+					CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
+					
+				end
 			end
 		end
 	end)
@@ -949,83 +1008,83 @@ local function TRP3RPNameInQuests_Init()
 			
 
 
-			-- Get Gossip Text
-			local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
-			C_GossipInfo.GetText = function (...)
+		-- Get Gossip Text
+		local TRP3_RPNameInQuests_C_GossipInfoGetTextHook = C_GossipInfo.GetText
+		C_GossipInfo.GetText = function (...)
+		
+			local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
 			
-				local thisGossipText = TRP3_RPNameInQuests_C_GossipInfoGetTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
-				
-				
-			end
+			return TRP3_RPNameInQuests_CompleteRename(thisGossipText)
 			
-
 			
-			-- Get Greeting Text
-			TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
-			GetGreetingText = function (...)
-			
-				local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisGreetingText)
-				
-			end
-
-
-
-			-- Get Quest Text
-			TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
-			GetQuestText = function (...)
-				local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisQuestText)
-				
-			end
-
-
-
-			-- Get Quest Progress Text
-			TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
-			GetProgressText = function (...)
-			
-				local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisProgressText)
-				
-			end
-
-
-
-			-- Get Quest Reward Text
-			TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
-			GetRewardText = function (...)
-			
-				local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
-				
-				return TRP3_RPNameInQuests_CompleteRename(thisRewardText)
-				
-			end
-
-
-			-- Gossip Options
-			TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
-			C_GossipInfo.GetOptions = function (...)
-			
-				local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
-				
-				for key, value in pairs(thisGossipOptions) do
-								
-					thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
-					
-				end
-
-				return(thisGossipOptions)
-			
-			end
-			
+		end
+		
 
 		
+		-- Get Greeting Text
+		TRP3_RPNameInQuests_GetGreetingTextHook = GetGreetingText
+		GetGreetingText = function (...)
+		
+			local thisGreetingText = TRP3_RPNameInQuests_GetGreetingTextHook()
+			
+			return TRP3_RPNameInQuests_CompleteRename(thisGreetingText)
+			
+		end
+
+
+
+		-- Get Quest Text
+		TRP3_RPNameInQuests_GetQuestTextHook = GetQuestText
+		GetQuestText = function (...)
+			local thisQuestText = TRP3_RPNameInQuests_GetQuestTextHook()
+			
+			return TRP3_RPNameInQuests_CompleteRename(thisQuestText)
+			
+		end
+
+
+
+		-- Get Quest Progress Text
+		TRP3_RPNameInQuests_GetProgressTextHook = GetProgressText
+		GetProgressText = function (...)
+		
+			local thisProgressText = TRP3_RPNameInQuests_GetProgressTextHook()
+			
+			return TRP3_RPNameInQuests_CompleteRename(thisProgressText)
+			
+		end
+
+
+
+		-- Get Quest Reward Text
+		TRP3_RPNameInQuests_GetRewardTextHook = GetRewardText
+		GetRewardText = function (...)
+		
+			local thisRewardText = TRP3_RPNameInQuests_GetRewardTextHook()
+			
+			return TRP3_RPNameInQuests_CompleteRename(thisRewardText)
+			
+		end
+
+
+		-- Gossip Options
+		TRP3_RPNameInQuests_GetGossipOptions = C_GossipInfo.GetOptions
+		C_GossipInfo.GetOptions = function (...)
+		
+			local thisGossipOptions = TRP3_RPNameInQuests_GetGossipOptions()
+			
+			for key, value in pairs(thisGossipOptions) do
+							
+				thisGossipOptions[key]["name"] =  TRP3_RPNameInQuests_CompleteRename(thisGossipOptions[key]["name"])
+				
+			end
+
+			return(thisGossipOptions)
+		
+		end
+		
+
+	
 		
 	
 	
@@ -1034,8 +1093,10 @@ local function TRP3RPNameInQuests_Init()
 	
 	--Cinematic Subtitles
 	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
-			SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+				SubtitlesFrame.Subtitle1:SetText(TRP3_RPNameInQuests_CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
+			end
 		end
 	end)
 
@@ -1050,7 +1111,7 @@ local function TRP3RPNameInQuests_Init()
 	-- /Interface/FrameXML/MailFrame.lua
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX) == true) then
 		hooksecurefunc("OpenMail_Update", function()
-
+			if not TRP3_RPNameInQuests_ShouldNotEditText() then
 				-- Retail
 				if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 					if ( not OpenMailFrame_IsValidMailID()) then
@@ -1074,7 +1135,7 @@ local function TRP3RPNameInQuests_Init()
 						end
 					end
 				end
-				
+			end
 
 		end)
 	
@@ -1090,32 +1151,36 @@ local function TRP3RPNameInQuests_Init()
 	
 	TRP3RPNameInQuests_Frame:SetScript("OnEvent", function(self, event, arg1, arg2)
 		
-		-- Books, etc.
-		-- /Interface/FrameXML/ItemTextFrame.lua
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
-	
-			if event == "ITEM_TEXT_READY" then
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
 			
-				local creator = ItemTextGetCreator();
-				if ( creator ) then
-					creator = "\n\n"..ITEM_TEXT_FROM.."\n"..creator.."\n";
-					ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText())..creator);
-				else
-					ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText()));
+			-- Books, etc.
+			-- /Interface/FrameXML/ItemTextFrame.lua
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
+		
+				if event == "ITEM_TEXT_READY" then
+				
+					local creator = ItemTextGetCreator();
+					if ( creator ) then
+						creator = "\n\n"..ITEM_TEXT_FROM.."\n"..creator.."\n";
+						ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText())..creator);
+					else
+						ItemTextPageText:SetText(TRP3_RPNameInQuests_CompleteRename(ItemTextGetText()));
+					end
+					
 				end
 				
 			end
 			
+			
+			--Update Nameplates if title/name changes
+			if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
+			
+				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
+					TRP3_RPNameInQuests_UpdateUnitFrames()
+				end
+				
 		end
 		
-		
-		--Update Nameplates if title/name changes
-		if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
-		
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3_RPNameInQuests_IgnoreUnitFrameMods == false)) then
-				TRP3_RPNameInQuests_UpdateUnitFrames()
-			end
-			
 		end
 		
 	
@@ -1129,6 +1194,10 @@ local function TRP3RPNameInQuests_Init()
 	
 	-- Chat Filters
 	local function TRP3_RPNameInQuests_ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...) 
+	
+		if TRP3_RPNameInQuests_ShouldNotEditText() then
+			return ...
+		end
 	
 		local thisNewMessage = TRP3_RPNameInQuests_CompleteRename(thisMessage)
 			local thisNewNPC = TRP3_RPNameInQuests_RPNameRename(thisNPC)
@@ -1180,10 +1249,12 @@ local function TRP3RPNameInQuests_Init()
 	--Talking Head
 	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
-			C_Timer.After(0.3, function()
-				--Talker Text
-				self.TextFrame.Text:SetText(TRP3_RPNameInQuests_CompleteRename(self.TextFrame.Text:GetText()))
-			end);
+			if not TRP3_RPNameInQuests_ShouldNotEditText() then
+				C_Timer.After(0.3, function()
+					--Talker Text
+					self.TextFrame.Text:SetText(TRP3_RPNameInQuests_CompleteRename(self.TextFrame.Text:GetText()))
+				end);
+			end
 		end)
 	end
 	
@@ -1195,28 +1266,30 @@ local function TRP3RPNameInQuests_Init()
 	function TRP3_RPNameInQuests_ModSpeechBubbles()
 			--Slight timer so the bubble has chance to fade in
 			C_Timer.After(.05, function()
-				for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
-					for i = 1, bubble:GetNumChildren() do
-						local child = select(i, select(i, bubble:GetChildren()))
-						if(child) then
-							if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
-								for i = 1, child:GetNumRegions() do
-									local region = select(i, child:GetRegions())
-									if (region:GetObjectType() == "FontString") then
-									
-										thisBubbleText = region:GetText()
+				if not TRP3_RPNameInQuests_ShouldNotEditText() then
+					for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
+						for i = 1, bubble:GetNumChildren() do
+							local child = select(i, select(i, bubble:GetChildren()))
+							if(child) then
+								if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
+									for i = 1, child:GetNumRegions() do
+										local region = select(i, child:GetRegions())
+										if (region:GetObjectType() == "FontString") then
 										
-										region:SetText(TRP3_RPNameInQuests_CompleteRename(thisBubbleText))
-										
-										--Resize bubble to accomodate new text
-										if (region:GetStringWidth() >= region:GetWrappedWidth()) then
-											region:SetWidth(region:GetWrappedWidth())
-										else
-											--region:SetWidth(region:GetStringWidth())
-											region:SetWidth(region:GetWrappedWidth())
+											thisBubbleText = region:GetText()
+											
+											region:SetText(TRP3_RPNameInQuests_CompleteRename(thisBubbleText))
+											
+											--Resize bubble to accomodate new text
+											if (region:GetStringWidth() >= region:GetWrappedWidth()) then
+												region:SetWidth(region:GetWrappedWidth())
+											else
+												--region:SetWidth(region:GetStringWidth())
+												region:SetWidth(region:GetWrappedWidth())
+											end
+											
+											
 										end
-										
-										
 									end
 								end
 							end
@@ -1248,20 +1321,24 @@ local function TRP3RPNameInQuests_Init()
 
 	
 	hooksecurefunc("Minimap_Update", function(...)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
-			varCurrentMinimapZoneText = GetMinimapZoneText()
-			
-			MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, true))
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
+			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+				varCurrentMinimapZoneText = GetMinimapZoneText()
+				
+				MinimapZoneText:SetText(TRP3_RPNameInQuests_RPNameRename(varCurrentMinimapZoneText, true))
+			end
 		end
 	end)
 
 	
 	
 	function TRP3_RPNameInQuests_UpdateUnitFrames()
-		securecallfunction(function () 
-			UnitFrame_Update(PlayerFrame)
-			UnitFrame_Update(TargetFrame)
-		end)
+		if not TRP3_RPNameInQuests_ShouldNotEditText() then
+			securecallfunction(function () 
+				UnitFrame_Update(PlayerFrame)
+				UnitFrame_Update(TargetFrame)
+			end)
+		end
 	end
 	
 
@@ -1557,6 +1634,18 @@ local function TRP3RPNameInQuests_Init()
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.TROUBLESHOOTING_NOTINENCOUNTER_TITLE,
+			help = L.TROUBLESHOOTING_NOTINENCOUNTER_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, value)	
 				
 				
 			end,
