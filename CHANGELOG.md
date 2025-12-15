@@ -1,2 +1,2 @@
-- Added a "Don't modify text during a Dungeon/Raid/PVP Encounter" under Troubleshooting.
-  - Ticking this will prevent the addon modifying any text during an Encounter Lockdown (Active Raid Boss/Dungeon/PVP Match).
+- Added a "Don't modify text during a Dungeon/Raid/PVP Instance" under Troubleshooting.
+  - Ticking this will prevent the addon modifying any text during an active instance, (Raid Boss/Dungeon/PVP Match).

@@ -209,17 +209,27 @@ local function TRP3RPNameInQuests_Init()
 
 	function TRP3_RPNameInQuests_ShouldNotEditText()
 	
-		local InEncounter 
+		--local InEncounter 
 		
-		if (C_InstanceEncounter) then
+		--[[if (C_InstanceEncounter) then
 			InEncounter = C_InstanceEncounter.IsEncounterInProgress()
 		else
 			InEncounter = IsEncounterInProgress()
+		end]]
+		
+		local inInstance, instanceType = IsInInstance()
+		
+		local shouldPrevent = false
+		
+		if (inInstance == true) then
+			if (instanceType == "pvp" or instanceType == "arena" or instanceType == "party" or instanceType == "raid" or instanceType == "scenario") then
+				shouldPrevent = true
+			end
 		end
 		
 	
 		--Should we not try to edit text right now?
-		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and InEncounter == true then
+		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true then
 			return true
 		else
 			return false

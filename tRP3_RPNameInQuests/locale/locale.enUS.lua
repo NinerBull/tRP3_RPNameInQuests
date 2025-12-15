@@ -103,6 +103,9 @@ local _, L = ...;
 	L.TROUBLESHOOTING_ALTMETHOD_TITLE = "Use alternate method to insert RP Name into Quest Text"
 	L.TROUBLESHOOTING_ALTMETHOD_HELP = "If your TRP3 Character Name does not appear in quest text as expected, try enabling this option.\nThis will use a slightly different method to add/replace your Character's Name in text which may fix the issue."
 	
+	L.TROUBLESHOOTING_NOTINENCOUNTER_TITLE = "Don't modify text during a Dungeon/Raid/PVP Instance"
+	L.TROUBLESHOOTING_NOTINENCOUNTER_HELP = "If checked, this addon won't attempt to modify any text when in a Dungeon, Raid, Scenario or PVP Instance.\nThis may help prevent LUA errors while in one of these."
+	
 	L.SLASHCMD_HELP = "Open the 'RP Name in Quest Text' Config."
 	
 	L.ADCOM_HOW = "How NPCs will address %s:"
