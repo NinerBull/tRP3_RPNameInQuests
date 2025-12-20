@@ -1685,7 +1685,7 @@ end
 TRP3_API.module.registerModule({
 	name = L.ADDON_NAME,
 	description = L.ADDON_DESC,
-	version = C_AddOns.GetAddOnMetadata("tRP3_RPNameInQuests", "Version"),
+	version = C_AddOns.GetAddOnMetadata("tRP3_RPNameInQuests", "Version"):gsub("v", ""),
 	id = "trp3_rpnameinquests",
 	onStart = TRP3RPNameInQuests_Init,
 	minVersion = 130,
