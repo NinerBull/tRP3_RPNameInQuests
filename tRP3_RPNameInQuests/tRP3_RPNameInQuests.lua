@@ -899,10 +899,10 @@ function TRP3RPNameInQuests_Frame:Init()
 							CharacterNameText:SetText(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
 							-- MoP
-							CharacterFrameTitleText:SetText(TRP3_RPNameInQuests_ReturnRPNameTarget());
+							CharacterFrameTitleText:SetText(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
 						else
 							-- Retail
-							CharacterFrame:SetTitle(TRP3_RPNameInQuests_ReturnRPNameTarget());
+							CharacterFrame:SetTitle(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
 						end
 					end
 				end
