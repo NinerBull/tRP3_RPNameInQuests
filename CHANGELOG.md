@@ -1,2 +1,1 @@
-- Added a "Don't modify text during a Dungeon/Raid/PVP Instance" under Troubleshooting.
-  - Ticking this will prevent the addon modifying any text during an active instance, (Raid Boss/Dungeon/PVP Match).
+- TBC Classic Anniversary Compatibility Fixes

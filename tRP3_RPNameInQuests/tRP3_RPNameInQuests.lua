@@ -897,6 +897,9 @@ function TRP3RPNameInQuests_Frame:Init()
 						if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 							-- Era Only
 							CharacterNameText:SetText(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
+						elseif (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) then 
+							-- TBC
+							CharacterNameText:SetText(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
 							-- MoP
 							CharacterFrameTitleText:SetText(TRP3RPNameInQuests_Frame:ReturnRPNameTarget());
@@ -926,6 +929,9 @@ function TRP3RPNameInQuests_Frame:Init()
 			
 				if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 					-- Era Only
+					CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
+				elseif (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) then
+					-- TBC
 					CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), thisTRP3CharRace, thisTRP3CharClass);
 				else
 					-- Retail and MoP
