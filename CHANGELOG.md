@@ -1,1 +1,2 @@
-- TBC Classic Anniversary Compatibility Fixes
+- Midnight Compatibility Fixes
+- Temporarily removed all extra UI modification settings due to extensive breakage in Midnight's API. I will bring them back if they are fixable!

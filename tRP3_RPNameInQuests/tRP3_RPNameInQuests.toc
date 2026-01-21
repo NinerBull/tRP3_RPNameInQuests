@@ -1,4 +1,4 @@
-## Interface: 110207, 50503, 38000, 30405, 20505, 11508
+## Interface: 120001, 120000, 50503, 38000, 30405, 20505, 11508
 ## Title: Total RP 3: RP Name in Quest Text
 ## Version: @project-version@
 ## Notes: Enhances questing immersion by putting your TRP3 Character Name (and optionally Race and Class) into Quest Text!
@@ -16,9 +16,6 @@
 ## X-Wago-ID: rNkP5z6a
 
 ## IconTexture: Interface\Icons\vas_namechange.blp
-## AddonCompartmentFunc: TRP3RPNameInQuests_CompartmentClick
-## AddonCompartmentFuncOnEnter: TRP3RPNameInQuests_CompartmentHover
-## AddonCompartmentFuncOnLeave: TRP3RPNameInQuests_CompartmentLeave
 
 ## Category: Roleplay
 ## Category-enUS: Roleplay

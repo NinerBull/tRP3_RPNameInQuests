@@ -729,7 +729,9 @@ function TRP3RPNameInQuests_Frame:Init()
 	end
 	
 	
+	--[[
 	
+		-- TEMP Removal due to 12.0.0 changes
 	
 	-- Unit Frame
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
@@ -754,38 +756,6 @@ function TRP3RPNameInQuests_Frame:Init()
 			end)
 		end
 	end)
-	
-	-- Also Unit Frame
-	--[[hooksecurefunc("UnitFrame_OnEvent", function(self, thisEvent, thisUnit)
-		if self.name and thisEvent == "UNIT_NAME_UPDATE" and thisUnit == self.thisUnit then
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
-				if self.name and self.thisUnit then
-					if (UnitIsPlayer(tostring(self.thisUnit))) then
-						if ((tostring(self.thisUnit) == "player" or tostring(self.thisUnit) == "target" or tostring(self.thisUnit) == "targettarget") and (self.name:GetText() == TRP3RPNameInQuests_Frame.NameToChange))  then
-							pcall(function () 
-								self.name:SetText(TRP3RPNameInQuests_Frame:GetFullRPName(true));
-							end)
-						else
-							--if (UnitRealmRelationship(tostring(self.thisUnit)) == 1) then
-							if (UnitName(self.thisUnit) ~= TRP3_API.register.getUnitRPName(tostring(self.thisUnit))) then
-								pcall(function () 
-									local thisRealmString = ""
-									if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_COALESCED) then
-										thisRealmString = FOREIGN_SERVER_LABEL
-									--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
-										--thisRealmString = INTERACTIVE_SERVER_LABEL
-									end
-									self.name:SetText(TRP3_API.register.getUnitRPName(tostring(self.thisUnit)) .. thisRealmString)
-								end)
-							end
-						end
-					end
-				end
-			end
-		end
-	end)]]
-	
-
 
 		
 	
@@ -958,7 +928,7 @@ function TRP3RPNameInQuests_Frame:Init()
 		end
 	end)
 	
-
+	]]
 
 	-- Quests, Dialog, Gossip Etc.
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
@@ -1121,13 +1091,17 @@ function TRP3RPNameInQuests_Frame:Init()
 			
 			
 			--Update Nameplates if title/name changes
-			if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
+			--[[
+				
+				TEMP Removal due to 12.0.0 changes
+			
+				if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
 			
 				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
 					TRP3RPNameInQuests_Frame:UpdateUnitFrames()
 				end
 				
-			end
+			end]]
 		
 		end
 		
@@ -1261,7 +1235,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	end
 
-	
+	--[[
 	hooksecurefunc("Minimap_Update", function(...)
 		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
@@ -1271,6 +1245,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			end
 		end
 	end)
+	]]
 
 	
 	
@@ -1476,7 +1451,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		{
+		--[[{
 			inherit = "TRP3_ConfigH1",
 			title = L.EXTRAFUNC_TITLE
 		},
@@ -1564,6 +1539,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
+		]]
 		{
 			inherit = "TRP3_ConfigH1",
 			title = L.TROUBLESHOOTING_TITLE,
