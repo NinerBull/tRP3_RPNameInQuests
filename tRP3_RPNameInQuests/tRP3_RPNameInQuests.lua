@@ -1117,20 +1117,24 @@ function TRP3RPNameInQuests_Frame:Init()
 		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
 			return ...
 		end
+		
+		if issecretvalue and issecretvalue(thisMessage) then
+			return ...
+		end
 	
 		local thisNewMessage = TRP3RPNameInQuests_Frame:CompleteRename(thisMessage)
-			local thisNewNPC = TRP3RPNameInQuests_Frame:RPNameRename(thisNPC)
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
-				if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
-					pcall(function () 
-						TRP3RPNameInQuests_Frame:ModSpeechBubbles()
-					end) 
-					
-				end
+		local thisNewNPC = TRP3RPNameInQuests_Frame:RPNameRename(thisNPC)
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+			if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
+				pcall(function () 
+					TRP3RPNameInQuests_Frame:ModSpeechBubbles()
+				end) 
+				
 			end
-			
-			
-			return false, thisNewMessage, thisNewNPC, ...
+		end
+		
+		
+		return false, thisNewMessage, thisNewNPC, ...
 	
 	end
 	
@@ -1155,10 +1159,10 @@ function TRP3RPNameInQuests_Frame:Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", ChatFilterFunc) -- NPC Boss /w Chat
 		
 		-- Raid Boss Emote
-		hooksecurefunc("RaidNotice_AddMessage", function(noticeFrame, ...)
+		--[[hooksecurefunc("RaidNotice_AddMessage", function(noticeFrame, ...)
 			noticeFrame.slot1:SetText(TRP3RPNameInQuests_Frame:CompleteRename(noticeFrame.slot1:GetText()))
 			noticeFrame.slot2:SetText(TRP3RPNameInQuests_Frame:CompleteRename(noticeFrame.slot2:GetText()))
-		end)
+		end)]]
 	
 	end
 	
