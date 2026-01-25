@@ -206,7 +206,9 @@ function TRP3RPNameInQuests_Frame:Init()
 
 
 
-	function TRP3RPNameInQuests_Frame:ShouldNotEditText()
+	function TRP3RPNameInQuests_Frame:ShouldNotEditText(strict)
+	
+		--print("Check Should Not Edit")
 			
 		local inInstance, instanceType = IsInInstance()
 		
@@ -218,8 +220,14 @@ function TRP3RPNameInQuests_Frame:Init()
 			end
 		end
 		
+		if (strict) then
+			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and IsInInstance()) then
+				shouldPrevent = true
+			end
+		end
+				
 		--Should we not try to edit text right now?
-		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true) or (strict == true and shouldPrevent == true) then
 			return true
 		else
 			return false
@@ -345,7 +353,11 @@ function TRP3RPNameInQuests_Frame:Init()
 			--textToRename = string.upper(textToRename)
 		end
 		
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if (issecretvalue and issecretvalue(textToRename)) then
+			return textToRename
+		end
+		
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return textToRename
 		end
 	
@@ -408,7 +420,11 @@ function TRP3RPNameInQuests_Frame:Init()
 		thisTarget = thisTarget or "player"
 		withTitle = withTitle or false
 		
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if (issecretvalue and issecretvalue(textToRename)) then
+			return UnitName(thisTarget)
+		end
+		
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return UnitName(thisTarget)
 		end
 		
@@ -440,7 +456,11 @@ function TRP3RPNameInQuests_Frame:Init()
 		doLowerCase = doLowerCase or false
 		doUpperCase = doUpperCase or false
 		
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if (issecretvalue and issecretvalue(textToRename)) then
+			return UnitName(thisTarget)
+		end
+		
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return textToRename
 		end
 		
@@ -514,7 +534,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	 --Return RP Race
 	function TRP3RPNameInQuests_Frame:ReturnRPRace()
 	
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return UnitRace("player")
 		end
 	
@@ -550,7 +570,11 @@ function TRP3RPNameInQuests_Frame:Init()
 	--Rename Class
 	 function TRP3RPNameInQuests_Frame:RPClassRename(textToRename, doLowerCase, doUpperCase)
 	 
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if (issecretvalue and issecretvalue(textToRename)) then
+			return textToRename
+		end
+	 
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return textToRename
 		end
 	
@@ -626,7 +650,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	--Return Class Name
 	 function TRP3RPNameInQuests_Frame:ReturnRPClass()
 	 
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return UnitClass("player")
 		end
 	
@@ -661,8 +685,12 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	--Complete Rename Function
 	function TRP3RPNameInQuests_Frame:CompleteRename(textToRename)
+		
+		if (issecretvalue and issecretvalue(textToRename)) then
+			return textToRename
+		end
 	
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			return textToRename
 		end
 
@@ -729,15 +757,13 @@ function TRP3RPNameInQuests_Frame:Init()
 	end
 	
 	
-	--[[
-	
-		-- TEMP Removal due to 12.0.0 changes
+
 	
 	-- Unit Frame
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to it.
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-			securecallfunction(function () 
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+			pcall(function () 
 				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
@@ -762,8 +788,8 @@ function TRP3RPNameInQuests_Frame:Init()
 	-- Party/Raid Frames
 	-- If "Show my character's TRP3 info in the Player Unit Frame" is enabled, these will add the full character name to the Raid Frames.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-			securecallfunction(function () 
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+			pcall(function () 
 				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
@@ -786,7 +812,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	-- 
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 				
 				local unitIsConnected = UnitIsConnected(frame.unit);
@@ -840,27 +866,29 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	
 	-- Update Unit Frames when profile changed
-	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
-			if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-				TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+	if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
+		TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
+				if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+					TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+				end
 			end
-		end
-	end);
-	
-	TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
-			if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-				TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+		end);
+		
+		TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
+			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
+				if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+					TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+				end
 			end
-		end
-	end);
+		end);
+	end
 	
 
 	
 	-- Character Sheet
 	hooksecurefunc("ToggleCharacter", function()
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 				if ( CharacterFrame:IsShown() ) then
 					if (TRP3RPNameInQuests_Frame:ReturnRPNameTarget() ~= "") then
@@ -886,7 +914,7 @@ function TRP3RPNameInQuests_Frame:Init()
 
 	-- Character Sheet Level/Race/Class
 	hooksecurefunc("PaperDollFrame_SetLevel", function()
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
 			
 				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
@@ -928,7 +956,7 @@ function TRP3RPNameInQuests_Frame:Init()
 		end
 	end)
 	
-	]]
+
 
 	-- Quests, Dialog, Gossip Etc.
 	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
@@ -1091,17 +1119,15 @@ function TRP3RPNameInQuests_Frame:Init()
 			
 			
 			--Update Nameplates if title/name changes
-			--[[
-				
-				TEMP Removal due to 12.0.0 changes
-			
+			if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
 				if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
-			
-				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
-					TRP3RPNameInQuests_Frame:UpdateUnitFrames()
-				end
 				
-			end]]
+					if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests_Frame.IgnoreUnitFrameMods == false)) then
+						TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+					end
+					
+				end
+			end
 		
 		end
 		
@@ -1112,14 +1138,14 @@ function TRP3RPNameInQuests_Frame:Init()
 
 	
 	-- Chat Filters
-	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...) 
+	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...)
 	
-		if TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-			return ...
+		if (TRP3RPNameInQuests_Frame:ShouldNotEditText(true)) then
+			return false, thisMessage, thisNPC, ...
 		end
 		
-		if issecretvalue and issecretvalue(thisMessage) then
-			return ...
+		if (issecretvalue and issecretvalue(thisMessage)) then
+			return false, thisMessage, thisNPC, ...
 		end
 	
 		local thisNewMessage = TRP3RPNameInQuests_Frame:CompleteRename(thisMessage)
@@ -1172,7 +1198,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	--Talking Head
 	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
-			if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+			if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 				C_Timer.After(0.3, function()
 					--Talker Text
 					self.TextFrame.Text:SetText(TRP3RPNameInQuests_Frame:CompleteRename(self.TextFrame.Text:GetText()))
@@ -1189,7 +1215,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	function TRP3RPNameInQuests_Frame:ModSpeechBubbles()
 			--Slight timer so the bubble has chance to fade in
 			C_Timer.After(.05, function()
-				if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+				if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 					for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
 						for i = 1, bubble:GetNumChildren() do
 							local child = select(i, select(i, bubble:GetChildren()))
@@ -1241,7 +1267,7 @@ function TRP3RPNameInQuests_Frame:Init()
 
 	--[[
 	hooksecurefunc("Minimap_Update", function(...)
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
+		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
 				varCurrentMinimapZoneText = GetMinimapZoneText()
 				
@@ -1254,11 +1280,13 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	
 	function TRP3RPNameInQuests_Frame:UpdateUnitFrames()
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
-			securecallfunction(function () 
-				UnitFrame_Update(PlayerFrame)
-				UnitFrame_Update(TargetFrame)
-			end)
+		if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
+			if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+				pcall(function () 
+					UnitFrame_Update(PlayerFrame)
+					UnitFrame_Update(TargetFrame)
+				end)
+			end
 		end
 	end
 	
@@ -1455,7 +1483,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		--[[{
+		{
 			inherit = "TRP3_ConfigH1",
 			title = L.EXTRAFUNC_TITLE
 		},
@@ -1477,7 +1505,9 @@ function TRP3RPNameInQuests_Frame:Init()
 				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
 				
 				--Update Unit Frames
-				TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+				if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+					TRP3RPNameInQuests_Frame:UpdateUnitFrames()
+				end
 				
 			end,
 		},
@@ -1543,7 +1573,6 @@ function TRP3RPNameInQuests_Frame:Init()
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		]]
 		{
 			inherit = "TRP3_ConfigH1",
 			title = L.TROUBLESHOOTING_TITLE,
