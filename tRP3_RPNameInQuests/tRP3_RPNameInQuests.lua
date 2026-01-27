@@ -219,15 +219,18 @@ function TRP3RPNameInQuests_Frame:Init()
 				shouldPrevent = true
 			end
 		end
-		
-		if (strict) then
+				
+		--[[if (strict) then
 			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and IsInInstance()) then
 				shouldPrevent = true
 			end
-		end
+		end]]
 				
 		--Should we not try to edit text right now?
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true) or (strict == true and shouldPrevent == true) then
+		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true) 
+		--or (strict == true and shouldPrevent == true) 
+		or (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) 
+		then
 			return true
 		else
 			return false
@@ -348,12 +351,8 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 		renameFullName = renameFullName or false
 		doUpperCase = doUpperCase or false
-	
-		if (doUpperCase == true) then
-			--textToRename = string.upper(textToRename)
-		end
-		
-		if (issecretvalue and issecretvalue(textToRename)) then
+			
+		if (canaccessvalue and not canaccessvalue(textToRename)) then
 			return textToRename
 		end
 		
@@ -420,7 +419,7 @@ function TRP3RPNameInQuests_Frame:Init()
 		thisTarget = thisTarget or "player"
 		withTitle = withTitle or false
 		
-		if (issecretvalue and issecretvalue(textToRename)) then
+		if (canaccessvalue and not canaccessvalue(thisTarget)) then
 			return UnitName(thisTarget)
 		end
 		
@@ -456,8 +455,8 @@ function TRP3RPNameInQuests_Frame:Init()
 		doLowerCase = doLowerCase or false
 		doUpperCase = doUpperCase or false
 		
-		if (issecretvalue and issecretvalue(textToRename)) then
-			return UnitName(thisTarget)
+		if (canaccessvalue and not canaccessvalue(textToRename)) then
+			return textToRename
 		end
 		
 		if TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
@@ -570,7 +569,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	--Rename Class
 	 function TRP3RPNameInQuests_Frame:RPClassRename(textToRename, doLowerCase, doUpperCase)
 	 
-		if (issecretvalue and issecretvalue(textToRename)) then
+		if (canaccessvalue and not canaccessvalue(textToRename)) then
 			return textToRename
 		end
 	 
@@ -686,7 +685,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	--Complete Rename Function
 	function TRP3RPNameInQuests_Frame:CompleteRename(textToRename)
 		
-		if (issecretvalue and issecretvalue(textToRename)) then
+		if (canaccessvalue and not canaccessvalue(textToRename)) then
 			return textToRename
 		end
 	
@@ -1092,9 +1091,6 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	end
 	
-	
-
-	
 	TRP3RPNameInQuests_Frame:SetScript("OnEvent", function(self, event, arg1, arg2)
 		
 		if not TRP3RPNameInQuests_Frame:ShouldNotEditText() then
@@ -1144,7 +1140,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			return false, thisMessage, thisNPC, ...
 		end
 		
-		if (issecretvalue and issecretvalue(thisMessage)) then
+		if (canaccessvalue and not canaccessvalue(thisMessage)) then
 			return false, thisMessage, thisNPC, ...
 		end
 	
