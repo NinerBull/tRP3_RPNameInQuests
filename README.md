@@ -1,5 +1,5 @@
 # Total RP 3: RP Name in Quest Text
-An addon for World of Warcraft - The War Within, MoP Classic and Classic Era!
+An addon for World of Warcraft!
 
 ![Info Img](https://cdn-wow.mmoui.com/preview/pvw75727.jpg)
 
@@ -44,7 +44,7 @@ You can also select which text this addon modifies. Turn on/off as desired.
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 ## Compatibility
-* **The War Within** - 12.0.0
+* **Midnight** - 12.0.0
 * **MoP Classic** - 5.5.3
 * **TBC Classic** - 2.5.5
 * **Classic Era** - 1.15.8
