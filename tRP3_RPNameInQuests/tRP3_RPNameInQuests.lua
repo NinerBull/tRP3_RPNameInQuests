@@ -490,20 +490,20 @@ function TRP3RPNameInQuests_Frame:Init()
 				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(", " .. TRP3RPNameInQuests_Frame.RaceToChange),string.lower(", " .. thisRaceName))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. ","),string.lower(thisRaceName .. ","))
-					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "%."),string.lower(thisRaceName .. "."))
-					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "%?"),string.lower(thisRaceName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "."),string.lower(thisRaceName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "?"),string.lower(thisRaceName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "!"),string.lower(thisRaceName .. "!"))
 				elseif (doUpperCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(", " .. TRP3RPNameInQuests_Frame.RaceToChange),string.upper(", " .. thisRaceName))
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. ","),string.upper(thisRaceName .. ","))
-					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "%."),string.upper(thisRaceName .. "."))
-					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "%?"),string.upper(thisRaceName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "."),string.upper(thisRaceName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "?"),string.upper(thisRaceName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "!"),string.upper(thisRaceName .. "!"))
 				else
 					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3RPNameInQuests_Frame.RaceToChange,", " .. thisRaceName)
 					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "," ,thisRaceName .. ",")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "%." ,thisRaceName .. ".")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "%?" ,thisRaceName .. "?")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "." ,thisRaceName .. ".")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "?" ,thisRaceName .. "?")
 					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "!" ,thisRaceName .. "!")
 				end
 			
