@@ -1,1 +1,1 @@
-- (Retail) Text will once again be modified in an instance, but only when chat lockdown is not in place (e.g. during an active boss fight/keystone/pvp match).
+- Adds support for [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log])

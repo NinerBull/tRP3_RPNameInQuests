@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: TRP3RPNameInQuests_CharVars
 ## DefaultState: enabled
 ## RequiredDeps: totalRP3
-## OptionalDeps: DialogueUI, totalRP3_UnitFrames, Classic Quest Log
+## OptionalDeps: DialogueUI, totalRP3_UnitFrames, Classic Quest Log, Kerzo Classic Quest Log
 ## Group: totalRP3
 
 ## X-Category: Roleplay

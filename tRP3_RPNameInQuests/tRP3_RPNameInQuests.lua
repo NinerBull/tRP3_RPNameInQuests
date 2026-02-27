@@ -490,20 +490,20 @@ function TRP3RPNameInQuests_Frame:Init()
 				if (doLowerCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(", " .. TRP3RPNameInQuests_Frame.RaceToChange),string.lower(", " .. thisRaceName))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. ","),string.lower(thisRaceName .. ","))
-					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "."),string.lower(thisRaceName .. "."))
-					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "?"),string.lower(thisRaceName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "%."),string.lower(thisRaceName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "%?"),string.lower(thisRaceName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.lower(TRP3RPNameInQuests_Frame.RaceToChange .. "!"),string.lower(thisRaceName .. "!"))
 				elseif (doUpperCase == true) then
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(", " .. TRP3RPNameInQuests_Frame.RaceToChange),string.upper(", " .. thisRaceName))
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. ","),string.upper(thisRaceName .. ","))
-					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "."),string.upper(thisRaceName .. "."))
-					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "?"),string.upper(thisRaceName .. "?"))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "%."),string.upper(thisRaceName .. "."))
+					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "%?"),string.upper(thisRaceName .. "?"))
 					thisTextToReturn = thisTextToReturn:gsub(string.upper(TRP3RPNameInQuests_Frame.RaceToChange .. "!"),string.upper(thisRaceName .. "!"))
 				else
 					thisTextToReturn = thisTextToReturn:gsub(", " .. TRP3RPNameInQuests_Frame.RaceToChange,", " .. thisRaceName)
 					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "," ,thisRaceName .. ",")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "." ,thisRaceName .. ".")
-					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "?" ,thisRaceName .. "?")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "%." ,thisRaceName .. ".")
+					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "%?" ,thisRaceName .. "?")
 					thisTextToReturn = thisTextToReturn:gsub(TRP3RPNameInQuests_Frame.RaceToChange .. "!" ,thisRaceName .. "!")
 				end
 			
@@ -964,7 +964,7 @@ function TRP3RPNameInQuests_Frame:Init()
 		if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
 		
 			-- If Classic Quest Log is Installed
-			if (C_AddOns.IsAddOnLoaded("Classic Quest Log")) then
+			if (C_AddOns.IsAddOnLoaded("Classic Quest Log") or C_AddOns.IsAddOnLoaded("Kerzo Classic Quest Log")) then
 				GetQuestLogQuestTextRPNameQuestText = GetQuestLogQuestText
 				GetQuestLogQuestText = function(...) 
 					questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
@@ -981,7 +981,7 @@ function TRP3RPNameInQuests_Frame:Init()
 			end
 		
 		else
-			-- Classic Era
+			-- Classic
 			hooksecurefunc("QuestLog_UpdateQuestDetails", function()
 				local thisQuestDescription = QuestLogQuestDescription:GetText()
 				if (thisQuestDescription ~= nil) then
