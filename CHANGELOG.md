@@ -1,1 +1,3 @@
 - Adds support for [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log])
+- Add checkbox called "Use Function Hooks instead of Function Replacements" under Troubleshooting.
+  - If checked, won't modify the functions that get Quest Text, instead, it will create secure hooks. This may help if you get LUA errors while in combat, but it may not be compatible with some addons or UI Frameworks.

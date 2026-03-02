@@ -18,6 +18,8 @@ TRP3RPNameInQuests_Frame:RegisterEvent("ITEM_TEXT_READY");
 TRP3RPNameInQuests_Frame:RegisterEvent("UNIT_NAME_UPDATE");
 TRP3RPNameInQuests_Frame:RegisterEvent("ADDON_LOADED")
 TRP3RPNameInQuests_Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+TRP3RPNameInQuests_Frame:RegisterEvent("GOSSIP_SHOW")
+
 
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
@@ -114,6 +116,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
 	TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER = "trp3_rpnameinquests_notinencounter";
+	TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS = "trp3_rpnameinquests_usefunchooks";
 
 	-- Register and set value for variables
 
@@ -183,6 +186,9 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	--Don't Modify in Encounter
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, false);
+	
+	--Use Function Hooks
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, false);
 
 
 
@@ -192,6 +198,7 @@ function TRP3RPNameInQuests_Frame:Init()
 	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
 	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
 	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME)
+	local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS)
 	
 	
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
@@ -236,6 +243,21 @@ function TRP3RPNameInQuests_Frame:Init()
 			return false
 		end
 		
+	end
+	
+	
+	
+	
+	function TRP3RPNameInQuests_Frame:IsEncounterInProgress()
+	
+		if IsEncounterInProgress then
+			return IsEncounterInProgress()
+		elseif C_InstanceEncounter and C_InstanceEncounter.IsEncounterInProgress then
+			return C_InstanceEncounter.IsEncounterInProgress()
+		else
+			return false
+		end
+	
 	end
 	
 	
@@ -970,15 +992,15 @@ function TRP3RPNameInQuests_Frame:Init()
 					questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
 					return TRP3RPNameInQuests_Frame:CompleteRename(questDescription), questObjectives
 				end
-			else 
-				-- Regular Quest Window
-				hooksecurefunc("QuestInfo_Display", function()
-					local thisQuestDescription = QuestInfoDescriptionText:GetText()
-					if (thisQuestDescription ~= nil) then
-						QuestInfoDescriptionText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(thisQuestDescription))
-					end
-				end)
 			end
+			
+			-- Regular Quest Window
+			hooksecurefunc("QuestInfo_Display", function()
+				local thisQuestDescription = QuestInfoDescriptionText:GetText()
+				if (thisQuestDescription ~= nil) then
+					QuestInfoDescriptionText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(thisQuestDescription))
+				end
+			end)
 		
 		else
 			-- Classic
@@ -989,58 +1011,105 @@ function TRP3RPNameInQuests_Frame:Init()
 				end
 			end)
 		 end
+		
+		
+		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS) == true then
+			-- Use Hooks
+			hooksecurefunc(QuestInfoDescriptionText, "SetText", function()
+				pcall(function()
+					if (not InCombatLockdown()) then
+						local questDescription;
+						if ( QuestInfoFrame and QuestInfoFrame.questLog ) then
+							questDescription = GetQuestLogQuestText();
+						else
+							questDescription = GetQuestText();
+						end
+						QuestInfoDescriptionText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(questDescription))
+					end
+				end)
+			end)
 			
 			
-		-- Get Gossip Text
-		TRP3RPNameInQuests_Frame.C_GossipInfoGetTextHook = C_GossipInfo.GetText
-		C_GossipInfo.GetText = function (...)
-			local thisGossipText = TRP3RPNameInQuests_Frame:C_GossipInfoGetTextHook()
-			return TRP3RPNameInQuests_Frame:CompleteRename(thisGossipText)
+			hooksecurefunc(GreetingText, "SetText", function()
+				pcall(function()
+					if (not InCombatLockdown()) then
+						GreetingText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(GetGreetingText()));
+					end
+				end)
+			end)
+			
+			hooksecurefunc(QuestProgressText, "SetText", function()
+				pcall(function()
+					if (not InCombatLockdown()) then
+						QuestProgressText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(GetProgressText()));
+					end
+				end)
+			end)
+			
+			hooksecurefunc(QuestInfoRewardText, "SetText", function()
+				pcall(function()
+					if (not InCombatLockdown()) then
+						QuestInfoRewardText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(GetRewardText()));
+					end
+				end)
+			end)
+		
+		else
+			
+			-- Get Gossip Text
+			TRP3RPNameInQuests_Frame.C_GossipInfoGetTextHook = C_GossipInfo.GetText
+			C_GossipInfo.GetText = function (...)
+				local thisGossipText = TRP3RPNameInQuests_Frame:C_GossipInfoGetTextHook()
+				return TRP3RPNameInQuests_Frame:CompleteRename(thisGossipText)
+			end
+			
+
+			-- Get Greeting Text
+			TRP3RPNameInQuests_Frame.GetGreetingTextHook = GetGreetingText
+			GetGreetingText = function (...)
+				local thisGreetingText = TRP3RPNameInQuests_Frame:GetGreetingTextHook()
+				return TRP3RPNameInQuests_Frame:CompleteRename(thisGreetingText)
+			end
+
+
+			-- Get Quest Text
+			TRP3RPNameInQuests_Frame.GetQuestTextHook = GetQuestText
+			GetQuestText = function (...)
+				local thisQuestText = TRP3RPNameInQuests_Frame:GetQuestTextHook()
+				return TRP3RPNameInQuests_Frame:CompleteRename(thisQuestText)
+			end
+
+
+			-- Get Quest Progress Text
+			TRP3RPNameInQuests_Frame.GetProgressTextHook = GetProgressText
+			GetProgressText = function (...)
+				local thisProgressText = TRP3RPNameInQuests_Frame:GetProgressTextHook()
+				return TRP3RPNameInQuests_Frame:CompleteRename(thisProgressText)
+			end
+
+
+
+			-- Get Quest Reward Text
+			TRP3RPNameInQuests_Frame.GetRewardTextHook = GetRewardText
+			GetRewardText = function (...)
+				local thisRewardText = TRP3RPNameInQuests_Frame:GetRewardTextHook()
+				return TRP3RPNameInQuests_Frame:CompleteRename(thisRewardText)
+			end
+
+
+			-- Gossip Options
+			TRP3RPNameInQuests_Frame.GetGossipOptions = C_GossipInfo.GetOptions
+			C_GossipInfo.GetOptions = function (...)
+				local thisGossipOptions = TRP3RPNameInQuests_Frame:GetGossipOptions()
+				for key, value in pairs(thisGossipOptions) do		
+					thisGossipOptions[key]["name"] =  TRP3RPNameInQuests_Frame:CompleteRename(thisGossipOptions[key]["name"])
+				end
+				return(thisGossipOptions)
+			end
+			
 		end
 		
-
-		-- Get Greeting Text
-		TRP3RPNameInQuests_Frame.GetGreetingTextHook = GetGreetingText
-		GetGreetingText = function (...)
-			local thisGreetingText = TRP3RPNameInQuests_Frame:GetGreetingTextHook()
-			return TRP3RPNameInQuests_Frame:CompleteRename(thisGreetingText)
-		end
-
-
-		-- Get Quest Text
-		TRP3RPNameInQuests_Frame.GetQuestTextHook = GetQuestText
-		GetQuestText = function (...)
-			local thisQuestText = TRP3RPNameInQuests_Frame:GetQuestTextHook()
-			return TRP3RPNameInQuests_Frame:CompleteRename(thisQuestText)
-		end
-
-
-		-- Get Quest Progress Text
-		TRP3RPNameInQuests_Frame.GetProgressTextHook = GetProgressText
-		GetProgressText = function (...)
-			local thisProgressText = TRP3RPNameInQuests_Frame:GetProgressTextHook()
-			return TRP3RPNameInQuests_Frame:CompleteRename(thisProgressText)
-		end
-
-
-
-		-- Get Quest Reward Text
-		TRP3RPNameInQuests_Frame.GetRewardTextHook = GetRewardText
-		GetRewardText = function (...)
-			local thisRewardText = TRP3RPNameInQuests_Frame:GetRewardTextHook()
-			return TRP3RPNameInQuests_Frame:CompleteRename(thisRewardText)
-		end
-
-
-		-- Gossip Options
-		TRP3RPNameInQuests_Frame.GetGossipOptions = C_GossipInfo.GetOptions
-		C_GossipInfo.GetOptions = function (...)
-			local thisGossipOptions = TRP3RPNameInQuests_Frame:GetGossipOptions()
-			for key, value in pairs(thisGossipOptions) do		
-				thisGossipOptions[key]["name"] =  TRP3RPNameInQuests_Frame:CompleteRename(thisGossipOptions[key]["name"])
-			end
-			return(thisGossipOptions)
-		end
+	
 		
 	end --eo QuestDialog
 	
@@ -1123,6 +1192,32 @@ function TRP3RPNameInQuests_Frame:Init()
 					end
 					
 				end
+			end
+		
+		end
+		
+		
+		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS) == true then
+			
+			if ( event == "GOSSIP_SHOW" ) then
+				
+				if (not InCombatLockdown()) then
+				
+					for _, thisChildFrame in GossipFrame.GreetingPanel.ScrollBox:EnumerateFrames() do
+						local thisChildFrameData = thisChildFrame:GetElementData()
+						local thisButtonX = thisChildFrameData.buttonType
+						
+						if (thisButtonX == GOSSIP_BUTTON_TYPE_TITLE) then
+							thisChildFrame.GreetingText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(thisChildFrame.GreetingText:GetText()))
+						elseif (thisButtonX == GOSSIP_BUTTON_TYPE_OPTION) then
+							thisChildFrame:SetText(TRP3RPNameInQuests_Frame:CompleteRename(thisChildFrame:GetText()))
+							thisChildFrame:Resize();
+						end
+					
+					end
+				
+				end
+			
 			end
 		
 		end
@@ -1581,6 +1676,22 @@ function TRP3RPNameInQuests_Frame:Init()
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+				
+				
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.TROUBLESHOOTING_USEHOOKS_TITLE,
+			help = L.TROUBLESHOOTING_USEHOOKS_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, value)
+				
+				if (TRP3_RPNameInQuests_OldVar_UseFuncHooks ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
 				
 				
 			end,

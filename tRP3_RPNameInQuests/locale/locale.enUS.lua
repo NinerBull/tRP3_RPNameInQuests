@@ -106,6 +106,9 @@ local _, L = ...;
 	L.TROUBLESHOOTING_NOTINENCOUNTER_TITLE = "Don't modify text during a Dungeon/Raid/PVP Instance"
 	L.TROUBLESHOOTING_NOTINENCOUNTER_HELP = "If checked, this addon won't attempt to modify any text when in a Dungeon, Raid, Scenario or PVP Instance.\nThis may help prevent LUA errors while in one of these."
 	
+	L.TROUBLESHOOTING_USEHOOKS_TITLE = "Use Function Hooks instead of Function Replacements"
+	L.TROUBLESHOOTING_USEHOOKS_HELP = "If checked, won't modify the functions that get Quest Text, instead, it will create secure hooks. \nThis may help if you get LUA errors while in combat, but it may not be compatible with some addons or UI Frameworks."
+	
 	L.SLASHCMD_HELP = "Open the 'RP Name in Quest Text' Config."
 	
 	L.ADCOM_HOW = "How NPCs will address %s:"
