@@ -833,7 +833,8 @@ function TRP3RPNameInQuests_Frame:Init()
 	-- 
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
-		if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+		local inInstance, instanceType = IsInInstance()
+		if (not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) and instanceType ~= "raid") then
 			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 				
 				local unitIsConnected = UnitIsConnected(frame.unit);
@@ -1001,6 +1002,8 @@ function TRP3RPNameInQuests_Frame:Init()
 					QuestInfoDescriptionText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(thisQuestDescription))
 				end
 			end)
+			
+			
 		
 		else
 			-- Classic
@@ -1231,12 +1234,16 @@ function TRP3RPNameInQuests_Frame:Init()
 	-- Chat Filters
 	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...)
 	
+		--print("ATEXT")
+	
 		if (TRP3RPNameInQuests_Frame:ShouldNotEditText(true)) then
-			return false, thisMessage, thisNPC, ...
+			--print("NOEDIT")
+			return false, thisMessage, ...
 		end
 		
 		if (canaccessvalue and not canaccessvalue(thisMessage)) then
-			return false, thisMessage, thisNPC, ...
+			--print("ISSECRET")
+			return false, thisMessage, ...
 		end
 	
 		local thisNewMessage = TRP3RPNameInQuests_Frame:CompleteRename(thisMessage)
@@ -1286,8 +1293,10 @@ function TRP3RPNameInQuests_Frame:Init()
 
 
 
-	--Talking Head
+	
 	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
+	
+		--Talking Head
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
 			if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
 				C_Timer.After(0.3, function()
@@ -1296,6 +1305,18 @@ function TRP3RPNameInQuests_Frame:Init()
 				end);
 			end
 		end)
+		
+		-- Adventure Map
+		C_AddOns.LoadAddOn("Blizzard_AdventureMap")
+		hooksecurefunc(AdventureMapQuestChoiceDialog, "RefreshDetails", function(self)
+			if not TRP3RPNameInQuests_Frame:ShouldNotEditText(true) then
+				local _, descriptionText, _ = C_AdventureMap.GetQuestInfo(self.questID);
+				if descriptionText then
+					self.Details.Child.DescriptionText:SetText(TRP3RPNameInQuests_Frame:CompleteRename(descriptionText));
+				end
+			end
+		end)
+		
 	end
 	
 
