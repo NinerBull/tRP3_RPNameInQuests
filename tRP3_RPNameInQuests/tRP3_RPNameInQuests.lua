@@ -215,29 +215,15 @@ function TRP3RPNameInQuests_Frame:Init()
 
 	function TRP3RPNameInQuests_Frame:ShouldNotEditText(strict)
 	
-		--print("Check Should Not Edit")
-			
-		local inInstance, instanceType = IsInInstance()
-		
 		local shouldPrevent = false
 		
-		if (inInstance == true) then
-			if (instanceType == "pvp" or instanceType == "arena" or instanceType == "party" or instanceType == "raid" or instanceType == "scenario") then
-				shouldPrevent = true
-			end
+		if (TRP3_API.utils.IsInCombatInstance()) then
+			shouldPrevent = true
 		end
-				
-		--[[if (strict) then
-			if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and IsInInstance()) then
-				shouldPrevent = true
-			end
-		end]]
 				
 		--Should we not try to edit text right now?
 		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true) 
-		--or (strict == true and shouldPrevent == true) 
-		or (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) 
-		then
+		or (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) then
 			return true
 		else
 			return false
@@ -1234,16 +1220,21 @@ function TRP3RPNameInQuests_Frame:Init()
 	-- Chat Filters
 	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...)
 	
-		--print("ATEXT")
+		---print("ATEXT")
+		
+		if (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) then
+			--print("CLOCKDOWN")
+			return --false, thisMessage, thisNPC, ...
+		end
 	
 		if (TRP3RPNameInQuests_Frame:ShouldNotEditText(true)) then
 			--print("NOEDIT")
-			return false, thisMessage, ...
+			return --false, thisMessage, thisNPC, ...
 		end
 		
 		if (canaccessvalue and not canaccessvalue(thisMessage)) then
 			--print("ISSECRET")
-			return false, thisMessage, ...
+			return --false, thisMessage, thisNPC, ...
 		end
 	
 		local thisNewMessage = TRP3RPNameInQuests_Frame:CompleteRename(thisMessage)
@@ -1256,8 +1247,7 @@ function TRP3RPNameInQuests_Frame:Init()
 				
 			end
 		end
-		
-		
+
 		return false, thisNewMessage, thisNewNPC, ...
 	
 	end
@@ -1316,6 +1306,7 @@ function TRP3RPNameInQuests_Frame:Init()
 				end
 			end
 		end)
+				
 		
 	end
 	
