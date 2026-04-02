@@ -1,2 +1,4 @@
-- Addon can now modify quest text on the Adventure Map Screens (e.g. Scouting Map, Prey Hunt Map)
-- When 'Use Custom Class Color in Raid Frames' is enabled, the addon will no longer try to modify health bar colors while in a Raid instance, due to taint.
+- Addon will now try to Auto Detect whether it should use Secure Hooks or Function Replacement in order to modify Quest Text.
+  - If any of the addons Immersion, Interaction or Storyline are enabled, functions will be replaced by default, otherwise Hooks will be used.
+  - This can be overriden in the quest text settings of Total RP 3, with the "Quest Text Modification Method" dropdown.
+  - If you have any other Quest Text addon where Auto Detect incorrectly chooses the wrong method, let me know and I'll fix it.

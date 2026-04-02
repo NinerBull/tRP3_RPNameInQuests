@@ -24,6 +24,10 @@ local _, L = ...;
 	L.DROPDOWNRACE_OPT2 = "TRP3 Race Name"
 	L.DROPDOWNRACE_OPT3 = "Custom* (Set Below)"
 	
+	L.DROPDOWNQTMETHOD_OPT1 = GX_ADAPTER_AUTO_DETECT .. " (%s)"
+	L.DROPDOWNQTMETHOD_OPT2 = "Function Hook"
+	L.DROPDOWNQTMETHOD_OPT3 = "Function Replacement"
+	
 	L.CHARSETTINGS_MAINTITLE = "%s's Quest Text Settings"
 	
 	L.CHARSETTINGS_CHARACTER = CHARACTER
@@ -108,6 +112,9 @@ local _, L = ...;
 	
 	L.TROUBLESHOOTING_USEHOOKS_TITLE = "Use Function Hooks instead of Function Replacements"
 	L.TROUBLESHOOTING_USEHOOKS_HELP = "If checked, won't modify the functions that get Quest Text, instead, it will create secure hooks. \nThis may help if you get LUA errors while in combat, but it may not be compatible with some addons or UI Frameworks."
+	
+	L.TROUBLESHOOTING_QTMETHOD_TITLE = "Quest Text Modification Method"
+	L.TROUBLESHOOTING_QTMETHOD_HELP = "Determines how the addon modifies quest text.\n\nFunction Hook uses secure hooks onto Blizzard's Quest Text functions that minimizes the chance of LUA Errors, but may not be compatible with other Quest Text addons.\n\nFunction Replacement is more compatible with other addons, but increases the likelyhood of LUA errors occuring."
 	
 	L.SLASHCMD_HELP = "Open the 'RP Name in Quest Text' Config."
 	

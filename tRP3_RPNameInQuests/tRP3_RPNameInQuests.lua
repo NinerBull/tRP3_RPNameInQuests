@@ -116,7 +116,8 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
 	TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER = "trp3_rpnameinquests_notinencounter";
-	TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS = "trp3_rpnameinquests_usefunchooks";
+	--TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS = "trp3_rpnameinquests_usefunchooks";
+	TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD = "trp3_rpnameinquests_qtmodmethod";
 
 	-- Register and set value for variables
 
@@ -188,7 +189,11 @@ function TRP3RPNameInQuests_Frame:Init()
 	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, false);
 	
 	--Use Function Hooks
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, false);
+	--TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, false);
+	
+	-- Quest Text Modification Method
+	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD, 1);
+	
 
 
 
@@ -198,7 +203,8 @@ function TRP3RPNameInQuests_Frame:Init()
 	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
 	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
 	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME)
-	local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS)
+	--local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS)
+	local TRP3_RPNameInQuests_OldVar_QTModMethod = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD)
 	
 	
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
@@ -243,6 +249,13 @@ function TRP3RPNameInQuests_Frame:Init()
 		else
 			return false
 		end
+	
+	end
+	
+	
+	function TRP3RPNameInQuests_Frame:QuestTextAddonDetected()
+		-- List addons here that use functions such as GetQuestText 
+		return (C_AddOns.IsAddOnLoaded("Immersion") or C_AddOns.IsAddOnLoaded("Interaction") or C_AddOns.IsAddOnLoaded("Storyline"))
 	
 	end
 	
@@ -1002,8 +1015,11 @@ function TRP3RPNameInQuests_Frame:Init()
 		 end
 		
 		
-		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS) == true then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 1 and not TRP3RPNameInQuests_Frame:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 2) then
 			-- Use Hooks
+			
+			--print("XHOOKS")
+			
 			hooksecurefunc(QuestInfoDescriptionText, "SetText", function()
 				pcall(function()
 					if (not InCombatLockdown()) then
@@ -1044,6 +1060,8 @@ function TRP3RPNameInQuests_Frame:Init()
 			end)
 		
 		else
+		
+			--print("XREPLACE")
 			
 			-- Get Gossip Text
 			TRP3RPNameInQuests_Frame.C_GossipInfoGetTextHook = C_GossipInfo.GetText
@@ -1186,7 +1204,7 @@ function TRP3RPNameInQuests_Frame:Init()
 		end
 		
 		
-		if TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS) == true then
+		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 1 and not TRP3RPNameInQuests_Frame:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 2) then
 			
 			if ( event == "GOSSIP_SHOW" ) then
 				
@@ -1219,21 +1237,16 @@ function TRP3RPNameInQuests_Frame:Init()
 	
 	-- Chat Filters
 	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...)
-	
-		---print("ATEXT")
-		
+
 		if (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) then
-			--print("CLOCKDOWN")
 			return --false, thisMessage, thisNPC, ...
 		end
 	
 		if (TRP3RPNameInQuests_Frame:ShouldNotEditText(true)) then
-			--print("NOEDIT")
 			return --false, thisMessage, thisNPC, ...
 		end
 		
 		if (canaccessvalue and not canaccessvalue(thisMessage)) then
-			--print("ISSECRET")
 			return --false, thisMessage, thisNPC, ...
 		end
 	
@@ -1419,6 +1432,13 @@ function TRP3RPNameInQuests_Frame:Init()
 		{ L.DROPDOWNRACE_OPT3, 99 },	
 	}
 	
+	local TRPRPNAMEINQUESTS_DROPDOWNQTMETHOD = {
+		{ string.format(L.DROPDOWNQTMETHOD_OPT1, TRP3RPNameInQuests_Frame:QuestTextAddonDetected() and L.DROPDOWNQTMETHOD_OPT3 or L.DROPDOWNQTMETHOD_OPT2), 1 },
+		{ L.DROPDOWNQTMETHOD_OPT2, 2 },
+		{ L.DROPDOWNQTMETHOD_OPT3, 3 },	
+		
+	}
+	
 	local TextureDot = CreateSimpleTextureMarkup("interface/raidframe/ui-raidframe-threat", 10,10)
 
 
@@ -1467,9 +1487,6 @@ function TRP3RPNameInQuests_Frame:Init()
 			listCallback = function(value)
 				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, value)
 				TRP3RPNameInQuests_CharVars.CustomClassName = value
-				
-				
-				
 			end,
 		},
 		{
@@ -1681,18 +1698,23 @@ function TRP3RPNameInQuests_Frame:Init()
 			title = L.TROUBLESHOOTING_TITLE,
 		},
 		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
-			help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
-			OnHide = function(button)
-				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "trp3_rpnameinquests_qtmodmethod",
+			title = L.TROUBLESHOOTING_QTMETHOD_TITLE,
+			help = L.TROUBLESHOOTING_QTMETHOD_HELP,
+			listContent = TRPRPNAMEINQUESTS_DROPDOWNQTMETHOD,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD,
+			listCallback = function(value)
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD, value)
 				
+				if (TRP3_RPNameInQuests_OldVar_QTModMethod ~= value) then
+					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
+				end
 				
 			end,
+
 		},
-		{
+		--[[{
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_USEHOOKS_TITLE,
 			help = L.TROUBLESHOOTING_USEHOOKS_HELP,
@@ -1704,6 +1726,18 @@ function TRP3RPNameInQuests_Frame:Init()
 				if (TRP3_RPNameInQuests_OldVar_UseFuncHooks ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
+				
+				
+			end,
+		},]]
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
+			help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
+			configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
 				
 				
 			end,
