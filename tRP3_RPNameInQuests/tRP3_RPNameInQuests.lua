@@ -26,8 +26,6 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests:RegisterEvent("KNOWN_TITLES_UPDATE");
 end
 
-TRPRPNAMEINQUESTS = select(2, ...);
-
 
 function TRP3RPNameInQuests:Init()
 
@@ -91,120 +89,120 @@ function TRP3RPNameInQuests:Init()
 
 
 	--TRP3 Variables
-	TRPRPNAMEINQUESTS.CONFIG = {};
+	TRP3RPNameInQuests.Config = {};
 
-	TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
-	TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT = "trp3_rpnameinquests_whichrpnametext";
+	TRP3RPNameInQuests.Config.WHICHRPNAME = "trp3_rpnameinquests_whichrpname";
+	TRP3RPNameInQuests.Config.WHICHRPNAMETEXT = "trp3_rpnameinquests_whichrpnametext";
 
-	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME = "trp3_rpnameinquests_customclassname";
-	TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT = "trp3_rpnameinquests_customclassnametext";
+	TRP3RPNameInQuests.Config.CUSTOMCLASSNAME = "trp3_rpnameinquests_customclassname";
+	TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT = "trp3_rpnameinquests_customclassnametext";
 
-	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME = "trp3_rpnameinquests_customracename";
-	TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT = "trp3_rpnameinquests_customracenametext";
+	TRP3RPNameInQuests.Config.CUSTOMRACENAME = "trp3_rpnameinquests_customracename";
+	TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT = "trp3_rpnameinquests_customracenametext";
 
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG = "trp3_rpnameinquests_textmod_questdialog";
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
-	TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
-	TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION = "trp3_rpnameinquests_textmod_raceclasspunctuation";
+	TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG = "trp3_rpnameinquests_textmod_questdialog";
+	TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH = "trp3_rpnameinquests_textmod_npcspeech";
+	TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS = "trp3_rpnameinquests_textmod_textitems";
+	TRP3RPNameInQuests.Config.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
+	TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION = "trp3_rpnameinquests_textmod_raceclasspunctuation";
 
-	TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
-	TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
-	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
-	TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR = "trp3_rpnameinquests_partyframerpcolor";
-	TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
+	TRP3RPNameInQuests.Config.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
+	TRP3RPNameInQuests.Config.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
+	TRP3RPNameInQuests.Config.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
+	TRP3RPNameInQuests.Config.PARTYFRAMERPCOLOR = "trp3_rpnameinquests_partyframerpcolor";
+	TRP3RPNameInQuests.Config.ZONENAMERPNAME = "trp3_rpnameinquests_zonenamerpname";
 	
-	TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
-	TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER = "trp3_rpnameinquests_notinencounter";
-	--TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS = "trp3_rpnameinquests_usefunchooks";
-	TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD = "trp3_rpnameinquests_qtmodmethod";
+	TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT = "trp3_rpnameinquests_altnamerpreplacement";
+	TRP3RPNameInQuests.Config.NOTINENCOUNTER = "trp3_rpnameinquests_notinencounter";
+	--TRP3RPNameInQuests.Config.USEFUNCHOOKS = "trp3_rpnameinquests_usefunchooks";
+	TRP3RPNameInQuests.Config.QTMODMETHOD = "trp3_rpnameinquests_qtmodmethod";
 
 	-- Register and set value for variables
 
 	-- ==Character Specific==
 	
 	--WhichRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.WHICHRPNAME, TRP3RPNameInQuests_CharVars.WhichRPName);
 	
 	--WhichRPNameText
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.WHICHRPNAMETEXT, TRP3RPNameInQuests_CharVars.WhichRPNameText);
 
 	--CustomClassName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME, TRP3RPNameInQuests_CharVars.CustomClassName);
 
 	--CustomClassNameText
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT, TRP3RPNameInQuests_CharVars.CustomClassNameText);
 
 	--CustomRaceName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME, TRP3RPNameInQuests_CharVars.CustomRaceName);
 
 	--CustomRaceNameText
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
-	TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
+	TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT, TRP3RPNameInQuests_CharVars.CustomRaceNameText);
 
 
 
 	-- ==Account Wide==
 	
 	--QuestDialog
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, true);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG, true);
 	
 	--NPCSpeech
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, true);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH, true);
 	
 	--TextItems
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, true);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS, true);
 
 	--Mailbox
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, true);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.TEXTMODMAILBOX, true);
 	
 	--RaceClassPunctuationAdjacent
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, true);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION, true);
 
 	--UnitFrameRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.UNITFRAMERPNAME, false);
 
 	--PaperDollRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME, false);
 	
 	--PartyFrameRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.PARTYFRAMERPNAME, false);
 	
 	--PartyFrameRPColor
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.PARTYFRAMERPCOLOR, false);
 	
 	--ZoneNameRPName
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.ZONENAMERPNAME, false);
 	
 	
 	--Alternate RP Name Replacement
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT, false);
 	
 	--Don't Modify in Encounter
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, false);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.NOTINENCOUNTER, false);
 	
 	--Use Function Hooks
-	--TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, false);
+	--TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.USEFUNCHOOKS, false);
 	
 	-- Quest Text Modification Method
-	TRP3_API.configuration.registerConfigKey(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD, 1);
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.QTMODMETHOD, 1);
 	
 
 
 
 	--Temp Values to check if /reload is needed
-	local TRP3_RPNameInQuests_OldVar_QuestDialog = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG)
-	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH)
-	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS)
-	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX)
-	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME)
-	--local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS)
-	local TRP3_RPNameInQuests_OldVar_QTModMethod = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD)
+	local TRP3_RPNameInQuests_OldVar_QuestDialog = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG)
+	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH)
+	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS)
+	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX)
+	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME)
+	--local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS)
+	local TRP3_RPNameInQuests_OldVar_QTModMethod = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD)
 	
 	
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
@@ -228,7 +226,7 @@ function TRP3RPNameInQuests:Init()
 		end
 				
 		--Should we not try to edit text right now?
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER) == true and shouldPrevent == true) 
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.NOTINENCOUNTER) == true and shouldPrevent == true) 
 		or (C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown()) then
 			return true
 		else
@@ -270,28 +268,28 @@ function TRP3RPNameInQuests:Init()
 		
 		local thisTRP3CharNameFull = ""
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
+		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 5) or (getFullName == true)) then
 			if (thisTRP3CharInfo.TI) then
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.TI	.. " "
 			end
 		end
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 6 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 8) or (getFullName == true)) then
+		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 6 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 8) or (getFullName == true)) then
 			if (thisTRP3CharInfo.FN) then
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. thisTRP3CharInfo.FN
 			end
 		end
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 7 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 8) or (getFullName == true)) then
+		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 5 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 7 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 8) or (getFullName == true)) then
 			if (thisTRP3CharInfo.LN) then
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
 			end
 		end
 		
 		
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT) == true) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT) == true) then
 			--Remove double of title, if it exists
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 5) or (getFullName == true)) then
+			if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 2 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 3 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 4 or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 5) or (getFullName == true)) then
 			
 				if (thisTRP3CharInfo.TI) then
 					if (string.find(thisTRP3CharNameFull, thisTRP3CharInfo.TI .. " " .. thisTRP3CharInfo.TI)) then
@@ -305,8 +303,8 @@ function TRP3RPNameInQuests:Init()
 		
 		
 		-- If the player wants to use a custom name, grab that instead
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) == 99 and getFullName == false) then
-			thisTRP3CharNameFull = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT)
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 99 and getFullName == false) then
+			thisTRP3CharNameFull = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAMETEXT)
 		end
 		
 		-- Trim extra space on the left and right of the string
@@ -391,7 +389,7 @@ function TRP3RPNameInQuests:Init()
 			thisTRP3CharName = TRP3RPNameInQuests.NameToChange
 		else
 		
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT) == true) then
 				if (textToRename) then
 					if (doUpperCase == true) then
 						textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests.NameToChange), string.upper(thisTRP3CharName))
@@ -489,23 +487,23 @@ function TRP3RPNameInQuests:Init()
 		thisRaceName = TRP3RPNameInQuests.RaceToChange
 		
 		--If not OOC Race Name
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) ~= 1) then
 			--TRP3 Race Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 2) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) == 2) then
 				if (thisTRP3CharInfoR.RA ~= nil) then
 					thisRaceName = thisTRP3CharInfoR.RA
 				end
 			end
 			
 			--Custom Race Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 99) then
-				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT) ~= "") then
-					thisRaceName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) == 99) then
+				if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT) ~= "") then
+					thisRaceName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT)
 				end
 			end
 			
 			
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION) == true) then
 			
 			
 				if (doLowerCase == true) then
@@ -562,18 +560,18 @@ function TRP3RPNameInQuests:Init()
 		thisRaceName = TRP3RPNameInQuests.RaceToChange
 		
 		--If not OOC Race Name
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) ~= 1) then
 			--TRP3 Race Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 2) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) == 2) then
 				if (thisTRP3CharInfoR.RA ~= nil) then
 					thisRaceName = thisTRP3CharInfoR.RA
 				end
 			end
 		
 			--Custom Race Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) == 99) then
-				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT) ~= "") then
-					thisRaceName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT)
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) == 99) then
+				if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT) ~= "") then
+					thisRaceName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT)
 				end
 			end
 				
@@ -605,22 +603,22 @@ function TRP3RPNameInQuests:Init()
 		thisClassName = TRP3RPNameInQuests.ClassToChange
 	
 		--If not OOC Class Name
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) ~= 1) then
 			--TRP3 Class Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 2) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) == 2) then
 				if (thisTRP3CharInfoC.CL ~= nil) then
 					thisClassName = thisTRP3CharInfoC.CL
 				end
 			end
 			
 			--Custom Class Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 99) then
-				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT) ~= "") then
-					thisClassName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT)
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) == 99) then
+				if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT) ~= "") then
+					thisClassName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT)
 				end
 			end
 			
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION) == true) then
 				--Replace text next to punctuation
 				
 				if (doLowerCase == true) then
@@ -678,18 +676,18 @@ function TRP3RPNameInQuests:Init()
 		thisClassName = TRP3RPNameInQuests.ClassToChange
 	
 		--If not OOC Class Name
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) ~= 1) then
 			--TRP3 Class Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 2) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) == 2) then
 				if (thisTRP3CharInfoC.CL ~= nil) then
 					thisClassName = thisTRP3CharInfoC.CL
 				end
 			end
 			
 			--Custom Class Name
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) == 99) then
-				if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT) ~= "") then
-					thisClassName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT)
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) == 99) then
+				if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT) ~= "") then
+					thisClassName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT)
 				end
 			end
 	
@@ -717,7 +715,7 @@ function TRP3RPNameInQuests:Init()
 		thisRenamedText = textToRename or ""
 		
 		--CharacterName
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) ~= 1) then
 		
 			-- Find out if TRP3 Name is a short version of OOC Name
 			lengthOfOOCName = string.len(TRP3RPNameInQuests.NameToChange)
@@ -744,7 +742,7 @@ function TRP3RPNameInQuests:Init()
 		end
 		
 		--ClassName
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) ~= 1) then
 			if (strmatch(thisRenamedText, TRP3RPNameInQuests.ClassToChange)) then
 				thisRenamedText =  TRP3RPNameInQuests:RPClassRename(thisRenamedText)
 			end
@@ -757,7 +755,7 @@ function TRP3RPNameInQuests:Init()
 		end
 		
 		--RaceName
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME) ~= 1) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) ~= 1) then
 			if (strmatch(thisRenamedText, TRP3RPNameInQuests.RaceToChange)) then
 				thisRenamedText =  TRP3RPNameInQuests:RPRaceRename(thisRenamedText)
 			end
@@ -784,7 +782,7 @@ function TRP3RPNameInQuests:Init()
 	hooksecurefunc("UnitFrame_Update", function(self, isParty)
 		if not TRP3RPNameInQuests:ShouldNotEditText(true) then
 			pcall(function () 
-				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
+				if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
 							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
@@ -810,7 +808,7 @@ function TRP3RPNameInQuests:Init()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(self)
 		if not TRP3RPNameInQuests:ShouldNotEditText(true) then
 			pcall(function () 
-				if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
+				if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
 							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
@@ -834,7 +832,7 @@ function TRP3RPNameInQuests:Init()
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
 		local inInstance, instanceType = IsInInstance()
 		if (not TRP3RPNameInQuests:ShouldNotEditText(true) and instanceType ~= "raid") then
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
+			if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PARTYFRAMERPNAME) == true) and (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PARTYFRAMERPCOLOR) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles")) and type(CompactUnitFrame_GetOptionUseClassColors) ~= "nil") then
 				
 				local unitIsConnected = UnitIsConnected(frame.unit);
 				local unitIsDead = unitIsConnected and UnitIsDead(frame.unit);
@@ -889,7 +887,7 @@ function TRP3RPNameInQuests:Init()
 	-- Update Unit Frames when profile changed
 	if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
 		TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
+			if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 				if not TRP3RPNameInQuests:ShouldNotEditText(true) then
 					TRP3RPNameInQuests:UpdateUnitFrames()
 				end
@@ -897,7 +895,7 @@ function TRP3RPNameInQuests:Init()
 		end);
 		
 		TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_DATA_UPDATED", function()
-			if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
+			if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 				if not TRP3RPNameInQuests:ShouldNotEditText(true) then
 					TRP3RPNameInQuests:UpdateUnitFrames()
 				end
@@ -910,7 +908,7 @@ function TRP3RPNameInQuests:Init()
 	-- Character Sheet
 	hooksecurefunc("ToggleCharacter", function()
 		if not TRP3RPNameInQuests:ShouldNotEditText(true) then
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME) == true) then
 				if ( CharacterFrame:IsShown() ) then
 					if (TRP3RPNameInQuests:ReturnRPNameTarget() ~= "") then
 						if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
@@ -936,7 +934,7 @@ function TRP3RPNameInQuests:Init()
 	-- Character Sheet Level/Race/Class
 	hooksecurefunc("PaperDollFrame_SetLevel", function()
 		if not TRP3RPNameInQuests:ShouldNotEditText(true) then
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME) == true) then
 			
 				local thisTRP3CharInfo = TRP3_API.profile.getData("player/characteristics")
 					
@@ -980,7 +978,7 @@ function TRP3RPNameInQuests:Init()
 
 
 	-- Quests, Dialog, Gossip Etc.
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG) == true) then
+	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG) == true) then
 		
 		-- Retail and MoP
 		if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
@@ -1015,7 +1013,7 @@ function TRP3RPNameInQuests:Init()
 		 end
 		
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 1 and not TRP3RPNameInQuests:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 2) then
+		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 1 and not TRP3RPNameInQuests:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 2) then
 			-- Use Hooks
 			
 			--print("XHOOKS")
@@ -1124,7 +1122,7 @@ function TRP3RPNameInQuests:Init()
 	--Cinematic Subtitles
 	hooksecurefunc(SubtitlesFrame, "AddSubtitle", function(...)
 		if not TRP3RPNameInQuests:ShouldNotEditText() then
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true) then
 				SubtitlesFrame.Subtitle1:SetText(TRP3RPNameInQuests:CompleteRename(SubtitlesFrame.Subtitle1:GetText()))
 			end
 		end
@@ -1135,7 +1133,7 @@ function TRP3RPNameInQuests:Init()
 	
 	-- Mail Window
 	-- /Interface/FrameXML/MailFrame.lua
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX) == true) then
+	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX) == true) then
 		hooksecurefunc("OpenMail_Update", function()
 			if not TRP3RPNameInQuests:ShouldNotEditText() then
 				-- Retail
@@ -1173,7 +1171,7 @@ function TRP3RPNameInQuests:Init()
 			
 			-- Books, etc.
 			-- /Interface/FrameXML/ItemTextFrame.lua
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS) == true) then
 		
 				if event == "ITEM_TEXT_READY" then
 				
@@ -1194,7 +1192,7 @@ function TRP3RPNameInQuests:Init()
 			if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
 				if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
 				
-					if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
+					if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 						TRP3RPNameInQuests:UpdateUnitFrames()
 					end
 					
@@ -1204,7 +1202,7 @@ function TRP3RPNameInQuests:Init()
 		end
 		
 		
-		if ((TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 1 and not TRP3RPNameInQuests:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD) == 2) then
+		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 1 and not TRP3RPNameInQuests:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 2) then
 			
 			if ( event == "GOSSIP_SHOW" ) then
 				
@@ -1252,7 +1250,7 @@ function TRP3RPNameInQuests:Init()
 		
 		local thisNewMessage = TRP3RPNameInQuests:CompleteRename(thisMessage)
 		local thisNewNPC = TRP3RPNameInQuests:RPNameRename(thisNPC)
-		if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true) then
 			if (thisEvent == "CHAT_MSG_MONSTER_SAY" or thisEvent == "CHAT_MSG_MONSTER_YELL" or thisEvent ==  "CHAT_MSG_MONSTER_PARTY") then
 				pcall(function () 
 					TRP3RPNameInQuests:ModSpeechBubbles()
@@ -1268,7 +1266,7 @@ function TRP3RPNameInQuests:Init()
 	
 	
 	-- NPC Speech
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true) then
+	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true) then
 		-- 12.0.0 Should be changed to ChatFrameUtil.AddMessageEventFilter
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_SAY", ChatFilterFunc) -- NPC /s Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_YELL", ChatFilterFunc) -- NPC /y Chat
@@ -1297,7 +1295,7 @@ function TRP3RPNameInQuests:Init()
 
 
 	
-	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH) == true)) then
+	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true)) then
 	
 		--Talking Head
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
@@ -1367,7 +1365,7 @@ function TRP3RPNameInQuests:Init()
 
 
 	--Zone Texts
-	if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME) == true) then
 	
 		TRP3RPNameGetZoneText = GetZoneText
 		function GetZoneText()
@@ -1384,7 +1382,7 @@ function TRP3RPNameInQuests:Init()
 	--[[
 	hooksecurefunc("Minimap_Update", function(...)
 		if not TRP3RPNameInQuests:ShouldNotEditText(true) then
-			if (TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME) == true) then
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME) == true) then
 				varCurrentMinimapZoneText = GetMinimapZoneText()
 				
 				MinimapZoneText:SetText(TRP3RPNameInQuests:RPNameRename(varCurrentMinimapZoneText, true))
@@ -1458,10 +1456,10 @@ function TRP3RPNameInQuests:Init()
 			title = string.format(L.CHARSETTINGS_NAMEFORMAT_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER)),
 			help = L.CHARSETTINGS_NAMEFORMAT_HELP,
 			listContent = TRPRPNAMEINQUESTS_DROPDOWNSTUFF,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME,
+			configKey = TRP3RPNameInQuests.Config.WHICHRPNAME,
 			listCallback = function(value)
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME, value)
-				TRP3RPNameInQuests_CharVars.WhichRPName = TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAME)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.WHICHRPNAME, value)
+				TRP3RPNameInQuests_CharVars.WhichRPName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME)
 			end,
 
 		},
@@ -1470,9 +1468,9 @@ function TRP3RPNameInQuests:Init()
 			title = string.format(L.CHARSETTINGS_RACEFORMAT_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE)),
 			help = L.CHARSETTINGS_RACEFORMAT_HELP,
 			listContent = TRPRPNAMEINQUESTS_DROPDOWNRACE,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME,
+			configKey = TRP3RPNameInQuests.Config.CUSTOMRACENAME,
 			listCallback = function(value)
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAME, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME, value)
 				TRP3RPNameInQuests_CharVars.CustomRaceName = value
 				
 				
@@ -1483,9 +1481,9 @@ function TRP3RPNameInQuests:Init()
 			title = string.format(L.CHARSETTINGS_CLASSFORMAT_TITLE, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS)),
 			help = L.CHARSETTINGS_CLASSFORMAT_HELP,
 			listContent = TRPRPNAMEINQUESTS_DROPDOWNCLASS,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME,
+			configKey = TRP3RPNameInQuests.Config.CUSTOMCLASSNAME,
 			listCallback = function(value)
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAME, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME, value)
 				TRP3RPNameInQuests_CharVars.CustomClassName = value
 			end,
 		},
@@ -1497,19 +1495,19 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMNAME_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT,
+			configKey = TRP3RPNameInQuests.Config.WHICHRPNAMETEXT,
 		},
 		{
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMRACE_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT,
+			configKey = TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT,
 		},
 		{
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMCLASS_TITLE, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMCLASS_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT,
+			configKey = TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT,
 		},
 		{
 			inherit = "TRP3_ConfigNote",
@@ -1527,11 +1525,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_QUESTTEXT_TITLE,
 			help = L.MODIFYSETTINGS_QUESTTEXT_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG,
+			configKey = TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;					
 				
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODQUESTDIALOG, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG, value)
 				
 				if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1542,11 +1540,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = string.format(L.MODIFYSETTINGS_NPCSPEECH_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_NPCSPEECH_TITLE2)),
 			help = L.MODIFYSETTINGS_NPCSPEECH_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH,
+			configKey = TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 				
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODNPCSPEECH, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH, value)
 				
 				if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1558,11 +1556,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = string.format(L.MODIFYSETTINGS_TEXTITEMS_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_TEXTITEMS_TITLE2)),
 			help = L.MODIFYSETTINGS_TEXTITEMS_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS,
+			configKey = TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODTEXTITEMS, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS, value)
 
 				if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1573,11 +1571,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_MAILBOX_TITLE,
 			help = L.MODIFYSETTINGS_MAILBOX_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX,
+			configKey = TRP3RPNameInQuests.Config.TEXTMODMAILBOX,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.TEXTMODMAILBOX, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX, value)
 				
 				if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1589,11 +1587,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_RCPUNC_TITLE,
 			help = string.format(L.MODIFYSETTINGS_RCPUNC_HELP, TRP3_API.globals.player_class_loc, TRP3_API.globals.player_class_loc),
-			configKey = TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION,
+			configKey = TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
 
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.RACECLASSPUNCTUATION, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION, value)
 
 
 				
@@ -1619,10 +1617,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " .. L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME,
+			configKey = TRP3RPNameInQuests.Config.UNITFRAMERPNAME,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.UNITFRAMERPNAME, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME, value)	
 				
 				--Update Unit Frames
 				if not TRP3RPNameInQuests:ShouldNotEditText(true) then
@@ -1635,17 +1633,17 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME,
+			configKey = TRP3RPNameInQuests.Config.PAPERDOLLRPNAME,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PAPERDOLLRPNAME, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME, value)
 				
 				--Save Variables we can't save otherwise
-				TRP3RPNameInQuests_CharVars.WhichRPNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.WHICHRPNAMETEXT))
+				TRP3RPNameInQuests_CharVars.WhichRPNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAMETEXT))
 				
-				TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMCLASSNAMETEXT))
+				TRP3RPNameInQuests_CharVars.CustomClassNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT))
 				
-				TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRPRPNAMEINQUESTS.CONFIG.CUSTOMRACENAMETEXT))
+				TRP3RPNameInQuests_CharVars.CustomRaceNameText = TRP3_API.utils.str.sanitize(TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT))
 				
 			end,
 		},
@@ -1653,10 +1651,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME,
+			configKey = TRP3RPNameInQuests.Config.PARTYFRAMERPNAME,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.PARTYFRAMERPNAME, value)	
 				
 				
 			end,
@@ -1665,11 +1663,11 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR,
-			dependentOnOptions = { TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPNAME },
+			configKey = TRP3RPNameInQuests.Config.PARTYFRAMERPCOLOR,
+			dependentOnOptions = { TRP3RPNameInQuests.Config.PARTYFRAMERPNAME },
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.PARTYFRAMERPCOLOR, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.PARTYFRAMERPCOLOR, value)	
 				
 				
 			end,
@@ -1678,10 +1676,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " .. string.format(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE, LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2)),
 			help = L.EXTRAFUNC_SHOWINFO_ZONENAME_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME,
+			configKey = TRP3RPNameInQuests.Config.ZONENAMERPNAME,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ZONENAMERPNAME, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME, value)	
 				
 				if (TRP3_RPNameInQuests_OldVar_ZoneNameRPName ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1703,9 +1701,9 @@ function TRP3RPNameInQuests:Init()
 			title = L.TROUBLESHOOTING_QTMETHOD_TITLE,
 			help = L.TROUBLESHOOTING_QTMETHOD_HELP,
 			listContent = TRPRPNAMEINQUESTS_DROPDOWNQTMETHOD,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD,
+			configKey = TRP3RPNameInQuests.Config.QTMODMETHOD,
 			listCallback = function(value)
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.QTMODMETHOD, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.QTMODMETHOD, value)
 				
 				if (TRP3_RPNameInQuests_OldVar_QTModMethod ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1718,10 +1716,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_USEHOOKS_TITLE,
 			help = L.TROUBLESHOOTING_USEHOOKS_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS,
+			configKey = TRP3RPNameInQuests.Config.USEFUNCHOOKS,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.USEFUNCHOOKS, value)
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS, value)
 				
 				if (TRP3_RPNameInQuests_OldVar_UseFuncHooks ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
@@ -1734,10 +1732,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
 			help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT,
+			configKey = TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.ALTRPNAMEREPLACEMENT, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT, value)	
 				
 				
 			end,
@@ -1746,10 +1744,10 @@ function TRP3RPNameInQuests:Init()
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_NOTINENCOUNTER_TITLE,
 			help = L.TROUBLESHOOTING_NOTINENCOUNTER_HELP,
-			configKey = TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER,
+			configKey = TRP3RPNameInQuests.Config.NOTINENCOUNTER,
 			OnHide = function(button)
 				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRPRPNAMEINQUESTS.CONFIG.NOTINENCOUNTER, value)	
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.NOTINENCOUNTER, value)	
 				
 				
 			end,
