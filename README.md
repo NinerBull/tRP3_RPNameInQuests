@@ -52,6 +52,7 @@ You can also add your TRP3 Roleplay Name/Race/Class to various UI components, su
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
 I have tested this addon successfully with the following:
+* [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log)
 * [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * [Immersion](https://github.com/seblindfors/Immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
@@ -60,6 +61,14 @@ I have tested this addon successfully with the following:
 * [Interaction](https://github.com/Adaptvx/Interaction)
 
 This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
+
+## API
+You can use the following functions in your own addons to make use of this addon's data.
+* `TRP3RPNameInQuests.API:ReturnRPName(renameFullName)` - Gives the character's currently chosen Quest Text RP Name. If `renameFullName` is `true`, it will give the full RP Name (Title + First Name + Last Name)
+* `TRP3RPNameInQuests.API:ReturnRPRace()` - Gives the character's currently chosen Quest Text RP Race. 
+* `TRP3RPNameInQuests.API:ReturnRPClass()` - Gives the character's currently chosen Quest Text RP Class. 
+* `TRP3RPNameInQuests.API:CompleteRename(textToRename)` - Returns the string `textToRename`, replacing the character's OOC Name, Class and Race with their selected Quest Text formatting settings.
+
 
 ## :warning: Caveats
 WoW's API only seems to give quest text/dialogue that already has your character's OOC Name/Class/Race in it. It does not have placeholders such as `<name>` or `<race>`.
