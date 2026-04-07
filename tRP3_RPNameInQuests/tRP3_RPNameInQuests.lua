@@ -253,7 +253,10 @@ function TRP3RPNameInQuests:Init()
 	function TRP3RPNameInQuests.API:QuestTextAddonDetected()
 		-- List addons here that use functions such as GetQuestText 
 		-- Note: DialogueUI calls a function to edit text on their end: https://github.com/Peterodox/YUI-Dialogue/blob/main/Code/SupportedAddOns/Roleplay.lua#L37
-		return (C_AddOns.IsAddOnLoaded("Immersion") or C_AddOns.IsAddOnLoaded("Interaction") or C_AddOns.IsAddOnLoaded("Storyline"))
+		return (C_AddOns.IsAddOnLoaded("Immersion") 
+			or C_AddOns.IsAddOnLoaded("Interaction") 
+			or C_AddOns.IsAddOnLoaded("Storyline")
+			or C_AddOns.IsAddOnLoaded("GossipChatter"))
 		
 	end
 	
