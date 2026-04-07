@@ -196,13 +196,14 @@ function TRP3RPNameInQuests:Init()
 
 
 	--Temp Values to check if /reload is needed
-	local TRP3_RPNameInQuests_OldVar_QuestDialog = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG)
-	local TRP3_RPNameInQuests_OldVar_NPCSpeech = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH)
-	local TRP3_RPNameInQuests_OldVar_TextItems = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS)
-	local TRP3_RPNameInQuests_OldVar_Mailbox = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX)
-	local TRP3_RPNameInQuests_OldVar_ZoneNameRPName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME)
-	--local TRP3_RPNameInQuests_OldVar_UseFuncHooks = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS)
-	local TRP3_RPNameInQuests_OldVar_QTModMethod = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD)
+	TRP3_RPNameInQuests.OldVar = {}
+	TRP3_RPNameInQuests.OldVar.QuestDialog = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG)
+	TRP3_RPNameInQuests.OldVar.NPCSpeech = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH)
+	TRP3_RPNameInQuests.OldVar.TextItems = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS)
+	TRP3_RPNameInQuests.OldVar.Mailbox = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX)
+	TRP3_RPNameInQuests.OldVar.ZoneNameRPName = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME)
+	--TRP3_RPNameInQuests.OldVar.UseFuncHooks = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS)
+	TRP3_RPNameInQuests.OldVar.QTModMethod = TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD)
 	
 	
 	-- Bypass Unit Frame options if totalRP3_UnitFrames is loaded.
@@ -1531,7 +1532,7 @@ function TRP3RPNameInQuests:Init()
 				
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG, value)
 				
-				if (TRP3_RPNameInQuests_OldVar_QuestDialog ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.QuestDialog ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 			end,
@@ -1546,7 +1547,7 @@ function TRP3RPNameInQuests:Init()
 				
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH, value)
 				
-				if (TRP3_RPNameInQuests_OldVar_NPCSpeech ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.NPCSpeech ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 				
@@ -1562,7 +1563,7 @@ function TRP3RPNameInQuests:Init()
 
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS, value)
 
-				if (TRP3_RPNameInQuests_OldVar_TextItems ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.TextItems ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 			end,
@@ -1577,7 +1578,7 @@ function TRP3RPNameInQuests:Init()
 
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX, value)
 				
-				if (TRP3_RPNameInQuests_OldVar_Mailbox ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.Mailbox ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 				
@@ -1681,7 +1682,7 @@ function TRP3RPNameInQuests:Init()
 				local value = button:GetChecked() and true or false;
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME, value)	
 				
-				if (TRP3_RPNameInQuests_OldVar_ZoneNameRPName ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.ZoneNameRPName ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 				
@@ -1705,7 +1706,7 @@ function TRP3RPNameInQuests:Init()
 			listCallback = function(value)
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.QTMODMETHOD, value)
 				
-				if (TRP3_RPNameInQuests_OldVar_QTModMethod ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.QTModMethod ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 				
@@ -1721,7 +1722,7 @@ function TRP3RPNameInQuests:Init()
 				local value = button:GetChecked() and true or false;
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS, value)
 				
-				if (TRP3_RPNameInQuests_OldVar_UseFuncHooks ~= value) then
+				if (TRP3_RPNameInQuests.OldVar.UseFuncHooks ~= value) then
 					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
 				end
 				
