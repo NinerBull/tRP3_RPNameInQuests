@@ -252,11 +252,25 @@ function TRP3RPNameInQuests:Init()
 	
 	function TRP3RPNameInQuests.API:QuestTextAddonDetected()
 		-- List addons here that use functions such as GetQuestText 
+		-- https://www.townlong-yak.com/globe/wut/#q:GetQuestText
 		-- Note: DialogueUI calls a function to edit text on their end: https://github.com/Peterodox/YUI-Dialogue/blob/main/Code/SupportedAddOns/Roleplay.lua#L37
-		return (C_AddOns.IsAddOnLoaded("Immersion") 
-			or C_AddOns.IsAddOnLoaded("Interaction") 
-			or C_AddOns.IsAddOnLoaded("Storyline")
-			or C_AddOns.IsAddOnLoaded("GossipChatter"))
+		return (
+			C_AddOns.IsAddOnLoaded("BelphiesQuestLog") or
+			C_AddOns.IsAddOnLoaded("Immersion") or
+			C_AddOns.IsAddOnLoaded("Interaction") or
+			C_AddOns.IsAddOnLoaded("LoreJournal") or
+			C_AddOns.IsAddOnLoaded("GossipChatter") or
+			C_AddOns.IsAddOnLoaded("GossipTTS") or
+			C_AddOns.IsAddOnLoaded("MidnightUI") or
+			C_AddOns.IsAddOnLoaded("Queso") or
+			C_AddOns.IsAddOnLoaded("QuestHistory") or
+			C_AddOns.IsAddOnLoaded("QuestSpeaker") or
+			C_AddOns.IsAddOnLoaded("QuestTTS") or
+			C_AddOns.IsAddOnLoaded("ScrollingQuestText") or
+			C_AddOns.IsAddOnLoaded("Skits") or
+			C_AddOns.IsAddOnLoaded("Storyline") or
+			C_AddOns.IsAddOnLoaded("StoryQuest")
+		)
 		
 	end
 	
@@ -334,7 +348,7 @@ function TRP3RPNameInQuests:Init()
 		-- Some allied races use a different race name in quest text rather than their full race name
 		local thisPlayerRaceName, thisPlayerRaceFile, thisPlayerRaceID = UnitRace("player")
 		
-		thisActualRaceInfo = {}
+		local thisActualRaceInfo = {}
 		
 		if (thisPlayerRaceID == 28) then -- Highmountain Tauren
 			thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(6)
@@ -382,7 +396,7 @@ function TRP3RPNameInQuests:Init()
 			return textToRename
 		end
 	
-		thisTextToReturn = textToRename
+		local thisTextToReturn = textToRename
 		
 		--rename char
 		thisTRP3CharName = TRP3RPNameInQuests.API:GetFullRPName(renameFullName)
@@ -485,7 +499,7 @@ function TRP3RPNameInQuests:Init()
 			return textToRename
 		end
 		
-		thisTextToReturn = textToRename
+		local thisTextToReturn = textToRename
 		local thisTRP3CharInfoR = TRP3_API.profile.getData("player/characteristics")
 		thisRaceName = TRP3RPNameInQuests.RaceToChange
 		
@@ -560,7 +574,7 @@ function TRP3RPNameInQuests:Init()
 		end
 	
 		local thisTRP3CharInfoR = TRP3_API.profile.getData("player/characteristics")
-		thisRaceName = TRP3RPNameInQuests.RaceToChange
+		local thisRaceName = TRP3RPNameInQuests.RaceToChange
 		
 		--If not OOC Race Name
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) ~= 1) then
@@ -601,9 +615,9 @@ function TRP3RPNameInQuests:Init()
 	
 		doLowerCase = doLowerCase or false
 		doUpperCase = doUpperCase or false
-		thisTextToReturn = textToRename
+		local thisTextToReturn = textToRename
 		local thisTRP3CharInfoC = TRP3_API.profile.getData("player/characteristics")
-		thisClassName = TRP3RPNameInQuests.ClassToChange
+		local thisClassName = TRP3RPNameInQuests.ClassToChange
 	
 		--If not OOC Class Name
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) ~= 1) then
@@ -676,7 +690,7 @@ function TRP3RPNameInQuests:Init()
 		end
 	
 		local thisTRP3CharInfoC = TRP3_API.profile.getData("player/characteristics")
-		thisClassName = TRP3RPNameInQuests.ClassToChange
+		local thisClassName = TRP3RPNameInQuests.ClassToChange
 	
 		--If not OOC Class Name
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) ~= 1) then
@@ -715,7 +729,7 @@ function TRP3RPNameInQuests:Init()
 			return textToRename
 		end
 
-		thisRenamedText = textToRename or ""
+		local thisRenamedText = textToRename or ""
 		
 		--CharacterName
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) ~= 1) then
@@ -990,7 +1004,7 @@ function TRP3RPNameInQuests:Init()
 			if (C_AddOns.IsAddOnLoaded("Classic Quest Log") or C_AddOns.IsAddOnLoaded("Kerzo Classic Quest Log")) then
 				GetQuestLogQuestTextRPNameQuestText = GetQuestLogQuestText
 				GetQuestLogQuestText = function(...) 
-					questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
+					local questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
 					return TRP3RPNameInQuests.API:CompleteRename(questDescription), questObjectives
 				end
 			end
@@ -1018,8 +1032,6 @@ function TRP3RPNameInQuests:Init()
 		
 		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 1 and not TRP3RPNameInQuests.API:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 2) then
 			-- Use Hooks
-			
-			--print("XHOOKS")
 			
 			hooksecurefunc(QuestInfoDescriptionText, "SetText", function()
 				pcall(function()
@@ -1061,9 +1073,8 @@ function TRP3RPNameInQuests:Init()
 			end)
 		
 		else
-		
-			--print("XREPLACE")
-			
+			-- Function Replacement
+					
 			-- Get Gossip Text
 			TRP3RPNameInQuests.C_GossipInfoGetTextHook = C_GossipInfo.GetText
 			C_GossipInfo.GetText = function (...)
@@ -1207,6 +1218,7 @@ function TRP3RPNameInQuests:Init()
 		
 		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 1 and not TRP3RPNameInQuests.API:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 2) then
 			
+			-- Gossip Text and Options
 			if ( event == "GOSSIP_SHOW" ) then
 				
 				if (not InCombatLockdown()) then
@@ -1342,7 +1354,7 @@ function TRP3RPNameInQuests:Init()
 										local region = select(i, child:GetRegions())
 										if (region:GetObjectType() == "FontString") then
 										
-											thisBubbleText = region:GetText()
+											local thisBubbleText = region:GetText()
 											
 											region:SetText(TRP3RPNameInQuests.API:CompleteRename(thisBubbleText))
 											
@@ -1370,14 +1382,14 @@ function TRP3RPNameInQuests:Init()
 	--Zone Texts
 	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ZONENAMERPNAME) == true) then
 	
-		TRP3RPNameGetZoneText = GetZoneText
+		TRP3RPNameInQuests.GetZoneTextHook = GetZoneText
 		function GetZoneText()
-			return TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameGetZoneText(), true)
+			return TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameInQuests.GetZoneTextHook(), true)
 		end
 		
-		TRP3RPNameGetSubZoneText = GetSubZoneText
+		TRP3RPNameInQuests.GetSubZoneTextHook = GetSubZoneText
 		function GetSubZoneText()
-			return TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameGetSubZoneText(), true)
+			return TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameInQuests.GetSubZoneTextHook(), true)
 		end
 	
 	end
