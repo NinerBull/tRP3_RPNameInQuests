@@ -72,6 +72,15 @@ You can use the following functions in your own addons to make use of this addon
 * `TRP3RPNameInQuests.API:RPRaceRename(textToRename)` - Returns a string, replacing the character's OOC Race with their chosen Quest Text Class Name.
 * `TRP3RPNameInQuests.API:CompleteRename(textToRename)` - Returns a string, replacing the character's OOC Name, Class and Race with their chosen Quest Text formatting settings.
 
+You can check to see if the module is loaded before attempting to use any of these APIs with the following example:
+```lua
+if (TRP3_API and TRP3_API.module.isModuleLoaded("trp3_rpnameinquests")) then
+	-- With an OOC Name of 'Sirtestman' and RP Name of 'Sir Obvious Testman'
+	local thisText = TRP3RPNameInQuests.API:CompleteRename("My Name is Sirtestman. A pleasure to meet you.")
+	-- thisText will become "My Name is Sir Obvious Testman. A pleasure to meet you."
+end
+```
+
 
 ## :warning: Caveats
 WoW's API only seems to give quest text/dialogue that already has your character's OOC Name/Class/Race in it. It does not have placeholders such as `<name>` or `<race>`.
