@@ -111,10 +111,10 @@ local _, L = ...;
 	L.TROUBLESHOOTING_NOTINENCOUNTER_HELP = "If checked, this addon won't attempt to modify any text when in a Dungeon, Raid, Scenario or PVP Instance.\nThis may help prevent LUA errors while in one of these."
 	
 	L.TROUBLESHOOTING_USEHOOKS_TITLE = "Use Function Hooks instead of Function Replacements"
-	L.TROUBLESHOOTING_USEHOOKS_HELP = "If checked, won't modify the functions that get Quest Text, instead, it will create secure hooks. \nThis may help if you get LUA errors while in combat, but it may not be compatible with some addons or UI Frameworks."
+	L.TROUBLESHOOTING_USEHOOKS_HELP = "If checked, won't modify the functions that get Quest Text, instead, it will create secure hooks. \nThis may help if you get LUA errors while trying to talk to NPCs while in combat, but it may not be compatible with some addons or UI Frameworks."
 	
 	L.TROUBLESHOOTING_QTMETHOD_TITLE = "Quest Text Modification Method"
-	L.TROUBLESHOOTING_QTMETHOD_HELP = "Determines how the addon modifies quest text.\n\nFunction Hook uses secure hooks onto Blizzard's Quest Text functions that minimizes the chance of LUA Errors, but may not be compatible with other Quest Text addons.\n\nFunction Replacement is more compatible with other addons, but increases the likelyhood of LUA errors occuring."
+	L.TROUBLESHOOTING_QTMETHOD_HELP = "Determines how the addon modifies quest text.\n\nFunction Hook uses secure hooks onto Blizzard's Quest Text functions that should allow you to talk to NPCs while in Combat, but may not be compatible with other Quest Text addons.\n\nFunction Replacement is more compatible with other addons, but may give you the inability to talk to NPCs during combat."
 	
 	L.SLASHCMD_HELP = "Open the 'RP Name in Quest Text' Config."
 	

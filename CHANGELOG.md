@@ -1,3 +1,5 @@
 - Addon will now try to Auto Detect whether it should use Secure Hooks or Function Replacement in order to modify Quest Text.
   - This can be overriden in the quest text settings of Total RP 3, with the "Quest Text Modification Method" dropdown.
   - If you have any Quest Text addons where Auto Detect incorrectly chooses the wrong method, let me know and I'll fix it.
+- Added multiple API functions that can be used in addons or macros, to retrieve your currently chosen Quest Text Name/Race/Class, or find & replace text within a given string with your Quest Text Name/Race/Class.
+  - See the addon's description on Github/Curse for details!

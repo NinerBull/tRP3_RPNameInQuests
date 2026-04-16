@@ -64,10 +64,13 @@ This addon should hopefully be compatible with other addons that modify quest wi
 
 ## API
 You can use the following functions in your own addons to make use of this addon's data.
-* `TRP3RPNameInQuests.API:ReturnRPName(renameFullName)` - Gives the character's currently chosen Quest Text RP Name. If `renameFullName` is `true`, it will give the full RP Name (Title + First Name + Last Name)
-* `TRP3RPNameInQuests.API:ReturnRPRace()` - Gives the character's currently chosen Quest Text RP Race. 
-* `TRP3RPNameInQuests.API:ReturnRPClass()` - Gives the character's currently chosen Quest Text RP Class. 
-* `TRP3RPNameInQuests.API:CompleteRename(textToRename)` - Replaces the character's OOC Name, Class and Race in the string `textToRename` with their selected Quest Text formatting settings.
+* `TRP3RPNameInQuests.API:ReturnRPName(renameFullName)` - Returns the character's currently chosen Quest Text RP Name. If `renameFullName` is `true`, it will give the full RP Name (Title + First Name + Last Name)
+* `TRP3RPNameInQuests.API:ReturnRPRace()` - Returns the character's currently chosen Quest Text RP Race. 
+* `TRP3RPNameInQuests.API:ReturnRPClass()` - Returns the character's currently chosen Quest Text RP Class. 
+* `TRP3RPNameInQuests.API:RPNameRename(textToRename, renameFullName)` - Returns a string, replacing the character's OOC Name with their chosen Quest Text Character Name. If `renameFullName` is `true`, it will search for the full RP Name (Title + First Name + Last Name).
+* `TRP3RPNameInQuests.API:RPClassRename(textToRename)` - Returns a string, replacing the character's OOC Class with their chosen Quest Text Class Name.
+* `TRP3RPNameInQuests.API:RPRaceRename(textToRename)` - Returns a string, replacing the character's OOC Race with their chosen Quest Text Class Name.
+* `TRP3RPNameInQuests.API:CompleteRename(textToRename)` - Returns a string, replacing the character's OOC Name, Class and Race with their chosen Quest Text formatting settings.
 
 
 ## :warning: Caveats
