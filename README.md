@@ -43,6 +43,8 @@ You can also select which text this addon modifies. Turn on/off as desired.
 
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
+
+
 ## Compatibility
 * **Midnight** - 12.0.5
 * **MoP Classic** - 5.5.3
@@ -75,9 +77,24 @@ You can use the following functions in your own addons to make use of this addon
 You can check to see if the module is loaded before attempting to use any of these APIs with the following example:
 ```lua
 if (TRP3_API and TRP3_API.module.isModuleLoaded("trp3_rpnameinquests")) then
+	
+	-- # Obtaining Strings
+	local thisRPName = TRP3RPNameInQuests.API:ReturnRPName()
+	local thisRPRace = TRP3RPNameInQuests.API:ReturnRPRace()
+	local thisRPClass = TRP3RPNameInQuests.API:ReturnRPClass()
+
+	-- # Modifying Strings
 	-- With an OOC Name of 'Sirtestman' and RP Name of 'Sir Obvious Testman'
-	local thisText = TRP3RPNameInQuests.API:CompleteRename("My Name is Sirtestman. A pleasure to meet you.")
-	-- thisText will become "My Name is Sir Obvious Testman. A pleasure to meet you."
+	local thisText1 = TRP3RPNameInQuests.API:CompleteRename("My Name is Sirtestman. A pleasure to meet you.")
+	-- thisText1 will become "My Name is Sir Obvious Testman. A pleasure to meet you."
+	
+	-- String variables also work.
+	local thisTextString = "My Name is Sirtestman. A pleasure to meet you."
+	local thisText2 = TRP3RPNameInQuests.API:CompleteRename(thisTextString)
+	
+	-- And also functions that return strings
+	local thisText3 = TRP3RPNameInQuests.API:CompleteRename(UnitName("player"))
+	
 end
 ```
 
