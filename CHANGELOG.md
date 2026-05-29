@@ -1,6 +1,1 @@
-- Addon will now hook onto Blizz's Quest Text functions by default, instead of replacing them, unless an addon which is known to make use of these functions is detected.
-  - Hooking functions will allow you to still be able to interact with NPCs while in combat, while function replacement is more compatible with other addons.
-  - This can be overriden in the quest text settings of Total RP 3, with the "Quest Text Modification Method" dropdown.
-  - If you have any Quest Text addons where Auto Detect incorrectly chooses the wrong method, let me know and I'll test it. Thanks!
-- Exposed multiple API functions that can be used in other addons or macros to retrieve your currently chosen Quest Text Name/Race/Class, or find & replace text within a given string with your Quest Text Name/Race/Class.
-  - See the addon's description on Github/Curse for details!
+- Update TOC for 12.0.7 and 5.5.4
