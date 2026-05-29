@@ -220,7 +220,7 @@ function TRP3RPNameInQuests:Init()
 	
 		local shouldPrevent = false
 		
-		if (TRP3_API.utils.IsInCombatInstance()) then
+		if (TRP3_API.utils.IsInCombatInstance and TRP3_API.utils.IsInCombatInstance()) then
 			shouldPrevent = true
 		end
 				
