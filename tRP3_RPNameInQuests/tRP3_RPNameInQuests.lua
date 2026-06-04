@@ -961,6 +961,16 @@ function TRP3RPNameInQuests:Init()
 		if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 1 and not TRP3RPNameInQuests.API:QuestTextAddonDetected()) or TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.QTMODMETHOD) == 2) then
 			-- Use Hooks
 			
+			-- Gossip Text
+			--[[hooksecurefunc(C_GossipInfo, "GetText", function()
+				pcall(function()
+					if (not InCombatLockdown()) then
+						
+					end
+				end)
+			end)]]
+			
+			-- Quest Description Text
 			hooksecurefunc(QuestInfoDescriptionText, "SetText", function()
 				pcall(function()
 					if (not InCombatLockdown()) then
@@ -975,7 +985,7 @@ function TRP3RPNameInQuests:Init()
 				end)
 			end)
 			
-			
+			-- Greeting Text
 			hooksecurefunc(GreetingText, "SetText", function()
 				pcall(function()
 					if (not InCombatLockdown()) then
@@ -984,6 +994,7 @@ function TRP3RPNameInQuests:Init()
 				end)
 			end)
 			
+			-- Quest Progress Text
 			hooksecurefunc(QuestProgressText, "SetText", function()
 				pcall(function()
 					if (not InCombatLockdown()) then
@@ -992,6 +1003,7 @@ function TRP3RPNameInQuests:Init()
 				end)
 			end)
 			
+			-- Quest Reward Text
 			hooksecurefunc(QuestInfoRewardText, "SetText", function()
 				pcall(function()
 					if (not InCombatLockdown()) then
@@ -999,7 +1011,8 @@ function TRP3RPNameInQuests:Init()
 					end
 				end)
 			end)
-		
+			
+
 		else
 			-- Function Replacement
 					
@@ -1148,23 +1161,28 @@ function TRP3RPNameInQuests:Init()
 			
 			-- Gossip Text and Options
 			if ( event == "GOSSIP_SHOW" ) then
+			
+				pcall(function()
 				
-				if (not InCombatLockdown()) then
-				
-					for _, thisChildFrame in GossipFrame.GreetingPanel.ScrollBox:EnumerateFrames() do
-						local thisChildFrameData = thisChildFrame:GetElementData()
-						local thisButtonX = thisChildFrameData.buttonType
+					if (not InCombatLockdown()) then
+					
+						for _, thisChildFrame in GossipFrame.GreetingPanel.ScrollBox:EnumerateFrames() do
+							local thisChildFrameData = thisChildFrame:GetElementData()
+							local thisButtonX = thisChildFrameData.buttonType
+							
+							if (thisButtonX == GOSSIP_BUTTON_TYPE_TITLE) then
+								thisChildFrame.GreetingText:SetText(TRP3RPNameInQuests.API:CompleteRename(thisChildFrame.GreetingText:GetText()))
+								thisChildFrame:Setup(TRP3RPNameInQuests.API:CompleteRename(thisChildFrame.GreetingText:GetText()))
+							elseif (thisButtonX == GOSSIP_BUTTON_TYPE_OPTION) then
+								thisChildFrame:SetText(TRP3RPNameInQuests.API:CompleteRename(thisChildFrame:GetText()))
+								thisChildFrame:Resize();
+							end
 						
-						if (thisButtonX == GOSSIP_BUTTON_TYPE_TITLE) then
-							thisChildFrame.GreetingText:SetText(TRP3RPNameInQuests.API:CompleteRename(thisChildFrame.GreetingText:GetText()))
-						elseif (thisButtonX == GOSSIP_BUTTON_TYPE_OPTION) then
-							thisChildFrame:SetText(TRP3RPNameInQuests.API:CompleteRename(thisChildFrame:GetText()))
-							thisChildFrame:Resize();
 						end
 					
 					end
 				
-				end
+				end)
 			
 			end
 		
