@@ -55,7 +55,6 @@ This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as 
 
 I have tested this addon successfully with the following:
 * [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log)
-* [Classic Quest Log](https://www.curseforge.com/wow/addons/classic-quest-log)
 * [Immersion](https://github.com/seblindfors/Immersion)
 * [Storyline](https://github.com/Total-RP/Storyline)
 * [GossipChatter](https://github.com/keyboardturner/GossipChatter)

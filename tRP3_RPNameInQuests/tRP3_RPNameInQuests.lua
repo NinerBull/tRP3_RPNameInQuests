@@ -928,8 +928,8 @@ function TRP3RPNameInQuests:Init()
 		-- Retail and MoP
 		if (WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC) then
 		
-			-- If Classic Quest Log is Installed
-			if (C_AddOns.IsAddOnLoaded("Classic Quest Log") or C_AddOns.IsAddOnLoaded("Kerzo Classic Quest Log")) then
+			-- If Kerzo Classic Quest Log is Installed
+			if (C_AddOns.IsAddOnLoaded("Kerzo Classic Quest Log")) then
 				GetQuestLogQuestTextRPNameQuestText = GetQuestLogQuestText
 				GetQuestLogQuestText = function(...) 
 					local questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
