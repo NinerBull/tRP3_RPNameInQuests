@@ -1,2 +1,0 @@
-- Fix a LUA error in Classic clients regarding a non-existent function
-- Update TOC for 12.0.7 and 5.5.4

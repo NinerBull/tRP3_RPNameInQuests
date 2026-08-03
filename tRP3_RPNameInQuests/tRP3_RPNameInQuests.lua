@@ -443,34 +443,51 @@ function TRP3RPNameInQuests:Init()
 	
 	
 	-- Return RP Name Target
-	function TRP3RPNameInQuests.API:ReturnRPNameTarget(thisTarget, withTitle)
+	function TRP3RPNameInQuests.API:ReturnRPNameUnit(thisUnit, withTitle)
 	
-		local thisTarget = thisTarget or "player"
+		local thisUnit = thisUnit or "player"
 		local withTitle = withTitle or false
+		local thisPlayer, thisPlayerData
 		
-		if (canaccessvalue and not canaccessvalue(thisTarget)) then
-			return UnitName(thisTarget)
+		if (canaccessvalue and not canaccessvalue(thisUnit)) then
+			return UnitName(thisUnit)
 		end
 		
 		if TRP3RPNameInQuests.API:ShouldNotEditText(true) then
-			return UnitName(thisTarget)
+			return UnitName(thisUnit)
 		end
 		
-		local thisPlayer = AddOn_TotalRP3.Player.CreateFromUnit(tostring(thisTarget))
-	
-		local thisFullName = thisPlayer:GetFullName() or TRP3RPNameInQuests.NameToChange
-		local thisFullTitle = thisPlayer:GetTitle()
+		if (UnitGUID(tostring(thisUnit))) then
+			thisPlayer, thisPlayerData = pcall(AddOn_TotalRP3.Player.CreateFromUnit, tostring(thisUnit))
+		end
 		
-		if (withTitle == true) then
-			if (thisFullTitle ~= nil) then
-				thisFullName = string.join(" ", thisFullTitle, thisFullName)
+		if thisPlayer then
+			local thisFullName = thisPlayerData.GetFullName and thisPlayerData:GetFullName()
+			
+			if thisFullName then
+				
+				local thisFullTitle = thisPlayerData.GetTitle and thisPlayerData:GetTitle()
+				
+				if (withTitle == true) then
+					if (thisFullTitle ~= nil) then
+						thisFullName = string.join(" ", thisFullTitle, thisFullName)
+					end
+				end
+				
+				thisFullName = thisFullName:gsub("%s+", " ")
+				thisFullName = thisFullName:gsub("^%s*(.-)%s*$", "%1")
+			
+				return thisFullName
+			
+			else
+				return UnitName(thisUnit)
 			end
+			
+		else
+		
+			return UnitName(thisUnit)
+			
 		end
-		
-		thisFullName = thisFullName:gsub("%s+", " ")
-		thisFullName = thisFullName:gsub("^%s*(.-)%s*$", "%1")
-		
-		return thisFullName
 	
 	end
 	
@@ -737,7 +754,7 @@ function TRP3RPNameInQuests:Init()
 								--elseif if (UnitRealmRelationship(tostring(self.thisUnit)) == LE_REALM_RELATION_VIRTUAL) then
 									--thisRealmString = INTERACTIVE_SERVER_LABEL
 								end
-								self.name:SetText(TRP3RPNameInQuests.API:ReturnRPNameTarget(self.unit, true) .. thisRealmString)
+								self.name:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit(self.unit, true) .. thisRealmString)
 							end
 						end
 					end
@@ -761,7 +778,7 @@ function TRP3RPNameInQuests:Init()
 									if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
 										thisRealmString = FOREIGN_SERVER_LABEL
 									end
-									self.name:SetText(TRP3RPNameInQuests.API:ReturnRPNameTarget(self.unit) .. thisRealmString)
+									self.name:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit(self.unit) .. thisRealmString)
 								
 							end
 						end
@@ -855,19 +872,19 @@ function TRP3RPNameInQuests:Init()
 		if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
 			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME) == true) then
 				if ( CharacterFrame:IsShown() ) then
-					if (TRP3RPNameInQuests.API:ReturnRPNameTarget() ~= "") then
+					if (TRP3RPNameInQuests.API:ReturnRPNameUnit() ~= "") then
 						if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 							-- Era Only
-							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameTarget());
+							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) then 
 							-- TBC
-							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameTarget());
+							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
 							-- MoP
-							CharacterFrameTitleText:SetText(TRP3RPNameInQuests.API:ReturnRPNameTarget());
+							CharacterFrameTitleText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
 						else
 							-- Retail
-							CharacterFrame:SetTitle(TRP3RPNameInQuests.API:ReturnRPNameTarget());
+							CharacterFrame:SetTitle(TRP3RPNameInQuests.API:ReturnRPNameUnit());
 						end
 					end
 				end
@@ -1779,26 +1796,26 @@ if (AddonCompartmentFrame) then
 		
 		funcOnEnter = function(button)
 			if (not TRP3RPNameInQuests.Tooltip) then
-					TRP3RPNameInQuests.Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests.Tooltip_Compartment", UIParent, "GameTooltipTemplate")
-				end
-				
-				local ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
-				
-				TRP3RPNameInQuests.Tooltip:SetOwner(button, "ANCHOR_LEFT");
-				TRP3RPNameInQuests.Tooltip:SetText(L.TRP3 .. ": " .. L.ADDON_NAME)
-				
-				TRP3RPNameInQuests.Tooltip:AddLine(" ")
-				TRP3RPNameInQuests.Tooltip:AddLine(string.format(L.ADCOM_HOW, ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)), WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-				TRP3RPNameInQuests.Tooltip:AddLine(" ")
-				
-				TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_NAME, TRP3RPNameInQuests.API:GetFullRPName(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-				TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_RACE, TRP3RPNameInQuests.API:ReturnRPRace(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-				TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_CLASS, TRP3RPNameInQuests.API:ReturnRPClass(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
-				
-				TRP3RPNameInQuests.Tooltip:AddLine(" ")
-				TRP3RPNameInQuests.Tooltip:AddLine(L.ADCOM_CLICK_TO_CHANGE, GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
+				TRP3RPNameInQuests.Tooltip = CreateFrame("GameTooltip", "TRP3RPNameInQuests.Tooltip_Compartment", UIParent, "GameTooltipTemplate")
+			end
+			
+			local ClassColorString = CreateColor(GetClassColor(TRP3_API.globals.player_character.class)) or NORMAL_FONT_COLOR
+			
+			TRP3RPNameInQuests.Tooltip:SetOwner(button, "ANCHOR_LEFT");
+			TRP3RPNameInQuests.Tooltip:SetText(L.TRP3 .. ": " .. L.ADDON_NAME)
+			
+			TRP3RPNameInQuests.Tooltip:AddLine(" ")
+			TRP3RPNameInQuests.Tooltip:AddLine(string.format(L.ADCOM_HOW, ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)), WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+			TRP3RPNameInQuests.Tooltip:AddLine(" ")
+			
+			TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_NAME, TRP3RPNameInQuests.API:GetFullRPName(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+			TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_RACE, TRP3RPNameInQuests.API:ReturnRPRace(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+			TRP3RPNameInQuests.Tooltip:AddDoubleLine(L.ADCOM_CLASS, TRP3RPNameInQuests.API:ReturnRPClass(), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, WHITE_FONT_COLOR.r, WHITE_FONT_COLOR.g, WHITE_FONT_COLOR.b)
+			
+			TRP3RPNameInQuests.Tooltip:AddLine(" ")
+			TRP3RPNameInQuests.Tooltip:AddLine(L.ADCOM_CLICK_TO_CHANGE, GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b)
 
-				TRP3RPNameInQuests.Tooltip:Show()
+			TRP3RPNameInQuests.Tooltip:Show()
 		end,
 		
 		funcOnLeave = function(button)
