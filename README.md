@@ -69,7 +69,7 @@ You can use the following functions in your own addons to make use of this addon
 * `TRP3RPNameInQuests.API:ReturnRPName(renameFullName)` - Returns the character's currently chosen Quest Text RP Name. If `renameFullName` is `true`, it will give the full RP Name (Title + First Name + Last Name)
 * `TRP3RPNameInQuests.API:ReturnRPRace()` - Returns the character's currently chosen Quest Text RP Race. 
 * `TRP3RPNameInQuests.API:ReturnRPClass()` - Returns the character's currently chosen Quest Text RP Class. 
-* `TRP3RPNameInQuests.API:ReturnRPNameUnit(unit, withTitle)` - Returns a string with the unit's RP Name, or their regular name if they do not have a TRP3 profile. `unit` should be a valid unit ID, e.g. `player` or `target`. If `withTitle` is `true`, it will also provide the target's RP Title.
+* `TRP3RPNameInQuests.API:ReturnRPNameUnit(unit, withTitle)` - Returns a string with the unit's RP Name, or their regular name if they do not have a TRP3 profile. `unit` should be a valid unit stringID, e.g. `"player"` or `"target"`. If `withTitle` is `true`, it will also provide the target's RP Title.
 
 * `TRP3RPNameInQuests.API:RPNameRename(textToRename, renameFullName)` - Returns a string, replacing the character's OOC Name with their chosen Quest Text Character Name. If `renameFullName` is `true`, it will search for the full RP Name (Title + First Name + Last Name).
 * `TRP3RPNameInQuests.API:RPClassRename(textToRename)` - Returns a string, replacing the character's OOC Class with their chosen Quest Text Class Name.
@@ -97,6 +97,10 @@ if (TRP3_API and TRP3_API.module.isModuleLoaded("trp3_rpnameinquests")) then
 	
 	-- And also functions that return strings
 	local thisText3 = TRP3RPNameInQuests.API:CompleteRename(UnitName("player"))
+	
+	-- Get the Target's RP Name
+	local thisTextTarget = TRP3RPNameInQuests.API:ReturnRPNameUnit("target")
+	local thisTextTargetTitle = TRP3RPNameInQuests.API:ReturnRPNameUnit("target", true) -- With Title
 	
 end
 ```
