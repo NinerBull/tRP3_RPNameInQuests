@@ -44,12 +44,11 @@ You can also select which text this addon modifies. Turn on/off as desired.
 You can also add your TRP3 Roleplay Name/Race/Class to various UI components, such as Unit Frames and the Character Window. _Note that this may not function with other 3rd party UI addons._
 
 
-
 ## Compatibility
-* **Midnight** - 12.0.7
+* **Midnight** - 12.1.0
 * **MoP Classic** - 5.5.4
-* **TBC Classic** - 2.5.5
-* **Classic Era** - 1.15.8
+* **TBC Classic** - 2.5.6
+* **Classic Era** - 1.15.9
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
 
