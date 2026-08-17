@@ -1,1 +1,2 @@
-- Update TOC for 12.1.0
+- Added two new API functions to check and see if certain text modifiers are enabled, [see this page for details](https://github.com/NinerBull/tRP3_RPNameInQuests#modifier-settings-functions).
+- Added more addons to check against for auto selecting Quest Text Modification Method.
