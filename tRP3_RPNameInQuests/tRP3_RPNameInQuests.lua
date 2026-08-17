@@ -1305,39 +1305,39 @@ function TRP3RPNameInQuests:Init()
 	-- Speech Bubbles
 	-- with Code Modified from https://www.wowinterface.com/forums/showpost.php?p=336696&postcount=2
 	function TRP3RPNameInQuests:ModSpeechBubbles()
-			--Slight timer so the bubble has chance to fade in
-			C_Timer.After(.05, function()
-				if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
-					for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
-						for i = 1, bubble:GetNumChildren() do
-							local child = select(i, select(i, bubble:GetChildren()))
-							if(child) then
-								if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
-									for i = 1, child:GetNumRegions() do
-										local region = select(i, child:GetRegions())
-										if (region:GetObjectType() == "FontString") then
+		--Slight timer so the bubble has chance to fade in
+		C_Timer.After(.05, function()
+			if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
+				for _, bubble in pairs(C_ChatBubbles.GetAllChatBubbles()) do -- This -should- only affect NPC speech bubbles, player speech bubbles are protected
+					for i = 1, bubble:GetNumChildren() do
+						local child = select(i, select(i, bubble:GetChildren()))
+						if(child) then
+							if (child:GetObjectType() == "Frame") and (child.String) and (child.Center) then
+								for i = 1, child:GetNumRegions() do
+									local region = select(i, child:GetRegions())
+									if (region:GetObjectType() == "FontString") then
+									
+										local thisBubbleText = region:GetText()
 										
-											local thisBubbleText = region:GetText()
-											
-											region:SetText(TRP3RPNameInQuests.API:CompleteRename(thisBubbleText))
-											
-											--Resize bubble to accomodate new text
-											if (region:GetStringWidth() >= region:GetWrappedWidth()) then
-												region:SetWidth(region:GetWrappedWidth())
-											else
-												--region:SetWidth(region:GetStringWidth())
-												region:SetWidth(region:GetWrappedWidth())
-											end
-											
-											
+										region:SetText(TRP3RPNameInQuests.API:CompleteRename(thisBubbleText))
+										
+										--Resize bubble to accomodate new text
+										if (region:GetStringWidth() >= region:GetWrappedWidth()) then
+											region:SetWidth(region:GetWrappedWidth())
+										else
+											--region:SetWidth(region:GetStringWidth())
+											region:SetWidth(region:GetWrappedWidth())
 										end
+										
+										
 									end
 								end
 							end
 						end
 					end
 				end
-			end)
+			end
+		end)
 	end
 	
 
@@ -1380,6 +1380,47 @@ function TRP3RPNameInQuests:Init()
 				end)
 			end
 		end
+	end
+	
+	
+	
+	-- Return true or false if this type of text is being modified by this addon.
+	function TRP3RPNameInQuests.API:IsTextModifierEnabled(thisTextModifier)
+		
+		thisTextModifier = tostring(thisTextModifier) or ""
+		
+		if (string.lower(thisTextModifier) == "questdialog") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODQUESTDIALOG)
+		elseif (string.lower(thisTextModifier) == "npcspeech") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH)
+		elseif (string.lower(thisTextModifier) == "textitems") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODTEXTITEMS)
+		elseif (string.lower(thisTextModifier) == "mailbox") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX)
+		else
+			TRP3_API.utils.message.displayMessage("IsTextModifierEnabled: Should be one of the following strings: 'questdialog','npcspeech','textitems','mailbox'.")
+			return
+		end
+			
+	end
+	
+	
+	-- Return true or false if the player's name, race or class is being modified by this addon. False if the player's OOC name/race/class is being used, true if using the TRP3 data.
+	function TRP3RPNameInQuests.API:IsUsingModifiedTextForType(thisTextType)
+		
+		thisTextType = tostring(thisTextType) or ""
+		
+		if (string.lower(thisTextType) == "name") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 1 and false or true
+		elseif (string.lower(thisTextType) == "class") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMCLASSNAME) == 1 and false or true
+		elseif (string.lower(thisTextType) == "race") then
+			return TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.CUSTOMRACENAME) == 1 and false or true
+		else
+			TRP3_API.utils.message.displayMessage("IsUsingModifiedTextForType: Should be one of the following strings: 'name','class','race'.")
+			return
+		end
+			
 	end
 	
 

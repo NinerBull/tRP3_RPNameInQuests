@@ -65,17 +65,30 @@ This addon should hopefully be compatible with other addons that modify quest wi
 ## API
 You can use the following functions in your own addons to make use of this addon's data.
 
+### Return Functions
 * `TRP3RPNameInQuests.API:ReturnRPName(renameFullName)` - Returns the character's currently chosen Quest Text RP Name. If `renameFullName` is `true`, it will give the full RP Name (Title + First Name + Last Name)
 * `TRP3RPNameInQuests.API:ReturnRPRace()` - Returns the character's currently chosen Quest Text RP Race. 
 * `TRP3RPNameInQuests.API:ReturnRPClass()` - Returns the character's currently chosen Quest Text RP Class. 
 * `TRP3RPNameInQuests.API:ReturnRPNameUnit(unit, withTitle)` - Returns a string with the unit's RP Name, or their regular name if they do not have a TRP3 profile. `unit` should be a valid unit stringID, e.g. `"player"` or `"target"`. If `withTitle` is `true`, it will also provide the target's RP Title.
 
+### Rename Functions
 * `TRP3RPNameInQuests.API:RPNameRename(textToRename, renameFullName)` - Returns a string, replacing the character's OOC Name with their chosen Quest Text Character Name. If `renameFullName` is `true`, it will search for the full RP Name (Title + First Name + Last Name).
 * `TRP3RPNameInQuests.API:RPClassRename(textToRename)` - Returns a string, replacing the character's OOC Class with their chosen Quest Text Class Name.
 * `TRP3RPNameInQuests.API:RPRaceRename(textToRename)` - Returns a string, replacing the character's OOC Race with their chosen Quest Text Class Name.
 * `TRP3RPNameInQuests.API:CompleteRename(textToRename)` - Returns a string, replacing the character's OOC Name, Class and Race with their chosen Quest Text formatting settings.
 
+### Modifier Settings Functions
+* `TRP3RPNameInQuests.API:IsTextModifierEnabled(thisTextModifier)` - Returns a boolean to determine if the addon is currently modifying a certain type of text content. `thisTextModifier` can be a string containing one of the following:
+	* `questdialog` - Quest Text / Gossip Text / Quest Log
+	* `npcspeech` - NPC Speech, such as /say and /yell
+	* `textitems` - Text Items, such as books and plaques
+	* `mailbox` - Mailbox items such as letters
+* `TRP3RPNameInQuests.API:IsUsingModifiedTextForType(thisTextType)` - Returns a boolean to determine if the addon is modifying the player's Name, Class or Race. `thisTextType` can be a string containing one of the following:
+	* `name` - If the character's Name is being modified from their OOC name to their TRP3 name (or a custom name)
+	* `class` - If the character's Class is being modified from their OOC class to their TRP3 class (or a custom class)
+	* `race` - If the character's Race is being modified from their OOC race to their TRP3 class (or a custom race)
 
+### API Examples
 You can check to see if the module is loaded before attempting to use any of these APIs with the following example:
 ```lua
 if (TRP3_API and TRP3_API.module.isModuleLoaded("trp3_rpnameinquests")) then
