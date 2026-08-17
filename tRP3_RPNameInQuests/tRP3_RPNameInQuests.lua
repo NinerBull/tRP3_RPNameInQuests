@@ -269,7 +269,10 @@ function TRP3RPNameInQuests:Init()
 			C_AddOns.IsAddOnLoaded("ScrollingQuestText") or
 			C_AddOns.IsAddOnLoaded("Skits") or
 			C_AddOns.IsAddOnLoaded("Storyline") or
-			C_AddOns.IsAddOnLoaded("StoryQuest")
+			C_AddOns.IsAddOnLoaded("StoryQuest") or
+			C_AddOns.IsAddOnLoaded("BravUI") or
+			C_AddOns.IsAddOnLoaded("TypeToMe") or 
+			C_AddOns.IsAddOnLoaded("TypeToMeClassic")
 		)
 		
 	end
