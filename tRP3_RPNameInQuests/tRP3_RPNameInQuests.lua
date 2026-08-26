@@ -18,6 +18,8 @@ TRP3RPNameInQuests:RegisterEvent("UNIT_NAME_UPDATE");
 TRP3RPNameInQuests:RegisterEvent("ADDON_LOADED")
 TRP3RPNameInQuests:RegisterEvent("PLAYER_ENTERING_WORLD")
 TRP3RPNameInQuests:RegisterEvent("GOSSIP_SHOW")
+TRP3RPNameInQuests:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
+
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests:RegisterEvent("KNOWN_TITLES_UPDATE");
@@ -1140,9 +1142,10 @@ function TRP3RPNameInQuests:Init()
 	
 	end
 	
-	TRP3RPNameInQuests:SetScript("OnEvent", function(self, event, arg1, arg2)
+	TRP3RPNameInQuests:SetScript("OnEvent", function(self, event, arg1, arg2, arg3, arg4, arg5)
 		
 		if not TRP3RPNameInQuests.API:ShouldNotEditText() then
+		
 			
 			-- Books, etc.
 			-- /Interface/FrameXML/ItemTextFrame.lua
@@ -1215,7 +1218,7 @@ function TRP3RPNameInQuests:Init()
 
 	
 	-- Chat Filters
-	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, ...)
+	local function ChatFilterFunc(self, thisEvent, thisMessage, thisNPC, thisLanguage, thisChannel, thisNPC2, ...)
 	
 		if (canaccessvalue and (not canaccessvalue(thisMessage) or not canaccessvalue(thisNPC))) then
 			return --false, thisMessage, thisNPC, ...
@@ -1239,8 +1242,12 @@ function TRP3RPNameInQuests:Init()
 				
 			end
 		end
+		
+		--[[if (thisNPC2) then
+			print(thisNPC2)
+		end]]
 
-		return false, thisNewMessage, thisNewNPC, ...
+		return false, thisNewMessage, thisNewNPC, thisLanguage, thisChannel, thisNPC2, ...
 	
 	end
 	
@@ -1263,6 +1270,9 @@ function TRP3RPNameInQuests:Init()
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_TRADESKILLS", ChatFilterFunc)
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_EMOTE", ChatFilterFunc) -- NPC Boss /e Chat
 		ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_BOSS_WHISPER", ChatFilterFunc) -- NPC Boss /w Chat
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_TEXT_EMOTE", ChatFilterFunc) -- Player /emote
+		ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", ChatFilterFunc) -- System Messages
+		
 		
 		-- Raid Boss Emote
 		--[[hooksecurefunc("RaidNotice_AddMessage", function(noticeFrame, ...)
