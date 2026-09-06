@@ -60,7 +60,10 @@ I have tested this addon successfully with the following:
 * [DialogueUI](https://github.com/Peterodox/YUI-Dialogue)
 * [Interaction](https://github.com/Adaptvx/Interaction)
 
+For [Eavesdropper](https://github.com/Raenore/Eavesdropper) users, _TRP3: RP Name In Quest Text_ has priority in modifying Quest Text and NPC Speech if enabled, otherwise, Eavesdropper will modify this text instead!
+
 This addon should hopefully be compatible with other addons that modify quest windows, chat windows, etc.
+
 
 ## API
 You can use the following functions in your own addons to make use of this addon's data.
