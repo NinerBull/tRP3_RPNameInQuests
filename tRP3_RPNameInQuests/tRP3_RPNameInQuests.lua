@@ -274,7 +274,10 @@ function TRP3RPNameInQuests:Init()
 			C_AddOns.IsAddOnLoaded("StoryQuest") or
 			C_AddOns.IsAddOnLoaded("BravUI") or
 			C_AddOns.IsAddOnLoaded("TypeToMe") or 
-			C_AddOns.IsAddOnLoaded("TypeToMeClassic")
+			C_AddOns.IsAddOnLoaded("TypeToMeClassic") or
+			C_AddOns.IsAddOnLoaded("Lorewalker") or
+			C_AddOns.IsAddOnLoaded("LoreReader")
+			
 		)
 		
 	end
