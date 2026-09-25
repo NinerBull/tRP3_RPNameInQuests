@@ -25,6 +25,41 @@ if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
 	TRP3RPNameInQuests:RegisterEvent("KNOWN_TITLES_UPDATE");
 end
 
+function TRP3RPNameInQuests:GetPlayerOOCName()
+
+	if (self:GetPlayerOOCFirstName() and self:GetPlayerOOCLastName()) then
+		return (self:GetPlayerOOCFirstName() .. " " .. self:GetPlayerOOCLastName())
+	else
+		return (self:GetPlayerOOCFirstName())
+	end
+
+end
+
+function TRP3RPNameInQuests:GetPlayerOOCFirstName()
+	local thisFirstName, thisLastName = UnitNameUnmodified("player")
+	return (thisFirstName)
+end
+
+function TRP3RPNameInQuests:GetPlayerOOCLastName()
+	local thisFirstName, thisLastName = UnitNameUnmodified("player")
+	return (thisLastName)
+end
+
+function TRP3RPNameInQuests:GetUnitNameFlat(thisTarget)
+
+	thisTarget = thisTarget or "player"
+
+	local thisFirstName, thisLastName = UnitName(thisTarget)
+
+	if (thisFirstName and thisLastName) then
+		return (thisFirstName .. " " .. thisLastName)
+	else
+		return (thisFirstName)
+	end
+
+end
+
+
 
 function TRP3RPNameInQuests:Init()
 
@@ -80,6 +115,10 @@ function TRP3RPNameInQuests:Init()
 	
 	if (type(TRP3RPNameInQuests_CharVars.CustomRaceNameText) ~= "string") then
 		TRP3RPNameInQuests_CharVars.CustomRaceNameText = ""
+	end
+	
+	if (type(TRP3RPNameInQuests_CharVars.UnitSurnameOwn) ~= "number") then
+		TRP3RPNameInQuests_CharVars.UnitSurnameOwn = GetCVar("unitSurnameOwn")
 	end
 	
 	
@@ -210,7 +249,7 @@ function TRP3RPNameInQuests:Init()
 	-- https://github.com/keyboardturner/totalRP3_UnitFrames
 
 	TRP3RPNameInQuests.IgnoreUnitFrameMods = C_AddOns.IsAddOnLoaded("totalRP3_UnitFrames") or false
-	TRP3RPNameInQuests.NameToChange = TRP3_API.globals.player or UnitNameUnmodified("player")
+	--TRP3RPNameInQuests.NameToChange = TRP3_API.globals.player or UnitNameUnmodified("player")
 	TRP3RPNameInQuests.RaceToChange = TRP3_API.globals.player_race_loc or UnitRace("player")
 	TRP3RPNameInQuests.ClassToChange = TRP3_API.globals.player_class_loc or UnitClass("player")
 	
@@ -274,10 +313,7 @@ function TRP3RPNameInQuests:Init()
 			C_AddOns.IsAddOnLoaded("StoryQuest") or
 			C_AddOns.IsAddOnLoaded("BravUI") or
 			C_AddOns.IsAddOnLoaded("TypeToMe") or 
-			C_AddOns.IsAddOnLoaded("TypeToMeClassic") or
-			C_AddOns.IsAddOnLoaded("Lorewalker") or
-			C_AddOns.IsAddOnLoaded("LoreReader")
-			
+			C_AddOns.IsAddOnLoaded("TypeToMeClassic")
 		)
 		
 	end
@@ -310,7 +346,7 @@ function TRP3RPNameInQuests:Init()
 				thisTRP3CharNameFull = thisTRP3CharNameFull .. " " ..  thisTRP3CharInfo.LN
 			end
 		end
-		
+						
 		
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT) == true) then
 			--Remove double of title, if it exists
@@ -340,7 +376,14 @@ function TRP3RPNameInQuests:Init()
 		
 		-- If for some reason the character name is empty, default back to the player's OOC name
 		if (thisTRP3CharNameFull == "") then
-			thisTRP3CharNameFull = TRP3_API.globals.player or UnitNameUnmodified("player")
+			if (getFullName == true) then
+				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCName()
+			elseif (GetCVar("UnitSurnameOwn") == 1 and TRP3RPNameInQuests:GetPlayerOOCLastName()) then
+				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCName()
+			else
+				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCFirstName()
+			end
+			
 		end
 			
 		
@@ -410,22 +453,22 @@ function TRP3RPNameInQuests:Init()
 				
 		if (thisTRP3CharName == "") then
 			--empty, do nothing
-			thisTRP3CharName = TRP3RPNameInQuests.NameToChange
+			thisTRP3CharName = TRP3RPNameInQuests:GetPlayerOOCFirstName()
 		else
 		
 			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT) == true) then
 				if (textToRename) then
-					textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests.NameToChange), string.upper(thisTRP3CharName))
+					textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests:GetPlayerOOCFirstName()), string.upper(thisTRP3CharName))
 					textToRename = textToRename:gsub(TRP3RPNameInQuests.NameToChange, thisTRP3CharName)
 				end
 			
 			else
 				
 				if (textToRename and not(string.find(textToRename, string.upper(thisTRP3CharName)  .. "%A"))) then
-					textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests.NameToChange), string.upper(thisTRP3CharName))
+					textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests:GetPlayerOOCFirstName()), string.upper(thisTRP3CharName))
 				end
 				if (textToRename and not(string.find(textToRename, thisTRP3CharName  .. "%A"))) then
-					textToRename = textToRename:gsub(TRP3RPNameInQuests.NameToChange, thisTRP3CharName)
+					textToRename = textToRename:gsub(TRP3RPNameInQuests:GetPlayerOOCFirstName(), thisTRP3CharName)
 				end
 
 			
@@ -458,11 +501,11 @@ function TRP3RPNameInQuests:Init()
 		local thisPlayer, thisPlayerData
 		
 		if (canaccessvalue and not canaccessvalue(thisUnit)) then
-			return UnitName(thisUnit)
+			return TRP3RPNameInQuests:GetUnitNameFlat(thisUnit)
 		end
 		
 		if TRP3RPNameInQuests.API:ShouldNotEditText(true) then
-			return UnitName(thisUnit)
+			return TRP3RPNameInQuests:GetUnitNameFlat(thisUnit)
 		end
 		
 		if (UnitGUID(tostring(thisUnit))) then
@@ -488,12 +531,12 @@ function TRP3RPNameInQuests:Init()
 				return thisFullName
 			
 			else
-				return UnitName(thisUnit)
+				return TRP3RPNameInQuests:GetUnitNameFlat(thisUnit)
 			end
 			
 		else
 		
-			return UnitName(thisUnit)
+			return TRP3RPNameInQuests:GetUnitNameFlat(thisUnit)
 			
 		end
 	
@@ -706,24 +749,24 @@ function TRP3RPNameInQuests:Init()
 		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) ~= 1) then
 		
 			-- Find out if TRP3 Name is a short version of OOC Name
-			lengthOfOOCName = string.len(TRP3RPNameInQuests.NameToChange)
-			lengthOfTRP3Name = string.len(TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameInQuests.NameToChange, true))
+			lengthOfOOCName = string.len(TRP3RPNameInQuests:GetPlayerOOCFirstName())
+			lengthOfTRP3Name = string.len(TRP3RPNameInQuests.API:RPNameRename(TRP3RPNameInQuests:GetPlayerOOCFirstName(), true))
 			
 		
 			if (lengthOfTRP3Name >= lengthOfOOCName) then
-				if (strmatch(thisRenamedText, TRP3RPNameInQuests.NameToChange) and (not (strmatch(thisRenamedText, TRP3RPNameInQuests.API:ReturnRPName(true))))) then
+				if (strmatch(thisRenamedText, TRP3RPNameInQuests:GetPlayerOOCFirstName()) and (not (strmatch(thisRenamedText, TRP3RPNameInQuests.API:ReturnRPName(true))))) then
 					thisRenamedText =  TRP3RPNameInQuests.API:RPNameRename(thisRenamedText)
 				end
 				
-				if (strmatch(thisRenamedText, string.upper(TRP3RPNameInQuests.NameToChange)) and (not (strmatch(thisRenamedText, TRP3RPNameInQuests.API:ReturnRPName(true))))) then
+				if (strmatch(thisRenamedText, string.upper(TRP3RPNameInQuests:GetPlayerOOCFirstName())) and (not (strmatch(thisRenamedText, TRP3RPNameInQuests.API:ReturnRPName(true))))) then
 					thisRenamedText =  TRP3RPNameInQuests.API:RPNameRename(thisRenamedText, false, true)
 				end
 				
 			else
-				if (strmatch(thisRenamedText, TRP3RPNameInQuests.NameToChange)) then
+				if (strmatch(thisRenamedText, TRP3RPNameInQuests:GetPlayerOOCFirstName())) then
 					thisRenamedText =  TRP3RPNameInQuests.API:RPNameRename(thisRenamedText)
 				end
-				if (strmatch(thisRenamedText, string.upper(TRP3RPNameInQuests.NameToChange))) then
+				if (strmatch(thisRenamedText, string.upper(TRP3RPNameInQuests:GetPlayerOOCFirstName()))) then
 					thisRenamedText =  TRP3RPNameInQuests.API:RPNameRename(thisRenamedText, false, true)
 				end
 			end
@@ -755,7 +798,7 @@ function TRP3RPNameInQuests:Init()
 				if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
-							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+							if (TRP3RPNameInQuests:GetUnitNameFlat(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 								local thisRealmString = ""
 								if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_COALESCED) then
 									thisRealmString = FOREIGN_SERVER_LABEL
@@ -781,7 +824,7 @@ function TRP3RPNameInQuests:Init()
 				if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PARTYFRAMERPNAME) == true) and (C_AddOns.IsAddOnLoaded("Blizzard_CUFProfiles"))) then
 					if self.name and self.unit then
 						if (UnitPlayerControlled(tostring(self.unit))) then
-							if (UnitName(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
+							if (TRP3RPNameInQuests:GetUnitNameFlat(tostring(self.unit)) ~= TRP3_API.register.getUnitRPName(tostring(self.unit))) then
 									local thisRealmString = ""
 									if (UnitRealmRelationship(tostring(self.unit)) == LE_REALM_RELATION_VIRTUAL) then
 										thisRealmString = FOREIGN_SERVER_LABEL
@@ -880,19 +923,19 @@ function TRP3RPNameInQuests:Init()
 		if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
 			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.PAPERDOLLRPNAME) == true) then
 				if ( CharacterFrame:IsShown() ) then
-					if (TRP3RPNameInQuests.API:ReturnRPNameUnit() ~= "") then
+					if (TRP3RPNameInQuests.API:GetFullRPName() ~= "") then
 						if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
 							-- Era Only
-							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
+							CharacterNameText:SetText(TRP3RPNameInQuests.API:GetFullRPName(true));
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC) then 
 							-- TBC
-							CharacterNameText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
+							CharacterNameText:SetText(TRP3RPNameInQuests.API:GetFullRPName(true));
 						elseif (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC) then 
 							-- MoP
-							CharacterFrameTitleText:SetText(TRP3RPNameInQuests.API:ReturnRPNameUnit());
+							CharacterFrameTitleText:SetText(TRP3RPNameInQuests.API:GetFullRPName(true));
 						else
 							-- Retail
-							CharacterFrame:SetTitle(TRP3RPNameInQuests.API:ReturnRPNameUnit());
+							CharacterFrame:SetTitle(TRP3RPNameInQuests.API:GetFullRPName(true));
 						end
 					end
 				end
@@ -1114,34 +1157,36 @@ function TRP3RPNameInQuests:Init()
 	-- Mail Window
 	-- /Interface/FrameXML/MailFrame.lua
 	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX) == true) then
-		hooksecurefunc("OpenMail_Update", function()
-			if not TRP3RPNameInQuests.API:ShouldNotEditText() then
-				-- Retail
-				if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
-					if ( not OpenMailFrame_IsValidMailID()) then
-						return;
-					else
-						local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
-						
-						if(bodyText) then
-							OpenMailBodyText:SetText(TRP3RPNameInQuests.API:CompleteRename(bodyText), true);
+		if (OpenMail_Update) then -- Todo, figure out what Forever's function is
+			hooksecurefunc("OpenMail_Update", function()
+				if not TRP3RPNameInQuests.API:ShouldNotEditText() then
+					-- Retail
+					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+						if ( not OpenMailFrame_IsValidMailID()) then
+							return;
+						else
+							local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice, isConsortium = GetInboxText(InboxFrame.openMailID);
+							
+							if(bodyText) then
+								OpenMailBodyText:SetText(TRP3RPNameInQuests.API:CompleteRename(bodyText), true);
+							end
 						end
-					end
-				else
-					-- Classic
-					if ( not InboxFrame.openMailID ) then
-						return;
 					else
-						local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice = GetInboxText(InboxFrame.openMailID);
-						
-						if(bodyText) then
-							OpenMailBodyText:SetText(TRP3RPNameInQuests.API:CompleteRename(bodyText), true);
+						-- Classic
+						if ( not InboxFrame.openMailID ) then
+							return;
+						else
+							local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice = GetInboxText(InboxFrame.openMailID);
+							
+							if(bodyText) then
+								OpenMailBodyText:SetText(TRP3RPNameInQuests.API:CompleteRename(bodyText), true);
+							end
 						end
 					end
 				end
-			end
 
-		end)
+			end)
+		end
 	
 	end
 	
@@ -1441,17 +1486,38 @@ function TRP3RPNameInQuests:Init()
 	
 
 	-- TRP3 Options Page
-	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
-		{ L.DROPDOWNSTUFF_OPT1, 1 },
-		{ L.DROPDOWNSTUFF_OPT2, 2 },
-		{ L.DROPDOWNSTUFF_OPT3, 3 },
-		{ L.DROPDOWNSTUFF_OPT4, 4 },
-		{ L.DROPDOWNSTUFF_OPT5, 5 },
-		{ L.DROPDOWNSTUFF_OPT6, 6 },
-		{ L.DROPDOWNSTUFF_OPT7, 7 },
-		{ L.DROPDOWNSTUFF_OPT8, 8 },
-		{ L.DROPDOWNSTUFF_OPT9, 99 },		
-	}
+	local TRPRPNAMEINQUESTS_DROPDOWNSTUFF
+	
+	if (TRP3RPNameInQuests:GetPlayerOOCLastName()) then
+		TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
+			{ L.DROPDOWNSTUFF_OPT1F, 1 },
+			{ L.DROPDOWNSTUFF_OPT22F, 22 },
+			{ L.DROPDOWNSTUFF_OPT23F, 23 },
+			{ L.DROPDOWNSTUFF_OPT2, 2 },
+			{ L.DROPDOWNSTUFF_OPT3, 3 },
+			{ L.DROPDOWNSTUFF_OPT4, 4 },
+			{ L.DROPDOWNSTUFF_OPT5, 5 },
+			{ L.DROPDOWNSTUFF_OPT6, 6 },
+			{ L.DROPDOWNSTUFF_OPT7, 7 },
+			{ L.DROPDOWNSTUFF_OPT8, 8 },
+			{ L.DROPDOWNSTUFF_OPT9, 99 },		
+		}
+	
+	else
+		TRPRPNAMEINQUESTS_DROPDOWNSTUFF = {
+			{ L.DROPDOWNSTUFF_OPT1, 1 },
+			{ L.DROPDOWNSTUFF_OPT2, 2 },
+			{ L.DROPDOWNSTUFF_OPT3, 3 },
+			{ L.DROPDOWNSTUFF_OPT4, 4 },
+			{ L.DROPDOWNSTUFF_OPT5, 5 },
+			{ L.DROPDOWNSTUFF_OPT6, 6 },
+			{ L.DROPDOWNSTUFF_OPT7, 7 },
+			{ L.DROPDOWNSTUFF_OPT8, 8 },
+			{ L.DROPDOWNSTUFF_OPT9, 99 },		
+		}
+	end
+	
+	
 
 	local TRPRPNAMEINQUESTS_DROPDOWNCLASS = {
 		{ L.DROPDOWNCLASS_OPT1, 1 },

@@ -15,6 +15,9 @@ local _, L = ...;
 	L.DROPDOWNSTUFF_OPT7 = "Last Name"
 	L.DROPDOWNSTUFF_OPT8 = "First Name + Last Name"
 	L.DROPDOWNSTUFF_OPT9 = "Custom* (Set Below)"
+	L.DROPDOWNSTUFF_OPT1F = "OOC First Name"
+	L.DROPDOWNSTUFF_OPT22F = "OOC Last Name"
+	L.DROPDOWNSTUFF_OPT23F = "OOC First Name + Last Name"
 	
 	L.DROPDOWNCLASS_OPT1 = "OOC Class Name"
 	L.DROPDOWNCLASS_OPT2 = "TRP3 Class Name"
@@ -80,6 +83,10 @@ local _, L = ...;
 	
 	
 	L.EXTRAFUNC_TITLE = "Extra Functions"
+	
+	L.EXTRAFUNC_UNITSURNAMECVAR_TITLE = "Character Specific 'My Secondary Name' Setting"
+	L.EXTRAFUNC_UNITSURNAMECVAR_HELP = "By default, Blizzard's 'My Secondary Name' option for Nameplates takes effect account-wide\r\n\r\nIf checked, this option will be character specific instead."
+	
 	L.EXTRAFUNC_HELP1 = "Add TRP3 Character Information to other UI elements."
 	L.EXTRAFUNC_HELP2 = "These functions may not be compatible with custom UI addons or frameworks."
 	L.EXTRAFUNC_HELP3 = "These options are %s."
