@@ -19,6 +19,7 @@ TRP3RPNameInQuests:RegisterEvent("ADDON_LOADED")
 TRP3RPNameInQuests:RegisterEvent("PLAYER_ENTERING_WORLD")
 TRP3RPNameInQuests:RegisterEvent("GOSSIP_SHOW")
 TRP3RPNameInQuests:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
+TRP3RPNameInQuests:RegisterEvent("MAIL_INBOX_UPDATE");
 
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
@@ -1157,7 +1158,7 @@ function TRP3RPNameInQuests:Init()
 	-- Mail Window
 	-- /Interface/FrameXML/MailFrame.lua
 	if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX) == true) then
-		if (OpenMail_Update) then -- Todo, figure out what Forever's function is
+		if (OpenMail_Update) then 
 			hooksecurefunc("OpenMail_Update", function()
 				if not TRP3RPNameInQuests.API:ShouldNotEditText() then
 					-- Retail
@@ -1201,6 +1202,7 @@ function TRP3RPNameInQuests:Init()
 		
 				if event == "ITEM_TEXT_READY" then
 				
+				
 					local creator = ItemTextGetCreator();
 					if ( creator ) then
 						creator = "\n\n"..ITEM_TEXT_FROM.."\n"..creator.."\n";
@@ -1211,6 +1213,28 @@ function TRP3RPNameInQuests:Init()
 					
 				end
 				
+			end
+			
+			
+			
+			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODMAILBOX) == true) then
+			
+				if not (OpenMail_Update) then
+					if event == "MAIL_INBOX_UPDATE" then
+									
+						if ( not InboxFrame.openMailID ) then
+							return;
+						else
+							local bodyText, stationeryID1, stationeryID2, isTakeable, isInvoice = GetInboxText(InboxFrame.openMailID);
+							
+							if(bodyText) then
+								OpenMailBodyText:SetText(TRP3RPNameInQuests.API:CompleteRename(bodyText), true);
+							end
+						end
+					
+					end
+				end
+			
 			end
 			
 			
