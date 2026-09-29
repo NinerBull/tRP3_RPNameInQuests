@@ -1212,9 +1212,7 @@ function TRP3RPNameInQuests:Init()
 			
 			-- Unit Surname Own
 			if ( event == "PLAYER_ENTERING_WORLD" ) then
-				print ("Entering World")
 				if (TRP3RPNameInQuests_CharVars.UnitSurnameOwn) then
-					print ("Setting UnitSurnameOwn to - " .. TRP3RPNameInQuests_CharVars.UnitSurnameOwn)
 					SetCVar("UnitSurnameOwn", TRP3RPNameInQuests_CharVars.UnitSurnameOwn)
 				end
 			end
