@@ -13,13 +13,16 @@ https://github.com/Total-RP/Total-RP-3
 local _, L = ...;
 
 TRP3RPNameInQuests = CreateFrame("Frame")
-TRP3RPNameInQuests:RegisterEvent("ITEM_TEXT_READY");
-TRP3RPNameInQuests:RegisterEvent("UNIT_NAME_UPDATE");
+TRP3RPNameInQuests:RegisterEvent("ITEM_TEXT_READY")
+TRP3RPNameInQuests:RegisterEvent("UNIT_NAME_UPDATE")
 TRP3RPNameInQuests:RegisterEvent("ADDON_LOADED")
 TRP3RPNameInQuests:RegisterEvent("PLAYER_ENTERING_WORLD")
+TRP3RPNameInQuests:RegisterEvent("PLAYER_LOGOUT")
 TRP3RPNameInQuests:RegisterEvent("GOSSIP_SHOW")
 TRP3RPNameInQuests:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
-TRP3RPNameInQuests:RegisterEvent("MAIL_INBOX_UPDATE");
+TRP3RPNameInQuests:RegisterEvent("MAIL_INBOX_UPDATE")
+
+
 
 
 if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
@@ -119,7 +122,7 @@ function TRP3RPNameInQuests:Init()
 	end
 	
 	if (type(TRP3RPNameInQuests_CharVars.UnitSurnameOwn) ~= "number") then
-		TRP3RPNameInQuests_CharVars.UnitSurnameOwn = GetCVar("unitSurnameOwn")
+		TRP3RPNameInQuests_CharVars.UnitSurnameOwn = tonumber(GetCVar("UnitSurnameOwn"))	
 	end
 	
 	
@@ -145,6 +148,7 @@ function TRP3RPNameInQuests:Init()
 	TRP3RPNameInQuests.Config.TEXTMODMAILBOX = "trp3_rpnameinquests_textmod_mailbox";
 	TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION = "trp3_rpnameinquests_textmod_raceclasspunctuation";
 
+	TRP3RPNameInQuests.Config.UNITSURNAMEOWN = "trp3_rpnameinquests_unitsurnameown";
 	TRP3RPNameInQuests.Config.UNITFRAMERPNAME = "trp3_rpnameinquests_unitframerpname";
 	TRP3RPNameInQuests.Config.PAPERDOLLRPNAME = "trp3_rpnameinquests_paperdollrpname";
 	TRP3RPNameInQuests.Config.PARTYFRAMERPNAME = "trp3_rpnameinquests_partyframerpname";
@@ -202,6 +206,10 @@ function TRP3RPNameInQuests:Init()
 	
 	--RaceClassPunctuationAdjacent
 	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION, true);
+
+
+	--UnitSurnameOwn
+	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.UNITSURNAMEOWN, false);
 
 	--UnitFrameRPName
 	TRP3_API.configuration.registerConfigKey(TRP3RPNameInQuests.Config.UNITFRAMERPNAME, false);
@@ -1192,9 +1200,28 @@ function TRP3RPNameInQuests:Init()
 	end
 	
 	TRP3RPNameInQuests:SetScript("OnEvent", function(self, event, arg1, arg2, arg3, arg4, arg5)
+
+
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITSURNAMEOWN) == true) then
+			
+			-- Unit Surname Own
+			if ( event == "PLAYER_ENTERING_WORLD" ) then
+				print ("Entering World")
+				if (TRP3RPNameInQuests_CharVars.UnitSurnameOwn) then
+					print ("Setting UnitSurnameOwn to - " .. TRP3RPNameInQuests_CharVars.UnitSurnameOwn)
+					SetCVar("UnitSurnameOwn", TRP3RPNameInQuests_CharVars.UnitSurnameOwn)
+				end
+			end
+
+			if ( event == "PLAYER_LOGOUT" ) then
+				TRP3RPNameInQuests_CharVars.UnitSurnameOwn = tonumber(GetCVar("UnitSurnameOwn"))
+			end
+
+		end
+
+
 		
 		if not TRP3RPNameInQuests.API:ShouldNotEditText() then
-		
 			
 			-- Books, etc.
 			-- /Interface/FrameXML/ItemTextFrame.lua
@@ -1566,16 +1593,16 @@ function TRP3RPNameInQuests:Init()
 
 
 	TRP3RPNameInQuests.ConfigElements = {
-		{
+		{ --1
 			inherit = "TRP3_ConfigH1",
 			title =  string.format(L.CHARSETTINGS_MAINTITLE, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(TRP3_API.globals.player)),
 			
 		},
-		{
+		{ --2
 			inherit = "TRP3_ConfigParagraph",
 			title = string.format(L.CHARSETTINGS_MAINTITLE_HELP, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(TRP3_API.globals.player), TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CHARSPECIFIC)),
 		},
-		{
+		{ --3
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "trp3_rpnameinquests_whichrpnamewidget",
 			title = string.format(L.CHARSETTINGS_NAMEFORMAT_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER)),
@@ -1588,7 +1615,7 @@ function TRP3RPNameInQuests:Init()
 			end,
 
 		},
-		{
+		{ --4
 			inherit = "TRP3_ConfigDropDown",
 			title = string.format(L.CHARSETTINGS_RACEFORMAT_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE)),
 			help = L.CHARSETTINGS_RACEFORMAT_HELP,
@@ -1601,7 +1628,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --5 
 			inherit = "TRP3_ConfigDropDown",
 			title = string.format(L.CHARSETTINGS_CLASSFORMAT_TITLE, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS)),
 			help = L.CHARSETTINGS_CLASSFORMAT_HELP,
@@ -1612,41 +1639,41 @@ function TRP3RPNameInQuests:Init()
 				TRP3RPNameInQuests_CharVars.CustomClassName = value
 			end,
 		},
-		{
+		{ --6 
 			inherit = "TRP3_ConfigNote",
 			title = "- - -",
 		},
-		{
+		{ --7
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, ORANGE_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_CHARACTER), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMNAME_HELP,
 			configKey = TRP3RPNameInQuests.Config.WHICHRPNAMETEXT,
 		},
-		{
+		{ --8
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMNAME_TITLE, NORMAL_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_RACE), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMRACE_HELP,
 			configKey = TRP3RPNameInQuests.Config.CUSTOMRACENAMETEXT,
 		},
-		{
+		{ --9
 			inherit = "TRP3_ConfigEditBox",
 			title = string.format(L.CHARSETTINGS_CUSTOMCLASS_TITLE, TRP3RPNameInQuests.ClassColorString:WrapTextInColorCode(L.CHARSETTINGS_CLASS), LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.CHARSETTINGS_ASTERISK)),
 			help = L.CHARSETTINGS_CUSTOMCLASS_HELP,
 			configKey = TRP3RPNameInQuests.Config.CUSTOMCLASSNAMETEXT,
 		},
-		{
+		{ --10
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		{
+		{ --11
 			inherit = "TRP3_ConfigH1",
 			title = L.MODIFYSETTINGS_TITLE,
 		},
-		{
+		{ --12
 			inherit = "TRP3_ConfigParagraph",
 			title = string.format(L.MODIFYSETTINGS_HELP, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
 		},
-		{
+		{ --13
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_QUESTTEXT_TITLE,
 			help = L.MODIFYSETTINGS_QUESTTEXT_HELP,
@@ -1661,7 +1688,7 @@ function TRP3RPNameInQuests:Init()
 				end
 			end,
 		},
-		{
+		{ --14
 			inherit = "TRP3_ConfigCheck",
 			title = string.format(L.MODIFYSETTINGS_NPCSPEECH_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_NPCSPEECH_TITLE2)),
 			help = L.MODIFYSETTINGS_NPCSPEECH_HELP,
@@ -1677,7 +1704,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --15
 			inherit = "TRP3_ConfigCheck",
 			title = string.format(L.MODIFYSETTINGS_TEXTITEMS_TITLE .. " ", LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_TEXTITEMS_TITLE2)),
 			help = L.MODIFYSETTINGS_TEXTITEMS_HELP,
@@ -1692,7 +1719,7 @@ function TRP3RPNameInQuests:Init()
 				end
 			end,
 		},
-		{
+		{ --16
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_MAILBOX_TITLE,
 			help = L.MODIFYSETTINGS_MAILBOX_HELP,
@@ -1708,7 +1735,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --17
 			inherit = "TRP3_ConfigCheck",
 			title = L.MODIFYSETTINGS_RCPUNC_TITLE,
 			help = string.format(L.MODIFYSETTINGS_RCPUNC_HELP, TRP3_API.globals.player_class_loc, TRP3_API.globals.player_class_loc),
@@ -1718,27 +1745,35 @@ function TRP3RPNameInQuests:Init()
 
 				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.RACECLASSPUNCTUATION, value)
 
-
-				
 			end,
 		},
-		{
+		{ --18
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		{
+		{ --19
 			inherit = "TRP3_ConfigH1",
 			title = L.EXTRAFUNC_TITLE
 		},
-		{
+		{ --20
+			inherit = "TRP3_ConfigCheck",
+			title = L.EXTRAFUNC_UNITSURNAMEOWN_TITLE,
+			help = L.EXTRAFUNC_UNITSURNAMEOWN_HELP,
+			configKey = TRP3RPNameInQuests.Config.UNITSURNAMEOWN,
+			OnHide = function(button)
+				local value = button:GetChecked() and true or false;
+				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.UNITSURNAMEOWN, value)					
+			end,
+		},
+		{ --21
 			inherit = "TRP3_ConfigParagraph",
 			title = L.EXTRAFUNC_HELP1 .. "\n" .. NORMAL_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_HELP2) ..  "\n" .. string.format(L.EXTRAFUNC_HELP3, ORANGE_FONT_COLOR:WrapTextInColorCode(L.MODIFYSETTINGS_ACCOUNT_WIDE)),
 		},
-		{
+		{ --22
 			inherit = "TRP3_ConfigNote",
 			title = LORE_TEXT_BODY_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_TITLE),
 		},
-		{
+		{ --23
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " .. L.EXTRAFUNC_SHOWINFO_UNITFRAME_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_UNITFRAME_HELP,
@@ -1754,7 +1789,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --24
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PAPERDOLL_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_PAPERDOLL_HELP,
@@ -1772,7 +1807,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --25
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_PARTYFRAME_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_PARTYFRAME_HELP,
@@ -1784,7 +1819,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --26
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " ..  L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_TITLE,
 			help = L.EXTRAFUNC_SHOWINFO_CLASSCOLOR_HELP,
@@ -1797,7 +1832,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --27
 			inherit = "TRP3_ConfigCheck",
 			title = TextureDot .. " " .. string.format(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE, LIGHTGRAY_FONT_COLOR:WrapTextInColorCode(L.EXTRAFUNC_SHOWINFO_ZONENAME_TITLE2)),
 			help = L.EXTRAFUNC_SHOWINFO_ZONENAME_HELP,
@@ -1812,15 +1847,15 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --28
 			inherit = "TRP3_ConfigNote",
 			title = " ",
 		},
-		{
+		{ --29
 			inherit = "TRP3_ConfigH1",
 			title = L.TROUBLESHOOTING_TITLE,
 		},
-		{
+		{ --30
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "trp3_rpnameinquests_qtmodmethod",
 			title = L.TROUBLESHOOTING_QTMETHOD_TITLE,
@@ -1837,23 +1872,7 @@ function TRP3RPNameInQuests:Init()
 			end,
 
 		},
-		--[[{
-			inherit = "TRP3_ConfigCheck",
-			title = L.TROUBLESHOOTING_USEHOOKS_TITLE,
-			help = L.TROUBLESHOOTING_USEHOOKS_HELP,
-			configKey = TRP3RPNameInQuests.Config.USEFUNCHOOKS,
-			OnHide = function(button)
-				local value = button:GetChecked() and true or false;
-				TRP3_API.configuration.setValue(TRP3RPNameInQuests.Config.USEFUNCHOOKS, value)
-				
-				if (TRP3RPNameInQuests.OldVar.UseFuncHooks ~= value) then
-					TRP3_API.popup.showConfirmPopup(L.MODIFYSETTINGS_RELOADUI, ReloadUI);
-				end
-				
-				
-			end,
-		},]]
-		{
+		{ --31
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_ALTMETHOD_TITLE,
 			help = L.TROUBLESHOOTING_ALTMETHOD_HELP,
@@ -1865,7 +1884,7 @@ function TRP3RPNameInQuests:Init()
 				
 			end,
 		},
-		{
+		{ --32
 			inherit = "TRP3_ConfigCheck",
 			title = L.TROUBLESHOOTING_NOTINENCOUNTER_TITLE,
 			help = L.TROUBLESHOOTING_NOTINENCOUNTER_HELP,
@@ -1882,7 +1901,12 @@ function TRP3RPNameInQuests:Init()
 	
 	-- Remove Unit Frame Option if needed
 	if (TRP3RPNameInQuests.IgnoreUnitFrameMods == true) then
-		table.remove(TRP3RPNameInQuests.ConfigElements, 22)
+		table.remove(TRP3RPNameInQuests.ConfigElements, 23)
+	end
+
+	-- Remove Unit Surname Option if needed
+	if (not TRP3RPNameInQuests:GetPlayerOOCLastName()) then
+		table.remove(TRP3RPNameInQuests.ConfigElements, 20)
 	end
 	
 

@@ -84,8 +84,8 @@ local _, L = ...;
 	
 	L.EXTRAFUNC_TITLE = "Extra Functions"
 	
-	L.EXTRAFUNC_UNITSURNAMECVAR_TITLE = "Character Specific 'My Secondary Name' Setting"
-	L.EXTRAFUNC_UNITSURNAMECVAR_HELP = "By default, Blizzard's 'My Secondary Name' option for Nameplates takes effect account-wide\r\n\r\nIf checked, this option will be character specific instead."
+	L.EXTRAFUNC_UNITSURNAMEOWN_TITLE = "Character Specific 'My Secondary Name' Setting"
+	L.EXTRAFUNC_UNITSURNAMEOWN_HELP = "By default, Blizzard's 'My Secondary Name' option for Nameplates takes effect account-wide.\r\n\r\nIf checked, this option will be character specific instead."
 	
 	L.EXTRAFUNC_HELP1 = "Add TRP3 Character Information to other UI elements."
 	L.EXTRAFUNC_HELP2 = "These functions may not be compatible with custom UI addons or frameworks."
