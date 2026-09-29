@@ -370,6 +370,14 @@ function TRP3RPNameInQuests:Init()
 			end
 		
 		end
+
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 22 and not getFullName) then
+			thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCLastName()
+		end
+
+		if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.WHICHRPNAME) == 23 and not getFullName) then
+			thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCName()
+		end
 		
 		
 		-- If the player wants to use a custom name, grab that instead
@@ -386,8 +394,6 @@ function TRP3RPNameInQuests:Init()
 		-- If for some reason the character name is empty, default back to the player's OOC name
 		if (thisTRP3CharNameFull == "") then
 			if (getFullName == true) then
-				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCName()
-			elseif (GetCVar("UnitSurnameOwn") == 1 and TRP3RPNameInQuests:GetPlayerOOCLastName()) then
 				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCName()
 			else
 				thisTRP3CharNameFull = TRP3RPNameInQuests:GetPlayerOOCFirstName()
