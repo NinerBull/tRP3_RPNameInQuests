@@ -22,10 +22,24 @@ TRP3RPNameInQuests:RegisterEvent("GOSSIP_SHOW")
 TRP3RPNameInQuests:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
 TRP3RPNameInQuests:RegisterEvent("MAIL_INBOX_UPDATE")
 
+function TRP3RPNameInQuests:IsRetail()
+	return(WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
+end
+
+function TRP3RPNameInQuests:IsForever()
+	return(WOW_PROJECT_ID == WOW_PROJECT_CAMELOT)
+end
+
+function TRP3RPNameInQuests:IsModern()
+	return(self:IsRetail() or self:IsForever())
+end
+
+function TRP3RPNameInQuests:IsClassicAny()
+	return(not self:IsModern())
+end
 
 
-
-if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+if (TRP3RPNameInQuests:IsModern()) then
 	TRP3RPNameInQuests:RegisterEvent("KNOWN_TITLES_UPDATE");
 end
 
@@ -413,7 +427,7 @@ function TRP3RPNameInQuests:Init()
 
 	-- Functions that do the actual renaming
 
-	if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+	if (TRP3RPNameInQuests:IsModern()) then
 		-- Some allied races use a different race name in quest text rather than their full race name
 		local thisPlayerRaceName, thisPlayerRaceFile, thisPlayerRaceID = UnitRace("player")
 		
@@ -916,7 +930,7 @@ function TRP3RPNameInQuests:Init()
 	
 	
 	-- Update Unit Frames when profile changed
-	if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
+	if (not TRP3RPNameInQuests:IsModern()) then -- BROKEN IN 12.0.0
 		TRP3_API.RegisterCallback(TRP3_Addon, "REGISTER_PROFILES_LOADED", function()
 			if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
 				if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
@@ -989,7 +1003,7 @@ function TRP3RPNameInQuests:Init()
 						thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
 					end
 					
-						if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+						if (TRP3RPNameInQuests:IsModern()) then
 						
 							local effectiveLevel = UnitEffectiveLevel("player");
 							
@@ -1179,7 +1193,7 @@ function TRP3RPNameInQuests:Init()
 			hooksecurefunc("OpenMail_Update", function()
 				if not TRP3RPNameInQuests.API:ShouldNotEditText() then
 					-- Retail
-					if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
+					if (TRP3RPNameInQuests:IsModern()) then
 						if ( not OpenMailFrame_IsValidMailID()) then
 							return;
 						else
@@ -1273,7 +1287,7 @@ function TRP3RPNameInQuests:Init()
 			
 			
 			--Update Nameplates if title/name changes
-			if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
+			if (not TRP3RPNameInQuests:IsModern()) then -- BROKEN IN 12.0.0
 				if ( event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and arg1 == "player")) then
 				
 					if ((TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.UNITFRAMERPNAME) == true) and (TRP3RPNameInQuests.IgnoreUnitFrameMods == false)) then
@@ -1392,7 +1406,7 @@ function TRP3RPNameInQuests:Init()
 
 
 	
-	if ((WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true)) then
+	if ((TRP3RPNameInQuests:IsModern()) and (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.TEXTMODNPCSPEECH) == true)) then
 	
 		--Talking Head
 		hooksecurefunc(TalkingHeadFrame, "PlayCurrent", function(self)
@@ -1491,7 +1505,7 @@ function TRP3RPNameInQuests:Init()
 	
 	
 	function TRP3RPNameInQuests:UpdateUnitFrames()
-		if (not WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then -- BROKEN IN 12.0.0
+		if (not TRP3RPNameInQuests:IsModern()) then -- BROKEN IN 12.0.0
 			if not TRP3RPNameInQuests.API:ShouldNotEditText(true) then
 				pcall(function () 
 					UnitFrame_Update(PlayerFrame)
