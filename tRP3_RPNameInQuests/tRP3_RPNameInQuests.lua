@@ -46,7 +46,7 @@ end
 function TRP3RPNameInQuests:GetPlayerOOCName()
 
 	if (self:GetPlayerOOCFirstName() and self:GetPlayerOOCLastName() and (RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled())) then
-		return (self:GetPlayerOOCFirstName() .. " " .. self:GetPlayerOOCLastName())
+		return (string.join(" ", self:GetPlayerOOCFirstName(), self:GetPlayerOOCLastName()))
 	else
 		return (self:GetPlayerOOCFirstName())
 	end
@@ -73,7 +73,7 @@ function TRP3RPNameInQuests:GetUnitNameFlat(thisTarget)
 	local thisFirstName, thisLastName = UnitName(thisTarget)
 
 	if (thisFirstName and thisLastName and (RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled())) then
-		return (thisFirstName .. " " .. thisLastName)
+		return (string.join(" ", thisFirstName, thisLastName))
 	else
 		return (thisFirstName)
 	end
