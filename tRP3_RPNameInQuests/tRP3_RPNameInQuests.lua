@@ -1003,17 +1003,21 @@ function TRP3RPNameInQuests:Init()
 						thisTRP3CharColor = CreateColorFromRGBHexString(thisTRP3CharInfo.CH) or NORMAL_FONT_COLOR			
 					end
 					
-						if (TRP3RPNameInQuests:IsModern()) then
+					if (UnitEffectiveLevel) then
+					
+						local effectiveLevel = UnitEffectiveLevel("player");
 						
-							local effectiveLevel = UnitEffectiveLevel("player");
-							
-							if ( effectiveLevel ~= level ) then
-								level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
-							end
-						
+						if ( effectiveLevel ~= level ) then
+							level = EFFECTIVE_LEVEL_FORMAT:format(effectiveLevel, level);
 						end
 					
-					CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
+					end
+					
+					if (WOW_PROJECT_ID == WOW_PROJECT_CAMELOT) then -- Forever doesn't show the Race here
+						CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharClass);
+					else
+						CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
+					end
 					
 				end
 			end
