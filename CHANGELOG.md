@@ -5,3 +5,5 @@ This update adds initial support to WoW: Forever!
   - OOC First Name is set as default, which is consistent with Forever's stock behaviour.
 - An optional toggle has been added in the settings to make Blizzard's 'My Secondary Name' Nameplate option a Character Specific toggle rather than an Account Wide toggle.
   - This is disabled by default.
+  
+- Updated TOC for 12.1.5

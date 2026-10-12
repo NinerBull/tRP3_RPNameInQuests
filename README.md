@@ -45,9 +45,10 @@ You can also add your TRP3 Roleplay Name/Race/Class to various UI components, su
 
 
 ## Compatibility
-* **Midnight** - 12.1.0
+* **Midnight** - 12.1.5
 * **MoP Classic** - 5.5.4
 * **TBC Classic** - 2.5.6
+* **Forever** - 1.60.1
 * **Classic Era** - 1.15.9
 
 This addon **requires** [Total RP 3](https://github.com/Total-RP/Total-RP-3) as it makes use of the RP Character Profile.
