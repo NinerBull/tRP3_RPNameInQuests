@@ -7,3 +7,4 @@ This update adds initial support to WoW: Forever!
   - This is disabled by default.
   
 - Updated TOC for 12.1.5
+- Fixed Typo in a text renaming function, thanks sw1ftly!
