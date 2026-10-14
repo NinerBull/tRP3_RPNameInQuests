@@ -491,7 +491,7 @@ function TRP3RPNameInQuests:Init()
 			if (TRP3_API.configuration.getValue(TRP3RPNameInQuests.Config.ALTRPNAMEREPLACEMENT) == true) then
 				if (textToRename) then
 					textToRename = textToRename:gsub(string.upper(TRP3RPNameInQuests:GetPlayerOOCFirstName()), string.upper(thisTRP3CharName))
-					textToRename = textToRename:gsub(TRP3RPNameInQuests.NameToChange, thisTRP3CharName)
+					textToRename = textToRename:gsub(TRP3RPNameInQuests:GetPlayerOOCFirstName(), thisTRP3CharName)
 				end
 			
 			else
