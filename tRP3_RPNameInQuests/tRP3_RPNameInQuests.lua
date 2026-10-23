@@ -1014,7 +1014,7 @@ function TRP3RPNameInQuests:Init()
 					end
 					
 					if (WOW_PROJECT_ID == WOW_PROJECT_CAMELOT) then -- Forever doesn't show the Race here
-						CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharClass);
+						CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharClass, "");
 					else
 						CharacterLevelText:SetFormattedText(PLAYER_LEVEL, level, thisTRP3CharColor:GenerateHexColor(), thisTRP3CharRace, thisTRP3CharClass);
 					end
