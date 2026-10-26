@@ -902,10 +902,15 @@ function TRP3RPNameInQuests:Init()
 						elseif ( frame.optionTable.colorHealthBySelection ) then
 							
 						elseif ( UnitIsFriend("player", frame.unit) ) then
-						
-							thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromUnit(frame.unit):GetCustomColorForDisplay() or nil
+							local thisUnitFrameColorDisplay = nil;
+							if (TRP3_NameUtil and frame.unit and UnitIsPlayer(frame.unit)) then
+								local thisCharacterID = TRP3_NameUtil.GetQualifiedName(frame.unit);
+								if (thisCharacterID) then
+									thisUnitFrameColorDisplay = AddOn_TotalRP3.Player.CreateFromCharacterID(thisCharacterID):GetCustomColorForDisplay();
+								end
+							end
 
-							if (UnitIsPlayer(frame.unit) and (thisUnitFrameColorDisplay)) then
+							if (thisUnitFrameColorDisplay) then
 								
 								local thisCustomClassColor = thisUnitFrameColorDisplay:GetRGBTable() or nil
 							
