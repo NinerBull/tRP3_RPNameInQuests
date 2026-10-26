@@ -6,5 +6,5 @@ This update adds initial support to WoW: Forever!
 - An optional toggle has been added in the settings to make Blizzard's 'My Secondary Name' Nameplate option a Character Specific toggle rather than an Account Wide toggle.
   - This is disabled by default.
   
-- Updated TOC for 12.1.5
 - Fixed Typo in a text renaming function, thanks sw1ftly!
+- Fix for LUA error that could occur when in a raid group and the 'Use Custom Class Color' option is enabled, thanks keyboardturner!

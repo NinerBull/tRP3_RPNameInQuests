@@ -873,7 +873,7 @@ function TRP3RPNameInQuests:Init()
 	
 	
 	-- 
-	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua#L553
+	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_UnitFrame/Shared/CompactUnitFrame.lua#L645
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
 		local inInstance, instanceType = IsInInstance()
 		if (not TRP3RPNameInQuests.API:ShouldNotEditText(true) and instanceType ~= "raid") then
