@@ -1042,7 +1042,13 @@ function TRP3RPNameInQuests:Init()
 				GetQuestLogQuestTextRPNameQuestText = GetQuestLogQuestText
 				GetQuestLogQuestText = function(...) 
 					local questDescription, questObjectives = GetQuestLogQuestTextRPNameQuestText(...)
-					return TRP3RPNameInQuests.API:CompleteRename(questDescription), questObjectives
+					if (KerzosQuestLog and KerzosQuestLog.cfg and KerzosQuestLog.cfg.HabilitarIntegracionTRP3 == true) then
+						-- Do not modify Quest Text if Kerzo's modification is enabled
+						return questDescription, questObjectives
+					else
+						return TRP3RPNameInQuests.API:CompleteRename(questDescription), questObjectives
+					end
+					
 				end
 			end
 			
