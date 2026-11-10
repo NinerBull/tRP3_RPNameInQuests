@@ -1,1 +1,1 @@
-- For [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log) users, the addon will not attempt to modify any quest text within the Quest Log window if Kerzo's TRP3 Name Replacement is enabled, to prevent duplicate name modification.
+- For [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log) users, the addon will no longer attempt to modify any quest text within Kerzo's Quest Log window if Kerzo's TRP3 Name Replacement is enabled, to prevent duplicate name modification.
