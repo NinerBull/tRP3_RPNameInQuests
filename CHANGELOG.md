@@ -1,1 +1,1 @@
-- For [Kerzo Classic Quest Log](https://www.curseforge.com/wow/addons/kerzo-classic-quest-log) users, the addon will no longer attempt to modify any quest text within Kerzo's Quest Log window if Kerzo's TRP3 Name Replacement is enabled, to prevent duplicate name modification.
+- (Forever) Potential fix for Race Renaming for Skyborne not working as expected.

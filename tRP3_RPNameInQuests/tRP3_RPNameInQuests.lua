@@ -442,7 +442,7 @@ function TRP3RPNameInQuests:Init()
 		end
 		
 		if (thisPlayerRaceID == 31) then -- Zandalari Troll
-			thisActualRaceInfo.raceName = TRP3RPNameInQuests.RaceToChange:match("(%w+)(.*)")
+			thisActualRaceInfo.raceName = strtrim(string.sub(thisPlayerRaceName, string.find(thisPlayerRaceName, " [^ ]*$"))) --TRP3RPNameInQuests.RaceToChange:match("(%w+)(.*)")
 		end
 		
 		if (thisPlayerRaceID == 34) then -- Dark Iron Dwarf
@@ -451,6 +451,10 @@ function TRP3RPNameInQuests:Init()
 		
 		if (thisPlayerRaceID == 36) then -- Mag'har Orc
 			 thisActualRaceInfo = C_CreatureInfo.GetRaceInfo(2)
+		end
+		
+		if (thisPlayerRaceID == 95 or thisPlayerRaceID == 96) then -- Skyborne
+			 thisActualRaceInfo.raceName = strtrim(string.sub(thisPlayerRaceName, string.find(thisPlayerRaceName, " [^ ]*$")))
 		end
 		
 		
